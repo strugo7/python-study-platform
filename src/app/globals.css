@@ -50,10 +50,65 @@ body {
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* RTL Adjustments */
-[dir="rtl"] .ltr-code {
+/* RTL Adjustments for Mixed Content */
+[dir="rtl"] .ltr-code,
+[dir="rtl"] code,
+[dir="rtl"] pre,
+[dir="rtl"] .font-mono {
   direction: ltr;
   text-align: left;
+}
+
+/* Code blocks always LTR */
+pre,
+code {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: isolate;
+}
+
+/* Tables with code should be LTR */
+table code,
+td code {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* Theory content - allow mixed RTL/LTR */
+.theory-section-content {
+  unicode-bidi: plaintext;
+}
+
+.theory-section-content pre,
+.theory-section-content code {
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+}
+
+/* Code in inline contexts */
+.prose code {
+  direction: ltr;
+  unicode-bidi: embed;
+  display: inline-block;
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 640px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .prose pre {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  .prose code {
+    font-size: 0.75rem;
+  }
 }
 
 /* Progress Bar Animation */
@@ -109,9 +164,12 @@ body {
 
 /* Animation Keyframes */
 @keyframes pulse-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 15px var(--neon-glow);
   }
+
   50% {
     box-shadow: 0 0 30px var(--neon-glow), 0 0 60px rgba(43, 238, 108, 0.2);
   }
@@ -126,6 +184,7 @@ body {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, use } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, use } from "react";
 import Header from "@/components/Header";
 import MemoryGrid from "@/components/visualizers/MemoryGrid";
-import CodeBlock from "@/components/CodeBlock";
 import PyTutorStepper from "@/components/visualizers/PyTutorStepper";
-import type { StepState, Variable } from "@/components/visualizers/PyTutorStepper";
+import type { StepState } from "@/components/visualizers/PyTutorStepper";
 import { getModuleByStringId, getNextModule, getPreviousModule, getAllModules } from "@/data/curriculumLoader";
-import { useCallback } from "react";
 
 interface LearnPageProps {
     params: Promise<{ id: string }>;
@@ -24,6 +22,7 @@ export default function LearnPage({ params }: LearnPageProps) {
 
     const [highlightedLine, setHighlightedLine] = useState<number | undefined>(undefined);
     const [activeSection, setActiveSection] = useState(0);
+    const [showSimulator, setShowSimulator] = useState(false);
     const [memorySlots, setMemorySlots] = useState<{
         name?: string;
         value?: string | number;
@@ -39,12 +38,11 @@ export default function LearnPage({ params }: LearnPageProps) {
         { address: "0x4F06" },
         { address: "0x4F07" },
     ]);
-    const [currentStepDescription, setCurrentStepDescription] = useState<string>('');
 
     // Fallback if module not found
     if (!module) {
         return (
-            <div className="flex h-screen flex-col">
+            <div className="flex min-h-screen flex-col">
                 <Header />
                 <main className="flex-1 flex items-center justify-center">
                     <div className="text-center">
@@ -62,14 +60,9 @@ export default function LearnPage({ params }: LearnPageProps) {
     const interactiveCode = module.interactive_code;
     const practiceQuestions = module.practice_questions || [];
 
-    const handleLineHover = (lineIndex: number) => {
-        setHighlightedLine(lineIndex + 1);
-    };
-
     // Callback to update memory grid when PyTutor step changes
     const handleStepChange = useCallback((step: StepState, stepIndex: number) => {
         setHighlightedLine(step.lineNumber);
-        setCurrentStepDescription(step.description || '');
 
         // Convert step variables to memory slots
         const baseSlots: {
@@ -104,246 +97,276 @@ export default function LearnPage({ params }: LearnPageProps) {
     }, []);
 
     return (
-        <div className="flex h-screen flex-col">
+        <div className="flex min-h-screen flex-col">
             <Header />
 
-            <main className="flex flex-1 overflow-hidden">
-                {/* Left Sticky Visualization (RAM) */}
-                <section className="hidden lg:flex w-1/2 border-l border-border-dark">
-                    <MemoryGrid slots={memorySlots} highlightedLine={highlightedLine} />
-                </section>
+            <main className="flex-1">
+                {/* Full Width Content Area */}
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12">
+                    {/* Breadcrumbs */}
+                    <nav className="flex flex-wrap gap-2 mb-6 md:mb-8 items-center text-sm">
+                        <Link href="/" className="text-text-muted hover:text-primary transition-colors">
+                            ראשי
+                        </Link>
+                        <svg className="w-4 h-4 text-text-muted rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                        <span className="text-text-muted">מודול {module.id}</span>
+                        <svg className="w-4 h-4 text-text-muted rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                        <span className="font-semibold">{module.title}</span>
+                    </nav>
 
-                {/* Right Scrollable Content */}
-                <section className="flex-1 overflow-y-auto p-6 md:p-12">
-                    <div className="max-w-3xl mx-auto">
-                        {/* Breadcrumbs */}
-                        <nav className="flex flex-wrap gap-2 mb-8 items-center text-sm">
-                            <Link href="/" className="text-text-muted hover:text-primary transition-colors">
-                                Python Master
-                            </Link>
-                            <svg className="w-4 h-4 text-text-muted rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                            <span className="text-text-muted">מודול {module.id}</span>
-                            <svg className="w-4 h-4 text-text-muted rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                            <span className="font-semibold">{module.title}</span>
-                        </nav>
-
-                        {/* Header Section */}
-                        <motion.div
-                            className="flex flex-col gap-6 mb-12"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                        >
-                            <div className="flex items-center gap-4">
-                                <span className="text-5xl font-black text-primary">{module.id}</span>
-                                <div>
-                                    <h1 className="text-3xl md:text-4xl font-black leading-tight tracking-tight">
-                                        {module.title}
-                                    </h1>
-                                    <p className="text-text-muted text-lg">{module.subtitle}</p>
-                                </div>
+                    {/* Header Section */}
+                    <motion.div
+                        className="flex flex-col gap-4 md:gap-6 mb-8 md:mb-12"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                    >
+                        <div className="flex items-center gap-4">
+                            <span className="text-4xl md:text-5xl font-black text-primary">{module.id}</span>
+                            <div>
+                                <h1 className="text-2xl md:text-4xl font-black leading-tight tracking-tight">
+                                    {module.title}
+                                </h1>
+                                <p className="text-text-muted text-base md:text-lg" dir="ltr">{module.subtitle}</p>
                             </div>
+                        </div>
 
-                            {/* Learning Objectives */}
-                            {module.learningObjectives && (
-                                <div className="bg-surface-dark/50 border border-border-dark rounded-xl p-6">
-                                    <h3 className="text-lg font-bold mb-3 text-primary">🎯 מטרות הלמידה</h3>
-                                    <ul className="space-y-2">
-                                        {module.learningObjectives.map((obj, idx) => (
-                                            <li key={idx} className="flex items-start gap-3 text-slate-300">
-                                                <span className="text-primary mt-1">✓</span>
-                                                <span>{obj}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
+                        {/* Learning Objectives */}
+                        {module.learningObjectives && (
+                            <div className="bg-surface-dark/50 border border-border-dark rounded-xl p-4 md:p-6">
+                                <h3 className="text-base md:text-lg font-bold mb-3 text-primary">🎯 מטרות הלמידה</h3>
+                                <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    {module.learningObjectives.map((obj, idx) => (
+                                        <li key={idx} className="flex items-start gap-3 text-slate-300 text-sm md:text-base">
+                                            <span className="text-primary mt-0.5">✓</span>
+                                            <span>{obj}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
 
-                            {/* Section Navigation */}
-                            <div className="flex flex-wrap gap-2">
-                                {theorySections.map((section, idx) => (
-                                    <button
-                                        key={section.id}
-                                        onClick={() => setActiveSection(idx)}
-                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeSection === idx
+                        {/* Section Navigation Tabs */}
+                        <div className="flex flex-wrap gap-2 border-b border-border-dark pb-4">
+                            {theorySections.map((section, idx) => (
+                                <button
+                                    key={section.id}
+                                    onClick={() => setActiveSection(idx)}
+                                    className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${activeSection === idx
                                             ? 'bg-primary text-background-dark'
                                             : 'bg-surface-dark text-text-muted hover:bg-border-dark'
-                                            }`}
-                                    >
-                                        {section.title}
-                                    </button>
-                                ))}
-                            </div>
-                        </motion.div>
-
-                        {/* Theory Content - Rendered HTML */}
-                        <div className="space-y-8">
-                            {theorySections.map((section, idx) => (
-                                <motion.div
-                                    key={section.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{
-                                        opacity: activeSection === idx ? 1 : 0.3,
-                                        y: 0,
-                                        scale: activeSection === idx ? 1 : 0.98
-                                    }}
-                                    transition={{ delay: idx * 0.1 }}
-                                    className={`theory-section-content bg-surface-dark/30 rounded-xl p-6 border-r-4 ${activeSection === idx ? 'border-primary' : 'border-border-dark'
                                         }`}
-                                    onClick={() => setActiveSection(idx)}
                                 >
-                                    <h2 className="text-2xl font-bold mb-4 text-white flex items-center gap-3">
-                                        <span className="text-primary text-sm bg-primary/20 px-2 py-1 rounded">
-                                            {section.id}
-                                        </span>
-                                        {section.title}
-                                    </h2>
-                                    {/* Render HTML content */}
-                                    <div
-                                        className="prose prose-invert prose-lg max-w-none
-                                            prose-headings:text-white prose-headings:font-bold
-                                            prose-p:text-slate-300 prose-p:leading-relaxed
-                                            prose-code:bg-primary/20 prose-code:text-primary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
-                                            prose-pre:bg-[#0d1117] prose-pre:border prose-pre:border-border-dark prose-pre:rounded-xl
-                                            prose-strong:text-white
-                                            prose-ul:space-y-2 prose-li:text-slate-300
-                                            prose-table:border-collapse prose-th:bg-surface-dark prose-th:p-2 prose-th:border prose-th:border-border-dark
-                                            prose-td:p-2 prose-td:border prose-td:border-border-dark prose-td:text-slate-300"
-                                        dangerouslySetInnerHTML={{ __html: section.content_html }}
-                                    />
-                                </motion.div>
+                                    {section.title}
+                                </button>
                             ))}
                         </div>
+                    </motion.div>
 
-                        {/* Interactive Code Example - PyTutor Style */}
-                        {interactiveCode && (
+                    {/* Theory Content - Full Width */}
+                    <div className="space-y-6 md:space-y-8">
+                        {theorySections.map((section, idx) => (
                             <motion.div
-                                className="mt-12"
+                                key={section.id}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
-                            >
-                                <PyTutorStepper
-                                    code={interactiveCode.code}
-                                    title={interactiveCode.title}
-                                    onStepChange={handleStepChange}
-                                />
-                                {/* Concepts used badges */}
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                    <span className="text-xs text-text-muted">קונספטים:</span>
-                                    {interactiveCode.concepts_used.map((concept, idx) => (
-                                        <span key={idx} className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full">
-                                            {concept}
-                                        </span>
-                                    ))}
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {/* Practice Questions Preview */}
-                        {practiceQuestions.length > 0 && (
-                            <motion.div
-                                className="mt-12 bg-gradient-to-r from-primary/10 to-transparent rounded-xl p-6 border border-primary/30"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4 }}
-                            >
-                                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                    <span className="text-2xl">📝</span>
-                                    שאלות תרגול ({practiceQuestions.length})
-                                </h3>
-                                <p className="text-text-muted mb-4">
-                                    בדוק את ההבנה שלך עם {practiceQuestions.length} שאלות תרגול על החומר של המודול הזה.
-                                </p>
-                                <Link
-                                    href={`/exam?module=${module.id}`}
-                                    className="inline-flex items-center gap-2 bg-primary text-background-dark px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity"
-                                >
-                                    <span>התחל תרגול</span>
-                                    <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </Link>
-                            </motion.div>
-                        )}
-
-                        {/* Bottom Nav */}
-                        <div className="mt-16 flex items-center justify-between border-t border-border-dark pt-8">
-                            {prevModule ? (
-                                <Link
-                                    href={`/learn/${prevModule.id}`}
-                                    className="flex items-center gap-2 text-text-muted hover:text-primary font-medium"
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                    <div className="text-right">
-                                        <span className="block text-xs text-text-muted">מודול קודם</span>
-                                        <span>{prevModule.title}</span>
-                                    </div>
-                                </Link>
-                            ) : (
-                                <Link href="/" className="flex items-center gap-2 text-text-muted hover:text-primary font-medium">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                    </svg>
-                                    <span>חזרה לדף הבית</span>
-                                </Link>
-                            )}
-
-                            {nextModule ? (
-                                <Link
-                                    href={`/learn/${nextModule.id}`}
-                                    className="flex items-center gap-2 bg-primary text-background-dark px-8 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity"
-                                >
-                                    <div className="text-right">
-                                        <span className="block text-xs opacity-80">מודול הבא</span>
-                                        <span>{nextModule.title}</span>
-                                    </div>
-                                    <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </Link>
-                            ) : (
-                                <Link
-                                    href="/exam"
-                                    className="flex items-center gap-2 bg-primary text-background-dark px-8 py-3 rounded-xl font-bold hover:opacity-90 transition-opacity"
-                                >
-                                    <span>סיים ועבור לבחינה</span>
-                                    <svg className="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </Link>
-                            )}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Module List Sidebar */}
-                <aside className="w-64 border-r border-border-dark hidden xl:flex flex-col py-6 px-4 overflow-y-auto">
-                    <h3 className="font-bold text-sm text-text-muted mb-4">כל המודולים</h3>
-                    <div className="space-y-1">
-                        {allModules.map((m) => (
-                            <Link
-                                key={m.id}
-                                href={`/learn/${m.id}`}
-                                className={`flex items-center gap-3 p-3 rounded-lg transition-all ${m.id === module.id
-                                    ? 'bg-primary/20 text-primary'
-                                    : 'hover:bg-surface-dark text-text-muted hover:text-white'
+                                animate={{
+                                    opacity: activeSection === idx ? 1 : 0.3,
+                                    y: 0,
+                                    display: activeSection === idx ? 'block' : 'none'
+                                }}
+                                transition={{ delay: idx * 0.05 }}
+                                className={`theory-section-content bg-surface-dark/30 rounded-xl p-4 md:p-6 border-r-4 ${activeSection === idx ? 'border-primary' : 'border-border-dark'
                                     }`}
                             >
-                                <span className={`w-7 h-7 flex items-center justify-center rounded-full text-sm font-bold ${m.id === module.id ? 'bg-primary text-background-dark' : 'bg-border-dark'
-                                    }`}>
-                                    {m.id}
-                                </span>
-                                <span className="text-sm truncate">{m.title}</span>
-                            </Link>
+                                <h2 className="text-xl md:text-2xl font-bold mb-4 text-white flex items-center gap-3">
+                                    <span className="text-primary text-xs md:text-sm bg-primary/20 px-2 py-1 rounded">
+                                        {section.id}
+                                    </span>
+                                    {section.title}
+                                </h2>
+                                {/* Render HTML content with proper RTL/LTR handling */}
+                                <div
+                                    className="prose prose-invert prose-sm md:prose-lg max-w-none
+                                        prose-headings:text-white prose-headings:font-bold
+                                        prose-p:text-slate-300 prose-p:leading-relaxed
+                                        prose-code:bg-primary/20 prose-code:text-primary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
+                                        prose-pre:bg-[#0d1117] prose-pre:border prose-pre:border-border-dark prose-pre:rounded-xl prose-pre:overflow-x-auto
+                                        prose-strong:text-white
+                                        prose-ul:space-y-2 prose-li:text-slate-300
+                                        prose-table:border-collapse prose-th:bg-surface-dark prose-th:p-2 prose-th:border prose-th:border-border-dark prose-th:text-sm
+                                        prose-td:p-2 prose-td:border prose-td:border-border-dark prose-td:text-slate-300 prose-td:text-sm
+                                        [&_pre]:!dir-ltr [&_code]:!dir-ltr [&_.python]:!text-left"
+                                    dangerouslySetInnerHTML={{ __html: section.content_html }}
+                                />
+                            </motion.div>
                         ))}
                     </div>
-                </aside>
+
+                    {/* Interactive Code Example - Collapsible */}
+                    {interactiveCode && (
+                        <motion.div
+                            className="mt-8 md:mt-12"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                        >
+                            {/* Toggle Button */}
+                            <button
+                                onClick={() => setShowSimulator(!showSimulator)}
+                                className={`w-full p-4 rounded-xl border transition-all flex items-center justify-between ${showSimulator
+                                        ? 'bg-primary/20 border-primary text-primary'
+                                        : 'bg-surface-dark border-border-dark hover:border-primary/50'
+                                    }`}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <span className="text-2xl">🔬</span>
+                                    <div className="text-right">
+                                        <h3 className="font-bold text-lg">{interactiveCode.title}</h3>
+                                        <p className="text-sm text-text-muted">{interactiveCode.description}</p>
+                                    </div>
+                                </div>
+                                <motion.div
+                                    animate={{ rotate: showSimulator ? 180 : 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </motion.div>
+                            </button>
+
+                            {/* Simulator Panel */}
+                            <AnimatePresence>
+                                {showSimulator && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="overflow-hidden"
+                                    >
+                                        <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                            {/* Code Stepper */}
+                                            <div className="order-2 lg:order-1">
+                                                <PyTutorStepper
+                                                    code={interactiveCode.code}
+                                                    title="סימולטור"
+                                                    onStepChange={handleStepChange}
+                                                />
+                                            </div>
+
+                                            {/* Memory Grid */}
+                                            <div className="order-1 lg:order-2 bg-surface-dark rounded-xl border border-border-dark p-4 min-h-[300px]">
+                                                <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
+                                                    <span>🧠</span> זיכרון (RAM)
+                                                </h4>
+                                                <MemoryGrid slots={memorySlots} highlightedLine={highlightedLine} />
+                                            </div>
+                                        </div>
+
+                                        {/* Concepts used badges */}
+                                        <div className="mt-4 flex flex-wrap gap-2">
+                                            <span className="text-xs text-text-muted">קונספטים:</span>
+                                            {interactiveCode.concepts_used.map((concept, idx) => (
+                                                <span key={idx} className="text-xs bg-primary/20 text-primary px-2 py-1 rounded-full" dir="ltr">
+                                                    {concept}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    )}
+
+                    {/* Practice Questions Preview */}
+                    {practiceQuestions.length > 0 && (
+                        <motion.div
+                            className="mt-8 md:mt-12 bg-gradient-to-r from-primary/10 to-transparent rounded-xl p-4 md:p-6 border border-primary/30"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                        >
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                <div>
+                                    <h3 className="text-lg md:text-xl font-bold text-primary">📝 שאלות תרגול</h3>
+                                    <p className="text-text-muted text-sm md:text-base">{practiceQuestions.length} שאלות בנושא זה</p>
+                                </div>
+                                <Link
+                                    href={`/exam?module=${module.id}`}
+                                    className="bg-primary text-background-dark px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold hover:opacity-90 transition-opacity text-center text-sm md:text-base"
+                                >
+                                    התחל תרגול →
+                                </Link>
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {/* Navigation */}
+                    <div className="mt-8 md:mt-12 flex flex-col sm:flex-row justify-between gap-4 border-t border-border-dark pt-6 md:pt-8">
+                        {prevModule ? (
+                            <Link
+                                href={`/learn/${prevModule.id}`}
+                                className="flex items-center gap-3 text-text-muted hover:text-primary transition-colors group"
+                            >
+                                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                                <div className="text-right">
+                                    <span className="text-xs block">הקודם</span>
+                                    <span className="font-medium">{prevModule.title}</span>
+                                </div>
+                            </Link>
+                        ) : <div />}
+
+                        {nextModule ? (
+                            <Link
+                                href={`/learn/${nextModule.id}`}
+                                className="flex items-center gap-3 text-text-muted hover:text-primary transition-colors group sm:text-left"
+                            >
+                                <div className="text-right sm:text-left">
+                                    <span className="text-xs block">הבא</span>
+                                    <span className="font-medium">{nextModule.title}</span>
+                                </div>
+                                <svg className="w-5 h-5 rotate-180 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                            </Link>
+                        ) : (
+                            <Link
+                                href="/exam/advanced"
+                                className="flex items-center gap-3 text-primary hover:opacity-80 transition-opacity group"
+                            >
+                                <div className="text-right sm:text-left">
+                                    <span className="text-xs block">סיימת!</span>
+                                    <span className="font-bold">עבור למבחן מסכם 🎯</span>
+                                </div>
+                            </Link>
+                        )}
+                    </div>
+
+                    {/* Module Navigation Pills */}
+                    <div className="mt-6 md:mt-8 pb-8">
+                        <p className="text-xs text-text-muted mb-3">כל המודולים:</p>
+                        <div className="flex flex-wrap gap-2">
+                            {allModules.map((m) => (
+                                <Link
+                                    key={m.id}
+                                    href={`/learn/${m.id}`}
+                                    className={`px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all ${m.id === module.id
+                                            ? 'bg-primary text-background-dark'
+                                            : 'bg-surface-dark text-text-muted hover:bg-border-dark'
+                                        }`}
+                                >
+                                    {m.id}. {m.title}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     );
