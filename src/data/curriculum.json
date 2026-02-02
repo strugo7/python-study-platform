@@ -1,0 +1,1600 @@
+{
+    "curriculum": {
+        "title": "קורס תכנות בפייתון",
+        "description": "קורס מקיף לתכנות בפייתון - מיסודות השפה ועד תכנות מונחה עצמים",
+        "version": "1.0",
+        "modules": [
+            {
+                "id": 1,
+                "title": "יסודות ומשתנים",
+                "subtitle": "Basics & Variables",
+                "isUnlocked": true,
+                "prerequisites": [],
+                "learningObjectives": [
+                    "הגדרת משתנים וטיפוסי נתונים",
+                    "שימוש בפונקציות input ו-print",
+                    "אופרטורים חשבוניים",
+                    "המרה בין טיפוסים (Casting)",
+                    "תנאים: if-elif-else"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "1.1",
+                        "title": "משתנים וטיפוסי נתונים",
+                        "content_html": "<div class='theory-section'><h3>📦 מה זה משתנה?</h3><p>משתנה הוא כמו <strong>קופסה עם תווית</strong> שמאחסנת מידע. בפייתון, אין צורך להכריז על סוג המשתנה מראש - השפה מזהה את הסוג באופן אוטומטי.</p><h4>סוגי משתנים בסיסיים:</h4><table class='type-table'><tr><th>טיפוס</th><th>דוגמה</th><th>תיאור</th></tr><tr><td><code>int</code></td><td><code>age = 25</code></td><td>מספר שלם</td></tr><tr><td><code>float</code></td><td><code>price = 19.99</code></td><td>מספר עשרוני</td></tr><tr><td><code>str</code></td><td><code>name = 'דני'</code></td><td>מחרוזת טקסט</td></tr><tr><td><code>bool</code></td><td><code>is_student = True</code></td><td>ערך בוליאני</td></tr></table><pre><code class='python'># דוגמאות להגדרת משתנים\nx = 5           # int\ny = 3.14        # float\nname = 'שלום'   # str\nis_valid = True # bool\n\n# בדיקת טיפוס\nprint(type(x))  # <class 'int'></code></pre></div>"
+                    },
+                    {
+                        "id": "1.2",
+                        "title": "קלט ופלט",
+                        "content_html": "<div class='theory-section'><h3>🖨️ פלט - print()</h3><p>הפונקציה <code>print()</code> מדפיסה ערכים למסך:</p><pre><code class='python'># פלט בסיסי\nprint('Hello World')         # Hello World\nprint('A', 'B', 'C')         # A B C (רווח אוטומטי)\nprint('A', 'B', sep='-')     # A-B (הפרדה מותאמת)\nprint('Loading', end='...') # Loading... (ללא ירידת שורה)</code></pre><h3>⌨️ קלט - input()</h3><p>הפונקציה <code>input()</code> מקבלת קלט מהמשתמש - תמיד כמחרוזת!</p><pre><code class='python'># קלט מהמשתמש\nname = input('מה שמך? ')\nprint('שלום', name)\n\n# קלט מספרי - חייבים להמיר!\nage = int(input('בן כמה אתה? '))\nprice = float(input('מה המחיר? '))</code></pre><div class='warning'>⚠️ <strong>חשוב לזכור:</strong> input() תמיד מחזיר מחרוזת. להמרה למספר, השתמש ב-int() או float().</div></div>"
+                    },
+                    {
+                        "id": "1.3",
+                        "title": "אופרטורים חשבוניים",
+                        "content_html": "<div class='theory-section'><h3>🔢 פעולות מתמטיות</h3><table class='operator-table'><tr><th>אופרטור</th><th>פעולה</th><th>דוגמה</th><th>תוצאה</th></tr><tr><td><code>+</code></td><td>חיבור</td><td><code>5 + 3</code></td><td>8</td></tr><tr><td><code>-</code></td><td>חיסור</td><td><code>5 - 3</code></td><td>2</td></tr><tr><td><code>*</code></td><td>כפל</td><td><code>5 * 3</code></td><td>15</td></tr><tr><td><code>/</code></td><td>חילוק</td><td><code>5 / 2</code></td><td>2.5</td></tr><tr><td><code>//</code></td><td>חילוק שלם</td><td><code>5 // 2</code></td><td>2</td></tr><tr><td><code>%</code></td><td>מודולו (שארית)</td><td><code>5 % 2</code></td><td>1</td></tr><tr><td><code>**</code></td><td>חזקה</td><td><code>5 ** 2</code></td><td>25</td></tr></table><h4>השמה מקוצרת:</h4><pre><code class='python'>x = 10\nx += 5   # x = x + 5 → 15\nx *= 2   # x = x * 2 → 30\nx //= 3  # x = x // 3 → 10</code></pre></div>"
+                    },
+                    {
+                        "id": "1.4",
+                        "title": "תנאים - if/elif/else",
+                        "content_html": "<div class='theory-section'><h3>🔀 בקרת זרימה</h3><p>תנאים מאפשרים לתוכנית לקבל החלטות לפי מצבים שונים:</p><h4>אופרטורי השוואה:</h4><p><code>==</code> (שווה), <code>!=</code> (שונה), <code>></code>, <code><</code>, <code>>=</code>, <code><=</code></p><h4>אופרטורים לוגיים:</h4><p><code>and</code> (וגם), <code>or</code> (או), <code>not</code> (הפוך)</p><pre><code class='python'>age = int(input('גיל: '))\n\nif age < 18:\n    print('ילד')\nelif age < 30:\n    print('צעיר')\nelse:\n    print('מבוגר')\n\n# תנאים מורכבים\nif age >= 18 and age < 65:\n    print('בגיל העבודה')</code></pre><div class='analogy'>🚦 <strong>אנלוגיה:</strong> תחשוב על if כמו רמזור - אם ירוק, עבור. אם אדום, עצור.</div></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "מחשבון גילאים",
+                    "description": "תוכנית פשוטה שמקבלת גיל ומחזירה קטגוריה",
+                    "concepts_used": [
+                        "input()",
+                        "int() casting",
+                        "if-elif-else",
+                        "print()"
+                    ],
+                    "code": "# מחשבון קטגוריות גיל\n# משלב: קלט, המרת טיפוסים, תנאים, פלט\n\nage = int(input('הכנס את גילך: '))\n\nif age < 0:\n    print('גיל לא יכול להיות שלילי!')\nelif age < 13:\n    category = 'ילד'\n    discount = 50\nelif age < 18:\n    category = 'נער'\n    discount = 25\nelif age < 65:\n    category = 'מבוגר'\n    discount = 0\nelse:\n    category = 'אזרח ותיק'\n    discount = 30\n\n# הדפסת תוצאה\nprint(f'קטגוריה: {category}')\nprint(f'הנחה: {discount}%')",
+                    "expected_output": "הכנס את גילך: 20\nקטגוריה: מבוגר\nהנחה: 0%"
+                },
+                "practice_questions": [
+                    {
+                        "id": "1-q1",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יהיה הפלט של הקוד הבא?",
+                        "code": "x = 10\ny = 3\nprint(x // y)\nprint(x % y)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "3.33\n1"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "3\n1"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "3\n0"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "10\n3"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "האופרטור // מחזיר חילוק שלם (10//3=3), והאופרטור % מחזיר שארית (10%3=1).",
+                        "cumulative_concepts": [
+                            "floor division //",
+                            "modulo %"
+                        ]
+                    },
+                    {
+                        "id": "1-q2",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יודפס?",
+                        "code": "x = 5\ny = '5'\nprint(x == int(y))\nprint(type(y))",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "True\n<class 'int'>"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "False\n<class 'str'>"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "True\n<class 'str'>"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "int('5') ממיר את המחרוזת למספר 5, אז 5==5 הוא True. אבל y עצמו נשאר מחרוזת.",
+                        "cumulative_concepts": [
+                            "int() casting",
+                            "type()",
+                            "== comparison"
+                        ]
+                    },
+                    {
+                        "id": "1-q3",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס בהרצת הקוד?",
+                        "code": "age = 25\nhas_license = True\n\nif age >= 18 and has_license:\n    print('יכול לנהוג')\nelif age >= 18:\n    print('צריך רישיון')\nelse:\n    print('קטן מדי')",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "יכול לנהוג"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "צריך רישיון"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "קטן מדי"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "יכול לנהוג\nצריך רישיון"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "הגיל 25 >= 18 ויש רישיון, אז התנאי הראשון מתקיים. ברגע שתנאי אחד מתקיים, שאר הענפים לא מורצים.",
+                        "cumulative_concepts": [
+                            "if-elif-else",
+                            "and operator",
+                            "boolean"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": [
+                    {
+                        "id": "1-exam1",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה יהיה ערך x בסוף הקוד?",
+                        "code": "x = 10\nx = x + 5\nx = x * 2\nx = x // 3\nx = x % 4",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "10"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "2"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "0"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "1"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "x=10→15→30→10→2. שלבים: 10+5=15, 15*2=30, 30//3=10, 10%4=2.",
+                        "cumulative_concepts": [
+                            "arithmetic operators",
+                            "operator precedence"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "title": "פונקציות ולולאות",
+                "subtitle": "Functions & Loops",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "משתנים ופעולות (מודול 1)"
+                ],
+                "learningObjectives": [
+                    "הגדרת פונקציות עם def",
+                    "החזרת ערכים עם return",
+                    "לולאת while",
+                    "לולאת for ו-range()",
+                    "break ו-continue"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "2.1",
+                        "title": "פונקציות - def & return",
+                        "content_html": "<div class='theory-section'><h3>🔧 מה זה פונקציה?</h3><p>פונקציה היא קטע קוד <strong>שניתן לקרוא לו שוב ושוב</strong>. במקום לכתוב את אותו קוד פעמים רבות, כותבים פעם אחת וקוראים לפונקציה.</p><pre><code class='python'># הגדרת פונקציה\ndef greet(name):  # name הוא פרמטר\n    return f'שלום {name}!'\n\n# קריאה לפונקציה\nmessage = greet('דני')  # 'דני' הוא ארגומנט\nprint(message)  # שלום דני!</code></pre><h4>ערכי ברירת מחדל:</h4><pre><code class='python'>def power(x, y=2):  # y=2 ברירת מחדל\n    return x ** y\n\nprint(power(5))    # 25 (משתמש ב-y=2)\nprint(power(2, 3)) # 8  (y=3)</code></pre><div class='cumulative-note'>🔗 <strong>שילוב מודול 1:</strong> פונקציות משתמשות ב<strong>משתנים</strong> לקלט ופלט, ו<strong>תנאים</strong> לקבלת החלטות בתוכן.</div></div>"
+                    },
+                    {
+                        "id": "2.2",
+                        "title": "החזרת ערכים מרובים",
+                        "content_html": "<div class='theory-section'><h3>📤 החזרת יותר מערך אחד</h3><p>פונקציה יכולה להחזיר מספר ערכים כ-Tuple:</p><pre><code class='python'>def get_stats(a, b):\n    total = a + b\n    diff = a - b\n    return total, diff  # מחזיר Tuple\n\n# פריקה למשתנים\nsum_val, diff_val = get_stats(10, 3)\nprint(sum_val)   # 13\nprint(diff_val)  # 7</code></pre><h4>משתנים לוקליים וגלובליים:</h4><pre><code class='python'>x = 100  # משתנה גלובלי\n\ndef my_func():\n    x = 5  # משתנה לוקלי - לא משפיע על הגלובלי\n    print(x)  # 5\n\nmy_func()\nprint(x)  # 100</code></pre></div>"
+                    },
+                    {
+                        "id": "2.3",
+                        "title": "לולאת while",
+                        "content_html": "<div class='theory-section'><h3>🔄 while - כל עוד</h3><p>לולאה שרצה <strong>כל עוד התנאי אמת</strong>:</p><pre><code class='python'># ספירה מ-1 עד 5\ni = 1\nwhile i <= 5:\n    print(i)\n    i += 1  # חובה! אחרת לולאה אינסופית</code></pre><h4>פקודות בקרה:</h4><ul><li><code>break</code> - יוצא מהלולאה לגמרי</li><li><code>continue</code> - דולג לאיטרציה הבאה</li></ul><pre><code class='python'># דוגמה עם break\nwhile True:\n    answer = input('הקלד צא ליציאה: ')\n    if answer == 'צא':\n        break\n    print('המשך...')</code></pre><div class='cumulative-note'>🔗 <strong>שילוב מודול 1:</strong> הלולאה משתמשת ב<strong>תנאי</strong> (if) וב<strong>אופרטורים</strong> (<=, +=) מהמודול הקודם.</div></div>"
+                    },
+                    {
+                        "id": "2.4",
+                        "title": "לולאת for ו-range()",
+                        "content_html": "<div class='theory-section'><h3>🎯 for - מעבר על רצף</h3><p>לולאת for עוברת על כל איבר ברצף:</p><pre><code class='python'># מעבר על מחרוזת\nfor char in 'שלום':\n    print(char)\n\n# מעבר על רשימה\nfruits = ['תפוח', 'בננה', 'תפוז']\nfor fruit in fruits:\n    print(fruit)</code></pre><h4>פונקציית range():</h4><p><code>range(start, stop, step)</code> - מייצרת סדרת מספרים</p><pre><code class='python'># range(5) = 0,1,2,3,4\nfor i in range(5):\n    print(i)\n\n# range(2, 10, 2) = 2,4,6,8\nfor i in range(2, 10, 2):\n    print(i)</code></pre><h4>לולאות מקוננות:</h4><pre><code class='python'># טבלת כפל\nfor i in range(1, 4):\n    for j in range(1, 4):\n        print(f'{i}*{j}={i*j}', end=' ')\n    print()  # ירידת שורה</code></pre></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "מחשבון סכום מספרים",
+                    "description": "פונקציה שמחשבת סכום מספרים מ-1 עד N באמצעות לולאות",
+                    "concepts_used": [
+                        "def (מודול 2)",
+                        "for loop (מודול 2)",
+                        "range() (מודול 2)",
+                        "input/int (מודול 1)",
+                        "if-else (מודול 1)"
+                    ],
+                    "code": "def sum_to_n(n):\n    \"\"\"\n    מחשבת סכום מספרים מ-1 עד n.\n    משלב: פונקציות, לולאות, תנאים\n    \"\"\"\n    if n < 1:\n        return 0  # תנאי קצה (מודול 1)\n    \n    total = 0\n    for i in range(1, n + 1):  # לולאת for עם range\n        total += i  # חיבור מצטבר (מודול 1)\n    return total\n\n# פונקציה עם while לצורך השוואה\ndef sum_to_n_while(n):\n    total = 0\n    i = 1\n    while i <= n:  # לולאת while\n        total += i\n        i += 1\n    return total\n\n# בדיקה\nprint(sum_to_n(10))       # 55\nprint(sum_to_n_while(10)) # 55\n\n# שימוש בקלט (מודול 1)\nnum = int(input('הכנס מספר: '))\nprint(f'הסכום מ-1 עד {num} הוא: {sum_to_n(num)}')",
+                    "expected_output": "55\n55\nהכנס מספר: 5\nהסכום מ-1 עד 5 הוא: 15"
+                },
+                "practice_questions": [
+                    {
+                        "id": "2-q1",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "def double(x):\n    return x * 2\n\nresult = double(5)\nprint(result)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "5"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "10"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "55"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "None"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "הפונקציה double מקבלת 5 ומחזירה 5*2=10.",
+                        "cumulative_concepts": [
+                            "def",
+                            "return",
+                            "function call"
+                        ]
+                    },
+                    {
+                        "id": "2-q2",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס?",
+                        "code": "for i in range(3):\n    for j in range(2):\n        print(i + j, end=' ')\n    print()",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "0 1\n1 2\n2 3"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "0 0\n1 1\n2 2"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "0 1 2\n1 2 3"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "0 1 1 2 2 3"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "לולאה חיצונית: i=0,1,2. לולאה פנימית: j=0,1. בכל שורה מודפס i+j: שורה 1: 0+0=0, 0+1=1. שורה 2: 1+0=1, 1+1=2. שורה 3: 2+0=2, 2+1=3.",
+                        "cumulative_concepts": [
+                            "nested loops",
+                            "range()",
+                            "print with end"
+                        ]
+                    },
+                    {
+                        "id": "2-q3",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "x = 0\nfor i in range(1, 6):\n    if i % 2 == 0:\n        continue\n    x += i\nprint(x)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "15"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "9"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "6"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "0"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "הלולאה עוברת על 1-5, אבל continue דולג על הזוגיים. נוספים רק האי-זוגיים: 1+3+5=9.",
+                        "cumulative_concepts": [
+                            "for loop",
+                            "continue",
+                            "modulo %",
+                            "+="
+                        ]
+                    }
+                ],
+                "exam_prep_questions": [
+                    {
+                        "id": "2-exam1",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה יחזיר הקוד הבא?",
+                        "code": "def mystery(n):\n    result = 1\n    for i in range(1, n + 1):\n        result *= i\n    return result\n\nprint(mystery(4))",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "4"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "10"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "24"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "1"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "זו פונקציית עצרת (factorial): 1*1=1, 1*2=2, 2*3=6, 6*4=24. התוצאה 4! = 24.",
+                        "cumulative_concepts": [
+                            "for loop",
+                            "range()",
+                            "accumulator pattern",
+                            "*="
+                        ]
+                    },
+                    {
+                        "id": "2-exam2",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה יודפס בסיום?",
+                        "code": "def find_first_even(nums):\n    for num in nums:\n        if num % 2 == 0:\n            return num\n    return -1\n\nx = find_first_even([1, 3, 5, 6, 8])\ny = find_first_even([1, 3, 5])\nprint(x, y)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "6 -1"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "8 5"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "2 -1"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "6 5"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "הפונקציה מחפשת את הזוגי הראשון. ברשימה הראשונה: 6 הוא הזוגי הראשון. ברשימה השנייה: אין זוגיים, מחזיר -1.",
+                        "cumulative_concepts": [
+                            "for loop",
+                            "return early",
+                            "modulo %",
+                            "list iteration"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "title": "רשימות ורשומות",
+                "subtitle": "Lists & Tuples",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "משתנים ופעולות (מודול 1)",
+                    "לולאות ופונקציות (מודול 2)"
+                ],
+                "learningObjectives": [
+                    "יצירת רשימות ורשומות",
+                    "גישה לאיברים באינדקס",
+                    "Slicing - חיתוך רשימות",
+                    "מתודות: append, pop, sort, reverse",
+                    "ההבדל בין Mutable ל-Immutable"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "3.1",
+                        "title": "רשימות - יסודות",
+                        "content_html": "<div class='theory-section'><h3>📋 מה זו רשימה?</h3><p>רשימה (List) היא אוסף סדור של פריטים. בניגוד למשתנה רגיל שמאחסן ערך אחד, רשימה יכולה להכיל <strong>הרבה ערכים</strong> בסדר מסוים.</p><pre><code class='python'># יצירת רשימות\nnumbers = [1, 2, 3, 4, 5]\nnames = ['דני', 'רונית', 'יוסי']\nmixed = [10, 'hello', 3.14, True]  # סוגים מעורבים\nempty = []  # רשימה ריקה</code></pre><h4>גישה לאיברים (Indexing):</h4><table class='index-table'><tr><th>אינדקס</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr><tr><td>ערך</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><td>שלילי</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr></table><pre><code class='python'>nums = [10, 20, 30, 40]\nprint(nums[0])   # 10 (ראשון)\nprint(nums[-1])  # 40 (אחרון)\nnums[1] = 99     # שינוי ערך - רשימות הן Mutable!</code></pre><div class='cumulative-note'>🔗 <strong>שילוב מודול 2:</strong> נעבור על רשימות עם <strong>לולאת for</strong>!</div></div>"
+                    },
+                    {
+                        "id": "3.2",
+                        "title": "חיתוך רשימות - Slicing",
+                        "content_html": "<div class='theory-section'><h3>✂️ Slicing - לגזור חלק מרשימה</h3><p>תחביר: <code>list[start:end:step]</code></p><ul><li><strong>start</strong> - אינדקס התחלה (כלול)</li><li><strong>end</strong> - אינדקס סיום (לא כלול!)</li><li><strong>step</strong> - קפיצות (ברירת מחדל: 1)</li></ul><pre><code class='python'>nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n\nprint(nums[2:5])    # [2, 3, 4]\nprint(nums[:4])     # [0, 1, 2, 3] מהתחלה\nprint(nums[6:])     # [6, 7, 8, 9] עד הסוף\nprint(nums[::2])    # [0, 2, 4, 6, 8] כל שני\nprint(nums[::-1])   # [9, 8, 7...0] היפוך!</code></pre><div class='tip'>💡 <strong>טיפ למבחן:</strong> <code>[::-1]</code> הופך רשימה או מחרוזת!</div></div>"
+                    },
+                    {
+                        "id": "3.3",
+                        "title": "מתודות שימושיות",
+                        "content_html": "<div class='theory-section'><h3>🔧 פעולות על רשימות</h3><table class='method-table'><tr><th>מתודה</th><th>תיאור</th><th>דוגמה</th></tr><tr><td><code>append(x)</code></td><td>הוספה לסוף</td><td><code>lst.append(5)</code></td></tr><tr><td><code>insert(i, x)</code></td><td>הכנסה במיקום</td><td><code>lst.insert(0, 'first')</code></td></tr><tr><td><code>pop()</code></td><td>הסרה והחזרה מהסוף</td><td><code>last = lst.pop()</code></td></tr><tr><td><code>remove(x)</code></td><td>הסרת ערך ראשון</td><td><code>lst.remove('a')</code></td></tr><tr><td><code>sort()</code></td><td>מיון במקום</td><td><code>lst.sort()</code></td></tr><tr><td><code>reverse()</code></td><td>היפוך במקום</td><td><code>lst.reverse()</code></td></tr><tr><td><code>index(x)</code></td><td>מציאת אינדקס</td><td><code>i = lst.index('b')</code></td></tr></table><pre><code class='python'>fruits = ['apple', 'banana']\nfruits.append('cherry')     # ['apple', 'banana', 'cherry']\nfruits.sort()               # ['apple', 'banana', 'cherry']\nfruits.reverse()            # ['cherry', 'banana', 'apple']\n\n# בדיקת קיום (מודול 1 - תנאים)\nif 'banana' in fruits:\n    print('נמצא!')</code></pre></div>"
+                    },
+                    {
+                        "id": "3.4",
+                        "title": "רשומות - Tuples",
+                        "content_html": "<div class='theory-section'><h3>🔒 Tuple - רשימה שלא משתנה</h3><p>Tuple דומה לרשימה, אבל היא <strong>Immutable</strong> - לא ניתן לשנות אותה לאחר יצירה.</p><pre><code class='python'># יצירת Tuple\npoint = (3, 4)\ncolors = ('red', 'green', 'blue')\n\n# גישה - כמו רשימה\nprint(point[0])  # 3\nprint(colors[-1])  # 'blue'\n\n# ניסיון שינוי - שגיאה!\n# point[0] = 5  # TypeError!</code></pre><h4>מתי להשתמש ב-Tuple?</h4><ul><li>כשרוצים להבטיח שהנתונים לא ישתנו</li><li>כמפתח במילון (רשימה לא יכולה!)</li><li>החזרת ערכים מרובים מפונקציה</li></ul><pre><code class='python'># פונקציה שמחזירה Tuple (מודול 2)\ndef get_min_max(numbers):\n    return min(numbers), max(numbers)\n\nresult = get_min_max([3, 1, 4, 1, 5])\nprint(result)  # (1, 5)</code></pre></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "ניהול רשימת קניות",
+                    "description": "תוכנית המשלבת רשימות, לולאות ותנאים",
+                    "concepts_used": [
+                        "lists (מודול 3)",
+                        "for loop (מודול 2)",
+                        "if-else (מודול 1)",
+                        "input/print (מודול 1)"
+                    ],
+                    "code": "def shopping_list_manager():\n    \"\"\"\n    מנהל רשימת קניות אינטראקטיבי.\n    משלב: רשימות, לולאות, תנאים, קלט/פלט\n    \"\"\"\n    shopping_list = []  # רשימה ריקה (מודול 3)\n    \n    while True:  # לולאה אינסופית (מודול 2)\n        print('\\n--- רשימת קניות ---')\n        print('1. הוסף פריט')\n        print('2. הסר פריט')\n        print('3. הצג רשימה')\n        print('4. יציאה')\n        \n        choice = input('בחר אפשרות: ')  # קלט (מודול 1)\n        \n        if choice == '1':  # תנאי (מודול 1)\n            item = input('שם הפריט: ')\n            shopping_list.append(item)  # append (מודול 3)\n            print(f'{item} נוסף!')\n            \n        elif choice == '2':\n            item = input('פריט להסרה: ')\n            if item in shopping_list:  # בדיקת קיום\n                shopping_list.remove(item)\n                print(f'{item} הוסר!')\n            else:\n                print('פריט לא נמצא')\n                \n        elif choice == '3':\n            if shopping_list:  # רשימה לא ריקה = True\n                for i, item in enumerate(shopping_list):  # enumerate\n                    print(f'{i+1}. {item}')\n            else:\n                print('הרשימה ריקה')\n                \n        elif choice == '4':\n            print('להתראות!')\n            break  # יציאה מהלולאה\n\n# shopping_list_manager()  # הפעלה",
+                    "expected_output": "--- רשימת קניות ---\n1. הוסף פריט\n..."
+                },
+                "practice_questions": [
+                    {
+                        "id": "3-q1",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "nums = [1, 2, 3, 4, 5]\nprint(nums[1:4])",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[1, 2, 3, 4]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[2, 3, 4]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[2, 3, 4, 5]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "[1, 2, 3]"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "Slicing [1:4] מתחיל באינדקס 1 (כולל) ומסתיים באינדקס 4 (לא כולל). לכן: אינדקסים 1,2,3 = [2, 3, 4].",
+                        "cumulative_concepts": [
+                            "list slicing",
+                            "indexing"
+                        ]
+                    },
+                    {
+                        "id": "3-q2",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "lst = [1, 2, 3]\nlst.append(4)\nlst.pop()\nlst.insert(0, 0)\nprint(lst)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[0, 1, 2, 3, 4]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[1, 2, 3]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[0, 1, 2, 3]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "[0, 1, 2, 4]"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "append(4) → [1,2,3,4]. pop() מסיר את 4 → [1,2,3]. insert(0,0) מוסיף 0 בהתחלה → [0,1,2,3].",
+                        "cumulative_concepts": [
+                            "append()",
+                            "pop()",
+                            "insert()"
+                        ]
+                    },
+                    {
+                        "id": "3-q3",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "nums = [1, 2, 3, 4, 5]\nresult = nums[::2] + nums[1::2]\nprint(result)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[1, 3, 5, 2, 4]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[1, 2, 3, 4, 5]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[2, 4, 1, 3, 5]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "[1, 3, 5] + [2, 4]"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "nums[::2] = [1,3,5] (כל שני מההתחלה). nums[1::2] = [2,4] (כל שני מאינדקס 1). חיבור: [1,3,5,2,4].",
+                        "cumulative_concepts": [
+                            "slicing with step",
+                            "list concatenation"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": [
+                    {
+                        "id": "3-exam1",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה יהיה ערך result?",
+                        "code": "def mystery(lst):\n    result = []\n    for i in range(len(lst) - 1, -1, -1):\n        if lst[i] % 2 == 0:\n            result.append(lst[i])\n    return result\n\nresult = mystery([1, 2, 3, 4, 5, 6])",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[2, 4, 6]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[6, 4, 2]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[1, 3, 5]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "[5, 3, 1]"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "הלולאה עוברת מהסוף להתחלה (range הפוך). מוסיפים רק זוגיים: 6, 4, 2. התוצאה [6, 4, 2].",
+                        "cumulative_concepts": [
+                            "range() reverse",
+                            "modulo %",
+                            "for loop",
+                            "append()"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "title": "מחרוזות",
+                "subtitle": "Strings",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "משתנים (מודול 1)",
+                    "לולאות (מודול 2)",
+                    "רשימות (מודול 3)"
+                ],
+                "learningObjectives": [
+                    "Slicing במחרוזות",
+                    "מתודות: split, join, find, replace",
+                    "עיבוד טקסט: strip, upper, lower",
+                    "f-strings לעיצוב מחרוזות",
+                    "הבנת Immutability"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "4.1",
+                        "title": "מחרוזות - יסודות",
+                        "content_html": "<div class='theory-section'><h3>📝 מחרוזות בפייתון</h3><p>מחרוזת היא רצף של תווים. בפייתון, מחרוזות הן <strong>Immutable</strong> - לא ניתן לשנות תו בודד לאחר יצירה.</p><pre><code class='python'>s = 'Hello World'\n\n# גישה לתווים\nprint(s[0])    # 'H'\nprint(s[-1])   # 'd'\nprint(len(s))  # 11\n\n# ניסיון שינוי - שגיאה!\n# s[0] = 'h'  # TypeError!</code></pre><div class='cumulative-note'>🔗 <strong>דמיון למודול 3:</strong> מחרוזות תומכות ב<strong>Slicing</strong> בדיוק כמו רשימות!</div></div>"
+                    },
+                    {
+                        "id": "4.2",
+                        "title": "חיתוך מחרוזות - Slicing",
+                        "content_html": "<div class='theory-section'><h3>✂️ Slicing במחרוזות</h3><p>אותו תחביר כמו ברשימות: <code>string[start:end:step]</code></p><pre><code class='python'>text = 'Python Programming'\n\nprint(text[0:6])    # 'Python'\nprint(text[7:])     # 'Programming'\nprint(text[:6])     # 'Python'\nprint(text[::2])    # 'Pto rgamn' (כל תו שני)\nprint(text[::-1])   # היפוך: 'gnimmargorP nohtyP'</code></pre><h4>שימושים נפוצים:</h4><pre><code class='python'># בדיקת פלינדרום (מודול 1 - תנאים)\nword = 'אבא'\nif word == word[::-1]:\n    print('פלינדרום!')</code></pre></div>"
+                    },
+                    {
+                        "id": "4.3",
+                        "title": "מתודות חשובות",
+                        "content_html": "<div class='theory-section'><h3>🔧 מתודות מחרוזת</h3><table class='method-table'><tr><th>מתודה</th><th>תיאור</th><th>דוגמה</th></tr><tr><td><code>split(sep)</code></td><td>פיצול לרשימה</td><td><code>'a,b,c'.split(',') → ['a','b','c']</code></td></tr><tr><td><code>join(list)</code></td><td>חיבור רשימה</td><td><code>'-'.join(['a','b']) → 'a-b'</code></td></tr><tr><td><code>strip()</code></td><td>הסרת רווחים</td><td><code>' hi '.strip() → 'hi'</code></td></tr><tr><td><code>upper()</code></td><td>אותיות גדולות</td><td><code>'hi'.upper() → 'HI'</code></td></tr><tr><td><code>lower()</code></td><td>אותיות קטנות</td><td><code>'HI'.lower() → 'hi'</code></td></tr><tr><td><code>replace(a,b)</code></td><td>החלפה</td><td><code>'cat'.replace('c','b') → 'bat'</code></td></tr><tr><td><code>find(x)</code></td><td>מציאת אינדקס</td><td><code>'hello'.find('l') → 2</code></td></tr></table><pre><code class='python'># שילוב מתודות\ntext = '  Hello World  '\nclean = text.strip().lower().replace(' ', '_')\nprint(clean)  # 'hello_world'</code></pre></div>"
+                    },
+                    {
+                        "id": "4.4",
+                        "title": "f-strings",
+                        "content_html": "<div class='theory-section'><h3>✨ עיצוב מחרוזות עם f-strings</h3><p>דרך קלה ונוחה לשלב משתנים בתוך מחרוזות:</p><pre><code class='python'>name = 'דני'\nage = 25\n\n# f-string בסיסי\nprint(f'שמי {name} וגילי {age}')\n\n# חישובים בתוך הסוגריים\nprint(f'בעוד 10 שנים אהיה בן {age + 10}')\n\n# עיצוב מספרים\nprice = 19.999\nprint(f'המחיר: {price:.2f}')  # 19.99 (2 ספרות)</code></pre><div class='cumulative-note'>🔗 <strong>שילוב מודול 2:</strong> משתמשים ב-f-strings בתוך <strong>לולאות</strong> להדפסה מעוצבת!</div></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "מעבד טקסט",
+                    "description": "פונקציות לעיבוד מחרוזות עם שילוב רשימות ולולאות",
+                    "concepts_used": [
+                        "strings (מודול 4)",
+                        "lists (מודול 3)",
+                        "for loop (מודול 2)",
+                        "functions (מודול 2)"
+                    ],
+                    "code": "def count_words(text):\n    \"\"\"סופר מילים בטקסט - משלב split (מודול 4) ו-len\"\"\"\n    words = text.strip().split()  # פיצול לרשימה (מודול 3)\n    return len(words)\n\ndef reverse_words(text):\n    \"\"\"הופך סדר מילים - משלב split, reverse, join\"\"\"\n    words = text.split()          # מחרוזת → רשימה\n    words.reverse()               # היפוך במקום (מודול 3)\n    return ' '.join(words)        # רשימה → מחרוזת\n\ndef word_frequency(text):\n    \"\"\"סופר תדירות מילים - משלב מילון (מודול 5)\"\"\"\n    words = text.lower().split()\n    freq = {}  # מילון ריק\n    for word in words:  # לולאה (מודול 2)\n        if word in freq:\n            freq[word] += 1\n        else:\n            freq[word] = 1\n    return freq\n\n# בדיקות\ntext = 'שלום עולם שלום'\nprint(count_words(text))       # 3\nprint(reverse_words(text))     # 'שלום עולם שלום'\nprint(word_frequency(text))    # {'שלום': 2, 'עולם': 1}",
+                    "expected_output": "3\nשלום עולם שלום\n{'שלום': 2, 'עולם': 1}"
+                },
+                "practice_questions": [
+                    {
+                        "id": "4-q1",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "s = 'Python'\nprint(s[1:4])",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "Pyt"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "yth"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "ytho"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "hon"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "s[1:4] לוקח תווים מאינדקס 1 עד 3 (לא כולל 4): 'y', 't', 'h' = 'yth'.",
+                        "cumulative_concepts": [
+                            "string slicing"
+                        ]
+                    },
+                    {
+                        "id": "4-q2",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "text = 'a,b,c,d'\nparts = text.split(',')\nresult = '-'.join(parts[1:3])\nprint(result)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "a-b"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "b-c"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "b-c-d"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "a-b-c-d"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "split(',') → ['a','b','c','d']. parts[1:3] → ['b','c']. join עם '-' → 'b-c'.",
+                        "cumulative_concepts": [
+                            "split()",
+                            "slicing",
+                            "join()"
+                        ]
+                    },
+                    {
+                        "id": "4-q3",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "s = '  Hello World  '\nresult = s.strip().upper().replace(' ', '_')\nprint(result)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "Hello World"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "HELLO_WORLD"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "hello_world"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "__HELLO_WORLD__"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "strip() מסיר רווחים מקצוות → 'Hello World'. upper() → 'HELLO WORLD'. replace(' ','_') → 'HELLO_WORLD'.",
+                        "cumulative_concepts": [
+                            "strip()",
+                            "upper()",
+                            "replace()",
+                            "method chaining"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": [
+                    {
+                        "id": "4-exam1",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "def process(s):\n    words = s.split()\n    result = []\n    for w in words:\n        if len(w) > 3:\n            result.append(w.upper())\n    return '-'.join(result)\n\nprint(process('I love Python programming'))",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "I-LOVE-PYTHON-PROGRAMMING"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "LOVE-PYTHON-PROGRAMMING"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "love-python-programming"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "PYTHON-PROGRAMMING"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "מפצלים למילים. מוסיפים רק מילים ארוכות מ-3 באותיות גדולות: 'love'(4), 'Python'(6), 'programming'(11). מחברים עם '-'.",
+                        "cumulative_concepts": [
+                            "split()",
+                            "len()",
+                            "for loop",
+                            "if condition",
+                            "upper()",
+                            "join()"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "title": "מילונים וקבוצות",
+                "subtitle": "Dictionaries & Sets",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "משתנים (מודול 1)",
+                    "לולאות (מודול 2)",
+                    "רשימות (מודול 3)",
+                    "מחרוזות (מודול 4)"
+                ],
+                "learningObjectives": [
+                    "יצירת מילונים Key-Value",
+                    "גישה לערכים ומתודות: keys, values, items, get",
+                    "קבוצות (Sets) וייחודיות",
+                    "פעולות: union, intersection, difference"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "5.1",
+                        "title": "מילונים - יסודות",
+                        "content_html": "<div class='theory-section'><h3>📖 מילון = מפתח:ערך</h3><p>מילון מאחסן נתונים בזוגות של <strong>מפתח (Key)</strong> ו<strong>ערך (Value)</strong>. גישה מהירה לפי מפתח.</p><pre><code class='python'># יצירת מילון\nphonebook = {\n    'דני': '050-1234567',\n    'רונית': '052-7654321'\n}\n\n# גישה לערך\nprint(phonebook['דני'])  # 050-1234567\n\n# הוספה/עדכון\nphonebook['יוסי'] = '054-1111111'\n\n# מחיקה\ndel phonebook['רונית']</code></pre><h4>מפתחות חייבים להיות Immutable:</h4><ul><li>✅ מחרוזת, מספר, Tuple</li><li>❌ רשימה (Mutable!)</li></ul></div>"
+                    },
+                    {
+                        "id": "5.2",
+                        "title": "מתודות מילון",
+                        "content_html": "<div class='theory-section'><h3>🔧 מתודות שימושיות</h3><table class='method-table'><tr><th>מתודה</th><th>מחזיר</th><th>דוגמה</th></tr><tr><td><code>.keys()</code></td><td>כל המפתחות</td><td><code>d.keys()</code></td></tr><tr><td><code>.values()</code></td><td>כל הערכים</td><td><code>d.values()</code></td></tr><tr><td><code>.items()</code></td><td>זוגות (key, value)</td><td><code>d.items()</code></td></tr><tr><td><code>.get(key, default)</code></td><td>ערך או ברירת מחדל</td><td><code>d.get('x', 0)</code></td></tr></table><pre><code class='python'>grades = {'דני': 85, 'רונית': 92}\n\n# מעבר על מילון (מודול 2 - לולאות)\nfor name, grade in grades.items():\n    print(f'{name}: {grade}')\n\n# גישה בטוחה עם get\nprint(grades.get('יוסי', 'לא נמצא'))  # לא נמצא</code></pre><div class='warning'>⚠️ <code>dict['key']</code> זורק שגיאה אם המפתח לא קיים. <code>dict.get('key')</code> מחזיר None.</div></div>"
+                    },
+                    {
+                        "id": "5.3",
+                        "title": "קבוצות - Sets",
+                        "content_html": "<div class='theory-section'><h3>🔵 Set - אוסף ייחודי</h3><p>קבוצה מכילה רק <strong>ערכים ייחודיים</strong> - ללא כפילויות!</p><pre><code class='python'># יצירת Set\nnums = {1, 2, 3, 3, 2}  # כפילויות מוסרות\nprint(nums)  # {1, 2, 3}\n\n# הוספה והסרה\nnums.add(4)\nnums.remove(1)\n\n# המרה מרשימה (מודול 3)\nmy_list = [1, 2, 2, 3, 3, 3]\nunique = set(my_list)  # {1, 2, 3}</code></pre></div>"
+                    },
+                    {
+                        "id": "5.4",
+                        "title": "פעולות על קבוצות",
+                        "content_html": "<div class='theory-section'><h3>🔀 פעולות מתמטיות</h3><pre><code class='python'>A = {1, 2, 3, 4}\nB = {3, 4, 5, 6}\n\n# איחוד (Union) - כל האיברים\nprint(A | B)  # {1, 2, 3, 4, 5, 6}\n\n# חיתוך (Intersection) - משותפים\nprint(A & B)  # {3, 4}\n\n# הפרש (Difference) - ב-A ולא ב-B\nprint(A - B)  # {1, 2}\n\n# הפרש סימטרי - לא בשניהם\nprint(A ^ B)  # {1, 2, 5, 6}</code></pre><h4>שימושים מעשיים:</h4><pre><code class='python'># מציאת מילים משותפות (מודול 4 - מחרוזות)\ntext1 = 'I love Python'\ntext2 = 'I love coding'\n\nwords1 = set(text1.lower().split())\nwords2 = set(text2.lower().split())\n\ncommon = words1 & words2\nprint(common)  # {'i', 'love'}</code></pre></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "מערכת ניהול ציונים",
+                    "description": "שימוש במילונים עם רשימות לניהול ציוני סטודנטים",
+                    "concepts_used": [
+                        "dictionaries (מודול 5)",
+                        "lists (מודול 3)",
+                        "for loop (מודול 2)",
+                        "functions (מודול 2)",
+                        "f-strings (מודול 4)"
+                    ],
+                    "code": "def create_gradebook():\n    \"\"\"\n    מערכת ציונים - משלב מילונים, רשימות, לולאות\n    \"\"\"\n    # מילון: שם → רשימת ציונים\n    gradebook = {\n        'דני': [85, 90, 78],\n        'רונית': [92, 88, 95],\n        'יוסי': [70, 75, 80]\n    }\n    return gradebook\n\ndef calculate_average(grades):\n    \"\"\"חישוב ממוצע רשימה (מודול 3)\"\"\"\n    return sum(grades) / len(grades)\n\ndef get_all_averages(gradebook):\n    \"\"\"ממוצע לכל סטודנט - מחזיר מילון חדש\"\"\"\n    averages = {}  # מילון ריק\n    for name, grades in gradebook.items():  # items() (מודול 5)\n        averages[name] = round(calculate_average(grades), 2)\n    return averages\n\ndef get_top_students(gradebook, threshold=85):\n    \"\"\"מחזיר רשימת סטודנטים עם ממוצע מעל הסף\"\"\"\n    top = []  # רשימה ריקה (מודול 3)\n    for name, grades in gradebook.items():\n        if calculate_average(grades) >= threshold:  # תנאי (מודול 1)\n            top.append(name)\n    return top\n\n# הרצה\ngb = create_gradebook()\nprint('ממוצעים:', get_all_averages(gb))\nprint('מצטיינים:', get_top_students(gb))",
+                    "expected_output": "ממוצעים: {'דני': 84.33, 'רונית': 91.67, 'יוסי': 75.0}\nמצטיינים: ['רונית']"
+                },
+                "practice_questions": [
+                    {
+                        "id": "5-q1",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "d = {'a': 1, 'b': 2}\nd['c'] = 3\nprint(d.get('x', 0))",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "None"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "0"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "שגיאה"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "3"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "get('x', 0) מחפש את 'x'. כיוון שלא קיים, מחזיר את ברירת המחדל 0.",
+                        "cumulative_concepts": [
+                            "dict.get()",
+                            "default value"
+                        ]
+                    },
+                    {
+                        "id": "5-q2",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "s1 = {1, 2, 3}\ns2 = {2, 3, 4}\nprint(s1 & s2)\nprint(s1 - s2)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "{2, 3}\n{1}"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "{1, 2, 3, 4}\n{4}"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "{1}\n{2, 3}"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "{2, 3}\n{1, 4}"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "& (חיתוך) = איברים משותפים {2,3}. - (הפרש) = ב-s1 ולא ב-s2 = {1}.",
+                        "cumulative_concepts": [
+                            "set intersection &",
+                            "set difference -"
+                        ]
+                    },
+                    {
+                        "id": "5-q3",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "d = {'a': [1, 2], 'b': [3, 4]}\nfor k, v in d.items():\n    print(f'{k}: {sum(v)}')",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "a: [1, 2]\nb: [3, 4]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "a: 3\nb: 7"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "3\n7"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "a: 1, 2\nb: 3, 4"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "items() מחזיר זוגות (key, value). sum() על הרשימה מחשב סכום. f-string מעצב את הפלט.",
+                        "cumulative_concepts": [
+                            "dict.items()",
+                            "sum()",
+                            "f-strings",
+                            "for loop unpacking"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": [
+                    {
+                        "id": "5-exam1",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה יהיה ערך result?",
+                        "code": "def count_chars(text):\n    result = {}\n    for char in text:\n        if char in result:\n            result[char] += 1\n        else:\n            result[char] = 1\n    return result\n\nresult = count_chars('abba')",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "{'a': 2, 'b': 2}"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "{'a': 1, 'b': 1}"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "{'abba': 1}"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "4"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "הפונקציה סופרת תווים. 'a' מופיע 2 פעמים, 'b' מופיע 2 פעמים. התוצאה {'a': 2, 'b': 2}.",
+                        "cumulative_concepts": [
+                            "dictionary building",
+                            "for loop on string",
+                            "in operator",
+                            "counter pattern"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "title": "קבצים וחריגות",
+                "subtitle": "Files & Exceptions",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "משתנים ופעולות (מודול 1)",
+                    "לולאות ופונקציות (מודול 2)",
+                    "רשימות (מודול 3)",
+                    "מחרוזות (מודול 4)",
+                    "מילונים (מודול 5)"
+                ],
+                "learningObjectives": [
+                    "קריאה וכתיבה לקבצים",
+                    "הבנת מצבי עבודה (modes): r, w, a",
+                    "שימוש ב-with לניהול משאבים",
+                    "טיפול בשגיאות עם try-except-finally",
+                    "זריקת שגיאות יזומות עם raise"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "6.1",
+                        "title": "מבוא לעבודה עם קבצים",
+                        "content_html": "<div class='theory-section'><h3>🗄️ למה צריך קבצים?</h3><p>עד עכשיו, כל הנתונים שלנו נעלמו ברגע שהתוכנית נסגרה. <strong>קבצים</strong> מאפשרים לנו לשמור מידע לטווח ארוך - בדיוק כמו שמחברת שומרת את מה שכותבים בה.</p><h4>שלבי העבודה עם קובץ:</h4><ol><li>📂 <strong>פתיחה</strong> - <code>open(filename, mode)</code></li><li>✏️ <strong>קריאה/כתיבה</strong> - <code>.read()</code>, <code>.write()</code></li><li>🔒 <strong>סגירה</strong> - <code>.close()</code></li></ol><div class='cumulative-note'><strong>🔗 קישור למודולים קודמים:</strong> כשנקרא קובץ, הנתונים יישמרו ב<strong>רשימה</strong> (מודול 3) או <strong>מחרוזת</strong> (מודול 4). נשתמש ב<strong>לולאות</strong> (מודול 2) לעבור על השורות.</div></div>"
+                    },
+                    {
+                        "id": "6.2",
+                        "title": "מצבי עבודה (Modes)",
+                        "content_html": "<div class='theory-section'><h3>🔑 מצבי פתיחה</h3><table class='mode-table'><tr><th>מצב</th><th>תיאור</th><th>אם הקובץ לא קיים</th></tr><tr><td><code>'r'</code></td><td>קריאה בלבד (Read)</td><td>⚠️ שגיאה!</td></tr><tr><td><code>'w'</code></td><td>כתיבה (Write) - מוחק תוכן קיים!</td><td>✅ נוצר חדש</td></tr><tr><td><code>'a'</code></td><td>הוספה (Append) - מוסיף לסוף</td><td>✅ נוצר חדש</td></tr></table><h4>דוגמה - שילוב עם רשימה (מודול 3):</h4><pre><code class='python'># קריאת שמות מקובץ לתוך רשימה\nnames = []  # רשימה ריקה (מודול 3)\nfile = open('students.txt', 'r')\nfor line in file:  # לולאת for (מודול 2)\n    names.append(line.strip())  # strip מסיר רווחים (מודול 4)\nfile.close()\nprint(names)</code></pre></div>"
+                    },
+                    {
+                        "id": "6.3",
+                        "title": "ניהול משאבים עם with",
+                        "content_html": "<div class='theory-section'><h3>🛡️ הדרך הבטוחה - with statement</h3><p>מה קורה אם שכחנו לסגור את הקובץ? או אם קרתה שגיאה באמצע? פקודת <code>with</code> פותרת את הבעיה:</p><pre><code class='python'># הדרך הנכונה והבטוחה:\nwith open('data.txt', 'r') as file:\n    content = file.read()  # מחרוזת אחת גדולה\n    lines = content.split('\\n')  # פיצול למחרוזות (מודול 4)\n# כאן הקובץ כבר סגור אוטומטית!</code></pre><div class='analogy'><strong>🏨 אנלוגיה:</strong> תחשוב על <code>with</code> כמו חדר מלון - כשאתה יוצא מהחדר (יוצא מהבלוק), הכל מתנקה אוטומטית.</div></div>"
+                    },
+                    {
+                        "id": "6.4",
+                        "title": "טיפול בחריגות - try/except",
+                        "content_html": "<div class='theory-section'><h3>⚠️ כשדברים משתבשים</h3><p>מה אם הקובץ לא קיים? מה אם המשתמש הקליד טקסט במקום מספר? <strong>חריגות (Exceptions)</strong> מאפשרות לטפל בבעיות בזמן ריצה.</p><h4>מבנה try-except-else-finally:</h4><pre><code class='python'>try:\n    # קוד שעלול לגרום לשגיאה\n    result = risky_operation()\nexcept SpecificError as e:\n    # טיפול בשגיאה ספציפית\n    print(f'שגיאה: {e}')\nelse:\n    # רץ רק אם הצליח (אין שגיאה)\n    print('הצלחה!')\nfinally:\n    # רץ תמיד - ניקוי משאבים\n    cleanup()</code></pre><h4>דוגמה מלאה - שילוב כל המודולים:</h4><pre><code class='python'>def load_grades(filename):\n    \"\"\"טוען ציונים מקובץ לתוך מילון (מודול 5)\"\"\"\n    grades = {}  # מילון ריק\n    try:\n        with open(filename, 'r') as file:\n            for line in file:  # לולאה (מודול 2)\n                parts = line.strip().split(',')  # מחרוזות (מודול 4)\n                name, score = parts[0], int(parts[1])\n                grades[name] = score  # מילון (מודול 5)\n    except FileNotFoundError:\n        print('קובץ לא נמצא!')\n        return None\n    except ValueError:\n        print('פורמט לא תקין!')\n        return None\n    return grades</code></pre></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "קריאת קובץ ציונים עם טיפול בשגיאות",
+                    "description": "דוגמה מלאה המשלבת לולאות, רשימות, מחרוזות, מילונים וטיפול בחריגות",
+                    "concepts_used": [
+                        "loops (מודול 2)",
+                        "lists (מודול 3)",
+                        "strings (מודול 4)",
+                        "dictionaries (מודול 5)",
+                        "files & exceptions (מודול 6)"
+                    ],
+                    "code": "def process_student_file(filename):\n    \"\"\"\n    מעבד קובץ סטודנטים ומחזיר סטטיסטיקות.\n    משלב: קבצים, לולאות, רשימות, מחרוזות, מילונים\n    \"\"\"\n    students = {}  # מילון: שם -> רשימת ציונים\n    \n    try:\n        with open(filename, 'r') as file:\n            for line in file:  # לולאת for על שורות הקובץ\n                # פיצול המחרוזת (מודול 4)\n                parts = line.strip().split(':')\n                if len(parts) != 2:\n                    continue  # דילוג על שורות לא תקינות\n                \n                name = parts[0]\n                # המרת ציונים מטקסט לרשימת מספרים\n                grades_str = parts[1].split(',')\n                grades = [int(g) for g in grades_str]  # list comprehension (מודול 3)\n                \n                students[name] = grades  # הוספה למילון (מודול 5)\n        \n        # חישוב ממוצע לכל סטודנט\n        averages = {}\n        for name, grades in students.items():\n            avg = sum(grades) / len(grades)  # פונקציות מובנות (מודול 2)\n            averages[name] = round(avg, 2)\n        \n        return averages\n    \n    except FileNotFoundError:\n        print(f'שגיאה: הקובץ {filename} לא נמצא')\n        return None\n    except ValueError as e:\n        print(f'שגיאה בפרסור נתונים: {e}')\n        return None\n\n# דוגמת הרצה (נניח שיש קובץ students.txt)\n# result = process_student_file('students.txt')\n# print(result)",
+                    "expected_output": "# עבור קובץ עם התוכן:\n# דני:85,90,88\n# רונית:92,95,91\n# \n# הפלט יהיה:\n# {'דני': 87.67, 'רונית': 92.67}"
+                },
+                "practice_questions": [
+                    {
+                        "id": "6-q1",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט של הקוד הבא?",
+                        "code": "data = []\ntry:\n    with open('test.txt', 'w') as f:\n        f.write('Hello\\nWorld')\n    with open('test.txt', 'r') as f:\n        for line in f:\n            data.append(line.strip().upper())\nexcept FileNotFoundError:\n    data.append('ERROR')\nprint(data)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "['Hello', 'World']"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "['HELLO', 'WORLD']"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "['Hello\\nWorld']"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "['ERROR']"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "הקובץ נוצר עם 'w' ונכתבים אליו 'Hello' ו-'World' בשתי שורות. לאחר מכן קוראים את הקובץ, מסירים רווחים עם strip() וממירים לאותיות גדולות עם upper() (מודול 4 - מחרוזות). התוצאה נוספת לרשימה (מודול 3).",
+                        "cumulative_concepts": [
+                            "lists.append()",
+                            "strings.strip()",
+                            "strings.upper()",
+                            "for loop",
+                            "file read/write"
+                        ]
+                    },
+                    {
+                        "id": "6-q2",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יקרה בהרצת הקוד הבא אם המשתמש יקליד 'ninety'?",
+                        "code": "try:\n    grade = int(input('Enter grade: '))  # User inputs: ninety\n    if grade < 0 or grade > 100:\n        raise ValueError('Out of range')\n    print(f'Grade: {grade}')\nexcept ValueError:\n    print('Invalid Input')",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "Grade: ninety"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "Out of range"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "Invalid Input"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "התוכנית תקרוס"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "הפונקציה int('ninety') זורקת ValueError כיוון שהמחרוזת אינה מכילה ספרות. הבלוק except תופס את השגיאה ומדפיס 'Invalid Input'.",
+                        "cumulative_concepts": [
+                            "int() casting",
+                            "try-except",
+                            "ValueError"
+                        ]
+                    },
+                    {
+                        "id": "6-q3",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יהיה ערך result בסוף הקוד?",
+                        "code": "def parse_numbers(text):\n    result = []\n    for item in text.split(','):\n        try:\n            result.append(int(item.strip()))\n        except ValueError:\n            result.append(0)\n    return result\n\nresult = parse_numbers('10, abc, 20, , 30')",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[10, 20, 30]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[10, 0, 20, 0, 30]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[10, 'abc', 20, '', 30]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "הפונקציה מפצלת את המחרוזת לפי פסיקים (מודול 4), עוברת על כל פריט בלולאה (מודול 2), ומנסה להמיר למספר. 'abc' ומחרוזת ריקה גורמים ל-ValueError ולכן מתווסף 0 במקום. התוצאה היא רשימה (מודול 3) עם [10, 0, 20, 0, 30].",
+                        "cumulative_concepts": [
+                            "split()",
+                            "strip()",
+                            "for loop",
+                            "list.append()",
+                            "try-except",
+                            "int()"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": [
+                    {
+                        "id": "6-exam1",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "עקוב אחר הקוד הבא. מה יהיה תוכן הקובץ output.txt בסיום?",
+                        "code": "data = {'a': [1, 2], 'b': [3, 4]}\n\nwith open('output.txt', 'w') as f:\n    for key in data:  # לולאה על מילון (מודול 5)\n        values = data[key]  # רשימה (מודול 3)\n        line = f'{key}:{sum(values)}\\n'  # f-string (מודול 4)\n        f.write(line)\n\n# מה יהיה בקובץ output.txt?",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "a:3\nb:7"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "a:[1, 2]\nb:[3, 4]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "3\n7"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "a:1,2\nb:3,4"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "הלולאה עוברת על מפתחות המילון ('a' ו-'b'). לכל מפתח, מחשבים את sum() של רשימת הערכים ויוצרים f-string עם המפתח והסכום. התוצאה: a:3 (סכום 1+2) ו-b:7 (סכום 3+4).",
+                        "cumulative_concepts": [
+                            "dict iteration",
+                            "list sum()",
+                            "f-strings",
+                            "file write"
+                        ]
+                    },
+                    {
+                        "id": "6-exam2",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה ידפיס הקוד הבא?",
+                        "code": "def safe_divide(nums):\n    results = []\n    for i in range(len(nums) - 1):\n        try:\n            result = nums[i] / nums[i + 1]\n            results.append(int(result))\n        except ZeroDivisionError:\n            results.append('X')\n    return results\n\nprint(safe_divide([10, 2, 0, 5]))",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[5, 'X', 0]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[5.0, 'X', 0.0]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[5, 0, 'X']"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "ZeroDivisionError"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "הפונקציה מחלקת כל מספר בזה שאחריו: 10/2=5, 2/0 זורק ZeroDivisionError (מוחלף ב-'X'), 0/5=0. התוצאה [5, 'X', 0]. שימו לב לשימוש ב-int() להמרה ו-range(len()) ללולאה.",
+                        "cumulative_concepts": [
+                            "list indexing",
+                            "range(len())",
+                            "try-except ZeroDivisionError",
+                            "int()"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 7,
+                "title": "תכנות מונחה עצמים - יסודות",
+                "subtitle": "OOP Basics",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "משתנים (מודול 1)",
+                    "פונקציות (מודול 2)",
+                    "רשימות (מודול 3)",
+                    "מילונים (מודול 5)"
+                ],
+                "learningObjectives": [
+                    "הבנת מחלקות ואובייקטים",
+                    "יצירת מחלקה עם __init__",
+                    "הבנת self ומתודות",
+                    "Attributes ומשתני מופע"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "7.1",
+                        "title": "מחלקות ואובייקטים",
+                        "content_html": "<div class='theory-section'><h3>🏗️ מחלקה = תבנית</h3><p><strong>מחלקה (Class)</strong> היא תבנית ליצירת אובייקטים. כמו 'תוכנית בניה' לבית.</p><p><strong>אובייקט (Object)</strong> הוא מופע ספציפי של המחלקה. כמו 'הבית עצמו'.</p><pre><code class='python'># הגדרת מחלקה\nclass Dog:\n    pass  # מחלקה ריקה\n\n# יצירת אובייקטים\ndog1 = Dog()\ndog2 = Dog()\nprint(type(dog1))  # <class '__main__.Dog'></code></pre></div>"
+                    },
+                    {
+                        "id": "7.2",
+                        "title": "__init__ - הבנאי",
+                        "content_html": "<div class='theory-section'><h3>🔨 בנאי = אתחול אובייקט</h3><p><code>__init__</code> היא מתודה מיוחדת שרצה אוטומטית כשיוצרים אובייקט חדש.</p><pre><code class='python'>class Person:\n    def __init__(self, name, age):\n        self.name = name  # משתנה מופע\n        self.age = age\n\n# יצירת אובייקט - __init__ רץ אוטומטית!\np1 = Person('דני', 25)\nprint(p1.name)  # דני\nprint(p1.age)   # 25</code></pre></div>"
+                    },
+                    {
+                        "id": "7.3",
+                        "title": "self ומתודות",
+                        "content_html": "<div class='theory-section'><h3>👆 self = האובייקט עצמו</h3><p><code>self</code> מייצג את האובייקט הספציפי שעליו עובדים. חייב להיות הפרמטר הראשון בכל מתודה.</p><pre><code class='python'>class BankAccount:\n    def __init__(self, balance):\n        self.balance = balance\n    \n    def deposit(self, amount):\n        self.balance += amount\n    \n    def withdraw(self, amount):\n        if amount <= self.balance:\n            self.balance -= amount\n            return True\n        return False\n\nacc = BankAccount(1000)\nacc.deposit(500)   # self = acc\nprint(acc.balance)  # 1500</code></pre></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "מחלקת סטודנט",
+                    "description": "מחלקה לניהול סטודנטים עם ציונים",
+                    "concepts_used": [
+                        "class (מודול 7)",
+                        "__init__",
+                        "self",
+                        "lists (מודול 3)",
+                        "dictionaries (מודול 5)"
+                    ],
+                    "code": "class Student:\n    def __init__(self, name, student_id):\n        self.name = name\n        self.student_id = student_id\n        self.grades = []  # רשימה ריקה (מודול 3)\n    \n    def add_grade(self, grade):\n        if 0 <= grade <= 100:\n            self.grades.append(grade)\n    \n    def get_average(self):\n        if not self.grades:\n            return 0\n        return sum(self.grades) / len(self.grades)\n    \n    def __str__(self):\n        return f'{self.name} (ID: {self.student_id})'\n\n# שימוש\ns = Student('דני', 12345)\ns.add_grade(85)\ns.add_grade(90)\nprint(s)  # דני (ID: 12345)\nprint(f'ממוצע: {s.get_average()}')",
+                    "expected_output": "דני (ID: 12345)\nממוצע: 87.5"
+                },
+                "practice_questions": [
+                    {
+                        "id": "7-q1",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "class Counter:\n    def __init__(self):\n        self.count = 0\n    def inc(self):\n        self.count += 1\n\nc = Counter()\nc.inc()\nc.inc()\nprint(c.count)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "0"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "1"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "2"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "__init__ מאתחל count=0. שתי קריאות ל-inc() מעלות ל-2.",
+                        "cumulative_concepts": [
+                            "__init__",
+                            "self",
+                            "method calls"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": [
+                    {
+                        "id": "7-exam1",
+                        "type": "code_tracing",
+                        "difficulty": "exam_level",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "class Box:\n    def __init__(self, items=[]):\n        self.items = items\n    def add(self, x):\n        self.items.append(x)\n\nb1 = Box()\nb1.add(1)\nb2 = Box()\nb2.add(2)\nprint(b1.items)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[1]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[2]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[1, 2]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "[]"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "מלכודת! ברירת מחדל של רשימה ריקה משותפת לכל האובייקטים. שני האובייקטים חולקים את אותה רשימה.",
+                        "cumulative_concepts": [
+                            "mutable default argument",
+                            "__init__",
+                            "list references"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 8,
+                "title": "ירושה ופולימורפיזם",
+                "subtitle": "Inheritance & Polymorphism",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "OOP יסודות (מודול 7)"
+                ],
+                "learningObjectives": [
+                    "ירושה בין מחלקות",
+                    "super()",
+                    "דריסת מתודות",
+                    "__str__ ו-__repr__"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "8.1",
+                        "title": "ירושה",
+                        "content_html": "<div class='theory-section'><h3>👨‍👦 ירושה = מחלקת בן יורשת מאב</h3><pre><code class='python'>class Animal:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        pass\n\nclass Dog(Animal):  # יורש מ-Animal\n    def speak(self):\n        return f'{self.name} says Woof!'\n\nclass Cat(Animal):\n    def speak(self):\n        return f'{self.name} says Meow!'\n\nd = Dog('Rex')\nprint(d.speak())  # Rex says Woof!</code></pre></div>"
+                    },
+                    {
+                        "id": "8.2",
+                        "title": "super()",
+                        "content_html": "<div class='theory-section'><h3>⬆️ super() - קריאה למחלקת האב</h3><pre><code class='python'>class Person:\n    def __init__(self, name):\n        self.name = name\n\nclass Student(Person):\n    def __init__(self, name, year):\n        super().__init__(name)  # קריאה לבנאי של Person\n        self.year = year\n\ns = Student('Dana', 2024)\nprint(s.name, s.year)  # Dana 2024</code></pre></div>"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "8-q1",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "class A:\n    def greet(self):\n        return 'Hello from A'\n\nclass B(A):\n    def greet(self):\n        return 'Hello from B'\n\nobj = B()\nprint(obj.greet())",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "Hello from A"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "Hello from B"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "Hello from A\\nHello from B"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "B דורס את greet() של A. כשקוראים ל-obj.greet() מתבצעת המתודה של B.",
+                        "cumulative_concepts": [
+                            "method overriding",
+                            "inheritance"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": []
+            },
+            {
+                "id": 9,
+                "title": "List Comprehensions",
+                "subtitle": "קיצורים חכמים",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "לולאות (מודול 2)",
+                    "רשימות (מודול 3)"
+                ],
+                "learningObjectives": [
+                    "List Comprehension",
+                    "Dictionary Comprehension",
+                    "סינון עם if"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "9.1",
+                        "title": "List Comprehension",
+                        "content_html": "<div class='theory-section'><h3>📝 קיצור ליצירת רשימות</h3><p>במקום לולאה ארוכה, שורה אחת!</p><pre><code class='python'># דרך ארוכה\nsquares = []\nfor x in range(5):\n    squares.append(x ** 2)\n\n# List Comprehension\nsquares = [x ** 2 for x in range(5)]\nprint(squares)  # [0, 1, 4, 9, 16]\n\n# עם סינון\nevens = [x for x in range(10) if x % 2 == 0]\nprint(evens)  # [0, 2, 4, 6, 8]</code></pre></div>"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "9-q1",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "result = [x * 2 for x in range(1, 5) if x % 2 == 1]\nprint(result)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[2, 4, 6, 8]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[2, 6]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[1, 3]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "[2, 4]"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "range(1,5) = 1,2,3,4. סינון אי-זוגיים: 1,3. כפל ב-2: 2,6.",
+                        "cumulative_concepts": [
+                            "list comprehension",
+                            "filter",
+                            "range"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": []
+            },
+            {
+                "id": 10,
+                "title": "Lambda ופונקציות מתקדמות",
+                "subtitle": "Lambda, Map, Filter",
+                "isUnlocked": true,
+                "prerequisites": [
+                    "פונקציות (מודול 2)",
+                    "רשימות (מודול 3)"
+                ],
+                "learningObjectives": [
+                    "Lambda functions",
+                    "map()",
+                    "filter()",
+                    "sorted with key"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "10.1",
+                        "title": "Lambda",
+                        "content_html": "<div class='theory-section'><h3>⚡ פונקציות אנונימיות</h3><pre><code class='python'># פונקציה רגילה\ndef double(x):\n    return x * 2\n\n# Lambda - שורה אחת\ndouble = lambda x: x * 2\nprint(double(5))  # 10\n\n# מיון לפי קריטריון\nnames = ['Bob', 'Alice', 'Charlie']\nsorted_names = sorted(names, key=lambda x: len(x))\nprint(sorted_names)  # ['Bob', 'Alice', 'Charlie']</code></pre></div>"
+                    }
+                ],
+                "practice_questions": [
+                    {
+                        "id": "10-q1",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "nums = [1, 2, 3, 4]\nresult = list(map(lambda x: x ** 2, nums))\nprint(result)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "[1, 2, 3, 4]"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "[1, 4, 9, 16]"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "[2, 4, 6, 8]"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "map() מפעיל את ה-lambda על כל איבר. x**2 לכל מספר = [1,4,9,16].",
+                        "cumulative_concepts": [
+                            "lambda",
+                            "map()",
+                            "list()"
+                        ]
+                    }
+                ],
+                "exam_prep_questions": []
+            }
+        ]
+    }
+}
