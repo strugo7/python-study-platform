@@ -276,21 +276,16 @@
                     },
                     {
                         "id": "2.3",
-                        "title": "דריסת פונקציות (Override Function)",
-                        "content_html": "<div class='theory-section'><h3>🔄 דריסת פונקציות בפייתון</h3><p>בניגוד לשפות כמו Java או C++, <strong>פייתון לא תומכת ב-Function Overloading</strong> (העמסת פונקציות). אם מגדירים שתי פונקציות עם אותו שם - <strong>הגדרה שנייה דורסת את הראשונה</strong>!</p><h4>דוגמה מההרצאה:</h4><pre><code class='python'>def func(x, y):\n    return x + y\n\nprint(func(5, 7))    # 12 ✓\n\ndef func(x):         # דריסה! הפונקציה הקודמת נעלמה\n    return x * x\n\nprint(func(4))       # 16 ✓\nprint(func(1, 2))    # ❌ TypeError! הפונקציה החדשה מקבלת רק פרמטר אחד</code></pre><div class='danger'>🚨 <strong>מלכודת מבחן!</strong> אחרי הגדרת func(x), הפונקציה func(x,y) כבר לא קיימת!</div><h4>גם משתנים יכולים לדרוס פונקציות!</h4><pre><code class='python'>def func(x):\n    return x * x\n\nfunc = \"Hello\"       # func כבר לא פונקציה!\nprint(func)          # Hello ✓\nprint(func(2))       # ❌ TypeError: 'str' object is not callable</code></pre><div class='warning'>⚠️ <strong>נקודה חשובה:</strong> בפייתון, שמות פונקציות הם רק משתנים שמצביעים לאובייקט פונקציה. אפשר להציב בהם כל ערך!</div><h4>איך לעקוף את ההגבלה?</h4><p>אפשר להשתמש בפרמטרים ברירת מחדל או *args:</p><pre><code class='python'># אופציה 1: ברירת מחדל\ndef power(x, y=2):\n    return x ** y\n\nprint(power(3))      # 9\nprint(power(3, 4))   # 81\n\n# אופציה 2: *args\ndef sum_all(*args):\n    return sum(args)\n\nprint(sum_all(1, 2))         # 3\nprint(sum_all(1, 2, 3, 4))   # 10</code></pre></div>"
-                    },
-                    {
-                        "id": "2.4",
                         "title": "טווח משתנים - Global vs Local",
                         "content_html": "<div class='theory-section'><h3>🌍 Scope - טווח משתנים</h3><p>משתנה <strong>לוקאלי</strong> קיים רק בתוך הפונקציה. משתנה <strong>גלובלי</strong> קיים בכל התוכנית.</p><h4>משתנה לוקאלי:</h4><pre><code class='python'>def my_func():\n    x = 10        # משתנה לוקאלי\n    print(x)\n\nmy_func()         # מדפיס 10\nprint(x)          # שגיאה! x לא קיים פה</code></pre><h4>משתנה גלובלי:</h4><pre><code class='python'>x = 10            # משתנה גלובלי\n\ndef read_global():\n    print(x)      # קורא את הגלובלי\n\ndef create_local():\n    x = 5         # יוצר משתנה לוקאלי חדש!\n    print(x)      # מדפיס 5\n\nread_global()     # 10\ncreate_local()    # 5\nprint(x)          # 10 - הגלובלי לא השתנה!</code></pre><div class='danger'>🚨 <strong>מלכודת מבחן קלאסית!</strong></div><pre><code class='python'>x = 10\n\ndef my_func(y):\n    x = 2              # משתנה לוקאלי חדש!\n    return x * y\n\nres = my_func(3)       # res = 6\nprint(res + x)         # 6 + 10 = 16</code></pre><h4>שינוי משתנה גלובלי מתוך פונקציה:</h4><pre><code class='python'>counter = 0\n\ndef increment():\n    global counter     # מכריז שרוצים את הגלובלי\n    counter += 1\n\nincrement()\nincrement()\nprint(counter)         # 2</code></pre><h4>קבועים גלובליים (Convention):</h4><pre><code class='python'>VAT = 0.17             # שם באותיות גדולות = קבוע\n\ndef calculate_price(base_price):\n    return base_price * (1 + VAT)</code></pre></div>"
                     },
                     {
-                        "id": "2.5",
+                        "id": "2.4",
                         "title": "לולאת while",
                         "content_html": "<div class='theory-section'><h3>🔄 לולאת while</h3><p>לולאה שממשיכה כל עוד התנאי מתקיים:</p><pre><code class='python'>count = 0\nwhile count < 5:\n    print(count)\n    count += 1        # חשוב! אחרת לולאה אינסופית</code></pre><h4>break - יציאה מהלולאה:</h4><pre><code class='python'>while True:           # לולאה \"אינסופית\"\n    user_input = input('הכנס מספר (0 ליציאה): ')\n    if user_input == '0':\n        break         # יוצא מהלולאה\n    print(f'הזנת: {user_input}')</code></pre><h4>continue - דילוג לאיטרציה הבאה:</h4><pre><code class='python'>num = 0\nwhile num < 10:\n    num += 1\n    if num % 2 == 0:  # אם זוגי\n        continue      # דלג להמשך\n    print(num)        # מדפיס רק אי-זוגיים: 1,3,5,7,9</code></pre><h4>else בלולאה - מתבצע רק אם הלולאה לא נעצרה עם break:</h4><pre><code class='python'>val = 0\nfor i in range(1, 4):\n    if i == 2:\n        break\n    val += i\nelse:\n    val = 10         # לא יתבצע כי היה break!\n\nprint(val)           # 1 (רק i=1 הוסף לפני הbreak)</code></pre><div class='danger'>🚨 <strong>מלכודת מבחן!</strong> ה-else של לולאה רץ רק אם לא היה break!</div></div>"
                     },
                     {
-                        "id": "2.6",
+                        "id": "2.5",
                         "title": "לולאת for ו-range()",
                         "content_html": "<div class='theory-section'><h3>🔢 לולאת for</h3><p>לולאה שעוברת על כל איבר ברצף (רשימה, מחרוזת, range וכו'):</p><pre><code class='python'># על רשימה\nfor fruit in ['תפוח', 'בננה', 'תפוז']:\n    print(fruit)\n\n# על מחרוזת\nfor char in 'Hello':\n    print(char)</code></pre><h4>פונקציית range():</h4><pre><code class='python'>range(end)              # 0, 1, 2, ..., end-1\nrange(start, end)       # start, start+1, ..., end-1\nrange(start, end, step) # start, start+step, ..., עד end</code></pre><h4>דוגמאות range:</h4><pre><code class='python'># range(5) → 0, 1, 2, 3, 4\nfor i in range(5):\n    print(i)\n\n# range(2, 6) → 2, 3, 4, 5\nfor i in range(2, 6):\n    print(i)\n\n# range(10, 0, -2) → 10, 8, 6, 4, 2\nfor i in range(10, 0, -2):\n    print(i)</code></pre><div class='danger'>🚨 <strong>מלכודת range!</strong></div><pre><code class='python'># כמה פעמים תרוץ הלולאה?\nfor i in range(10, 2, -3):\n    count += 1\n# i = 10, 7, 4 → 3 פעמים!</code></pre><h4>לולאות מקוננות:</h4><pre><code class='python'>rows = 3\ncols = 4\nfor r in range(rows):\n    for c in range(cols):\n        print('*', end='')\n    print()   # ירידת שורה אחרי כל שורה\n\n# פלט:\n# ****\n# ****\n# ****</code></pre></div>"
                     }
@@ -498,194 +493,240 @@
                 "subtitle": "Lists & Tuples",
                 "isUnlocked": true,
                 "prerequisites": [
-                    "משתנים ופעולות (מודול 1)",
-                    "לולאות ופונקציות (מודול 2)"
+                    1,
+                    2
                 ],
                 "learningObjectives": [
-                    "יצירת רשימות ורשומות",
-                    "גישה לאיברים באינדקס",
-                    "Slicing - חיתוך רשימות",
-                    "מתודות: append, pop, sort, reverse",
-                    "ההבדל בין Mutable ל-Immutable"
+                    "יצירת רשימות וגישה לאיברים באינדקס חיובי ושלילי",
+                    "שימוש בחיתוך (Slicing) ושינוי איברים (Mutability)",
+                    "שימוש במתודות רשימה: append, insert, remove, pop, sort",
+                    "עבודה עם רשימות דו-ממדיות ולולאות מקוננות",
+                    "הבנת ההבדל בין רשימה (Mutable) לטאפל (Immutable)",
+                    "פריקת טאפלים (Unpacking) והחלפת ערכים"
                 ],
                 "theory_sections": [
                     {
                         "id": "3.1",
-                        "title": "רשימות - יסודות",
-                        "content_html": "<div class='theory-section'><h3>📋 מה זו רשימה?</h3><p>רשימה (List) היא אוסף סדור של פריטים. בניגוד למשתנה רגיל שמאחסן ערך אחד, רשימה יכולה להכיל <strong>הרבה ערכים</strong> בסדר מסוים.</p><pre><code class='python'># יצירת רשימות\nnumbers = [1, 2, 3, 4, 5]\nnames = ['דני', 'רונית', 'יוסי']\nmixed = [10, 'hello', 3.14, True]  # סוגים מעורבים\nempty = []  # רשימה ריקה</code></pre><h4>גישה לאיברים (Indexing):</h4><table class='index-table'><tr><th>אינדקס</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr><tr><td>ערך</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><td>שלילי</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr></table><pre><code class='python'>nums = [10, 20, 30, 40]\nprint(nums[0])   # 10 (ראשון)\nprint(nums[-1])  # 40 (אחרון)\nnums[1] = 99     # שינוי ערך - רשימות הן Mutable!</code></pre><div class='cumulative-note'>🔗 <strong>שילוב מודול 2:</strong> נעבור על רשימות עם <strong>לולאת for</strong>!</div></div>"
+                        "title": "מבוא לרשימות",
+                        "content_html": "<div class='theory-section'><h3>📋 מה זה רשימה (List)?</h3><p>רשימה היא אוסף מסודר של איברים שיכולים להיות מטיפוסים שונים. רשימות הן <strong>Mutable</strong> (ניתנות לשינוי).</p><h4>יצירת רשימה:</h4><pre><code class='python'># רשימה ריקה\nmystery = []\n\n# רשימה עם איברים\nnumbers = [10, 20, 30, 40]\nnames = ['אלי', 'בני', 'גדי']\nmixed = [1, 'שלום', 3.14, True]</code></pre><h4>גישה לפי אינדקס:</h4><table class='index-table'><tr><th>אינדקס</th><th>0</th><th>1</th><th>2</th><th>3</th></tr><tr><td>ערך</td><td>10</td><td>20</td><td>30</td><td>40</td></tr><tr><td>שלילי</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr></table><pre><code class='python'>nums = [10, 20, 30, 40]\nprint(nums[0])   # 10\nprint(nums[-1])  # 40 (איבר אחרון)\nprint(nums[-2])  # 30 (איבר לפני אחרון)</code></pre><div class='danger'>🚨 <strong>מלכודת!</strong> ניסיון לגשת לאינדקס שלא קיים יגרום ל-<code>IndexError</code>.</div></div>"
                     },
                     {
                         "id": "3.2",
-                        "title": "חיתוך רשימות - Slicing",
-                        "content_html": "<div class='theory-section'><h3>✂️ Slicing - לגזור חלק מרשימה</h3><p>תחביר: <code>list[start:end:step]</code></p><ul><li><strong>start</strong> - אינדקס התחלה (כלול)</li><li><strong>end</strong> - אינדקס סיום (לא כלול!)</li><li><strong>step</strong> - קפיצות (ברירת מחדל: 1)</li></ul><pre><code class='python'>nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n\nprint(nums[2:5])    # [2, 3, 4]\nprint(nums[:4])     # [0, 1, 2, 3] מהתחלה\nprint(nums[6:])     # [6, 7, 8, 9] עד הסוף\nprint(nums[::2])    # [0, 2, 4, 6, 8] כל שני\nprint(nums[::-1])   # [9, 8, 7...0] היפוך!</code></pre><div class='tip'>💡 <strong>טיפ למבחן:</strong> <code>[::-1]</code> הופך רשימה או מחרוזת!</div></div>"
+                        "title": "חיתוך ושינוי (Slicing & Mutability)",
+                        "content_html": "<div class='theory-section'><h3>🔪 חיתוך רשימות (Slicing)</h3><p>אפשר לקבל חלק מהרשימה באמצעות התחביר: <code>list[start:end:step]</code>.</p><ul><li><strong>start</strong>: כולל</li><li><strong>end</strong>: לא כולל</li><li><strong>step</strong>: קפיצות (ברירת מחדל 1)</li></ul><pre><code class='python'>nums = [0, 10, 20, 30, 40, 50]\nprint(nums[1:4])    # [10, 20, 30]\nprint(nums[:3])     # [0, 10, 20]\nprint(nums[3:])     # [30, 40, 50]\nprint(nums[::2])    # [0, 20, 40] (קפיצות של 2)</code></pre><h4>שינוי איברים (Mutability):</h4><p>רשימות הן ברות-שינוי. אפשר לשנות איבר ישירות:</p><pre><code class='python'>colors = ['Red', 'Green', 'Blue']\ncolors[1] = 'Yellow'  # שינוי איבר\nprint(colors)         # ['Red', 'Yellow', 'Blue']</code></pre><h4>פעולות שרשור וחזרה:</h4><pre><code class='python'>list1 = [1, 2]\nlist2 = [3, 4]\nprint(list1 + list2)  # [1, 2, 3, 4] (שרשור)\nprint(list1 * 3)      # [1, 2, 1, 2, 1, 2] (חזרה)</code></pre></div>"
                     },
                     {
                         "id": "3.3",
-                        "title": "מתודות שימושיות",
-                        "content_html": "<div class='theory-section'><h3>🔧 פעולות על רשימות</h3><table class='method-table'><tr><th>מתודה</th><th>תיאור</th><th>דוגמה</th></tr><tr><td><code>append(x)</code></td><td>הוספה לסוף</td><td><code>lst.append(5)</code></td></tr><tr><td><code>insert(i, x)</code></td><td>הכנסה במיקום</td><td><code>lst.insert(0, 'first')</code></td></tr><tr><td><code>pop()</code></td><td>הסרה והחזרה מהסוף</td><td><code>last = lst.pop()</code></td></tr><tr><td><code>remove(x)</code></td><td>הסרת ערך ראשון</td><td><code>lst.remove('a')</code></td></tr><tr><td><code>sort()</code></td><td>מיון במקום</td><td><code>lst.sort()</code></td></tr><tr><td><code>reverse()</code></td><td>היפוך במקום</td><td><code>lst.reverse()</code></td></tr><tr><td><code>index(x)</code></td><td>מציאת אינדקס</td><td><code>i = lst.index('b')</code></td></tr></table><pre><code class='python'>fruits = ['apple', 'banana']\nfruits.append('cherry')     # ['apple', 'banana', 'cherry']\nfruits.sort()               # ['apple', 'banana', 'cherry']\nfruits.reverse()            # ['cherry', 'banana', 'apple']\n\n# בדיקת קיום (מודול 1 - תנאים)\nif 'banana' in fruits:\n    print('נמצא!')</code></pre></div>"
+                        "title": "מתודות ופונקציות של רשימות",
+                        "content_html": "<div class='theory-section'><h3>🛠️ כלים לעבודה עם רשימות</h3><h4>הוספה ומחיקה:</h4><table class='methods-table'><tr><th>מתודה</th><th>פעולה</th><th>דוגמה</th></tr><tr><td><code>append(x)</code></td><td>הוספה לסוף</td><td><code>lst.append(5)</code></td></tr><tr><td><code>insert(i, x)</code></td><td>הוספה באינדקס i</td><td><code>lst.insert(0, 'hi')</code></td></tr><tr><td><code>remove(x)</code></td><td>מחיקת האיבר הראשון שערכו x</td><td><code>lst.remove(20)</code></td></tr><tr><td><code>pop(i)</code></td><td>מחיקה והחזרת איבר באינדקס i</td><td><code>val = lst.pop()</code></td></tr><tr><td><code>clear()</code></td><td>מחיקת כל האיברים</td><td><code>lst.clear()</code></td></tr></table><pre><code class='python'>nums = [1, 2, 3]\nnums.append(4)      # [1, 2, 3, 4]\nnums.insert(1, 10)  # [1, 10, 2, 3, 4]\nnums.remove(2)      # [1, 10, 3, 4]\nval = nums.pop()    # val = 4, nums = [1, 10, 3]</code></pre><h4>פונקציות מובנות:</h4><pre><code class='python'>nums = [10, 5, 20]\nprint(len(nums))  # 3 (אורך)\nprint(sum(nums))  # 35 (סכום)\nprint(max(nums))  # 20 (מקסימום)\nprint(min(nums))  # 5 (מינימום)</code></pre><h4>מיון:</h4><pre><code class='python'>nums = [10, 1, 5]\nnums.sort()       # משנה את הרשימה המקורית ל: [1, 5, 10]\nnums.reverse()    # הופך סדר: [10, 5, 1]</code></pre></div>"
                     },
                     {
                         "id": "3.4",
-                        "title": "רשומות - Tuples",
-                        "content_html": "<div class='theory-section'><h3>🔒 Tuple - רשימה שלא משתנה</h3><p>Tuple דומה לרשימה, אבל היא <strong>Immutable</strong> - לא ניתן לשנות אותה לאחר יצירה.</p><pre><code class='python'># יצירת Tuple\npoint = (3, 4)\ncolors = ('red', 'green', 'blue')\n\n# גישה - כמו רשימה\nprint(point[0])  # 3\nprint(colors[-1])  # 'blue'\n\n# ניסיון שינוי - שגיאה!\n# point[0] = 5  # TypeError!</code></pre><h4>מתי להשתמש ב-Tuple?</h4><ul><li>כשרוצים להבטיח שהנתונים לא ישתנו</li><li>כמפתח במילון (רשימה לא יכולה!)</li><li>החזרת ערכים מרובים מפונקציה</li></ul><pre><code class='python'># פונקציה שמחזירה Tuple (מודול 2)\ndef get_min_max(numbers):\n    return min(numbers), max(numbers)\n\nresult = get_min_max([3, 1, 4, 1, 5])\nprint(result)  # (1, 5)</code></pre></div>"
+                        "title": "רשימות דו-ממדיות (Nested Lists)",
+                        "content_html": "<div class='theory-section'><h3>🧱 רשימה בתוך רשימה</h3><p>רשימה דו-ממדית היא רשימה שאיבריה הם רשימות בעצמם. נהוג לחשוב עליהן כאל מטריצה עם שורות ועמודות.</p><pre><code class='python'>matrix = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\n\n# גישה לאיבר:\nprint(matrix[0])     # [1, 2, 3] (שורה 0)\nprint(matrix[1][2])  # 6 (שורה 1, עמודה 2)</code></pre><h4>מעבר על מטריצה עם לולאות מקוננות:</h4><pre><code class='python'>for row in matrix:\n    for item in row:\n        print(item, end=' ')\n    print()  # ירידת שורה</code></pre><div class='info-box'>💡 <strong>טיפ:</strong> בסליידות של ד\"ר ריקה מצוין שאפשר להשתמש ב-<code>matrix[row][col]</code> כדי לגשת לכל איבר.</div></div>"
+                    },
+                    {
+                        "id": "3.5",
+                        "title": "טאפלים (Tuples)",
+                        "content_html": "<div class='theory-section'><h3>🔒 מה זה טאפל (רשומה)?</h3><p>טאפל הוא רצף של איברים הדומה לרשימה, אך הוא <strong>Immutable</strong> (לא ניתן לשינוי לאחר היצירה).</p><h4>תכונות עיקריות:</h4><ul><li>נוצר עם סוגריים עגולים <code>()</code></li><li>מהיר יותר מרשימה</li><li>בטוח יותר (מגן על הנתונים משינוי)</li></ul><pre><code class='python'>my_tuple = (1, 2, 3, 'hello')\nprint(my_tuple[1])   # 2\n\n# ❌ יגרום לשגיאה:\nmy_tuple[1] = 10     # TypeError: 'tuple' object does not support item assignment</code></pre><h4>המרה בין רשימה לטאפל:</h4><pre><code class='python'>lst = [1, 2, 3]\ntpl = tuple(lst)   # הופך ל-(1, 2, 3)\n\nnew_lst = list(tpl) # הופך חזרה ל-[1, 2, 3]</code></pre></div>"
+                    },
+                    {
+                        "id": "3.6",
+                        "title": "פריקת טאפלים (Unpacking)",
+                        "content_html": "<div class='theory-section'><h3>📦 פריקת איברים</h3><p>פייתון מאפשרת להציב איברי טאפל (או רשימה) לתוך משתנים בשורה אחת.</p><pre><code class='python'># פריקה בסיסית\npoint = (10, 20)\nx, y = point\nprint(x)  # 10\nprint(y)  # 20</code></pre><h4>החלפת ערכים (Swap) - הדרך הפייתונית:</h4><pre><code class='python'>a = 5\nb = 10\n\n# במקום להשתמש במשתנה עזר (temp):\na, b = b, a\n\nprint(a)  # 10\nprint(b)  # 5</code></pre><h4>החזרת ערכים מרובים מפונקציה:</h4><p>כפי שראינו במודול 2, פונקציה שמחזירה כמה ערכים בעצם מחזירה טאפל:</p><pre><code class='python'>def get_coords():\n    return 100, 200    # מחזיר (100, 200)\n\ncoords = get_coords()\nx, y = get_coords()</code></pre></div>"
                     }
                 ],
                 "interactive_code": {
                     "title": "ניהול רשימת קניות",
-                    "description": "תוכנית המשלבת רשימות, לולאות ותנאים",
+                    "description": "הוספה, מחיקה ומיון של רשימה",
                     "concepts_used": [
-                        "lists (מודול 3)",
-                        "for loop (מודול 2)",
-                        "if-else (מודול 1)",
-                        "input/print (מודול 1)"
+                        "append",
+                        "remove",
+                        "sort",
+                        "len"
                     ],
-                    "code": "def shopping_list_manager():\n    \"\"\"\n    מנהל רשימת קניות אינטראקטיבי.\n    משלב: רשימות, לולאות, תנאים, קלט/פלט\n    \"\"\"\n    shopping_list = []  # רשימה ריקה (מודול 3)\n    \n    while True:  # לולאה אינסופית (מודול 2)\n        print('\\n--- רשימת קניות ---')\n        print('1. הוסף פריט')\n        print('2. הסר פריט')\n        print('3. הצג רשימה')\n        print('4. יציאה')\n        \n        choice = input('בחר אפשרות: ')  # קלט (מודול 1)\n        \n        if choice == '1':  # תנאי (מודול 1)\n            item = input('שם הפריט: ')\n            shopping_list.append(item)  # append (מודול 3)\n            print(f'{item} נוסף!')\n            \n        elif choice == '2':\n            item = input('פריט להסרה: ')\n            if item in shopping_list:  # בדיקת קיום\n                shopping_list.remove(item)\n                print(f'{item} הוסר!')\n            else:\n                print('פריט לא נמצא')\n                \n        elif choice == '3':\n            if shopping_list:  # רשימה לא ריקה = True\n                for i, item in enumerate(shopping_list):  # enumerate\n                    print(f'{i+1}. {item}')\n            else:\n                print('הרשימה ריקה')\n                \n        elif choice == '4':\n            print('להתראות!')\n            break  # יציאה מהלולאה\n\n# shopping_list_manager()  # הפעלה",
-                    "expected_output": "--- רשימת קניות ---\n1. הוסף פריט\n..."
+                    "code": "shopping_list = ['milk', 'bread', 'eggs']\n\n# הוספת מוצר\nshopping_list.append('coffee')\n\n# מחיקת מוצר\nshopping_list.remove('bread')\n\n# מיון\nshopping_list.sort()\n\nprint(f'רשימה מעודכנת: {shopping_list}')\nprint(f'מספר מוצרים: {len(shopping_list)}')",
+                    "expected_output": "רשימה מעודכנת: ['coffee', 'eggs', 'milk']\nמספר מוצרים: 3"
                 },
                 "practice_questions": [
                     {
                         "id": "3-q1",
                         "type": "code_tracing",
-                        "difficulty": "easy",
+                        "difficulty": "medium",
                         "question_text": "מה יהיה הפלט?",
-                        "code": "nums = [1, 2, 3, 4, 5]\nprint(nums[1:4])",
+                        "code": "nums = [10, 20, 30, 40, 50]\nprint(nums[1:4:2])",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "[1, 2, 3, 4]"
+                                "text": "[20, 40]"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "[2, 3, 4]"
+                                "text": "[10, 30]"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "[2, 3, 4, 5]"
+                                "text": "[20, 30, 40]"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "[1, 2, 3]"
+                                "text": "[10, 20, 30, 40, 50]"
                             }
                         ],
-                        "correct_answer": "b",
-                        "explanation": "Slicing [1:4] מתחיל באינדקס 1 (כולל) ומסתיים באינדקס 4 (לא כולל). לכן: אינדקסים 1,2,3 = [2, 3, 4].",
+                        "correct_answer": "a",
+                        "explanation": "החיתוך מתחיל באינדקס 1 (ערך 20), נגמר לפני אינדקס 4, ובקפיצות של 2. לכן נקבל 20 ו-40.",
+                        "trapProfile": "Slicing Steps",
                         "cumulative_concepts": [
-                            "list slicing",
-                            "indexing"
+                            "slicing",
+                            "steps"
                         ]
                     },
                     {
                         "id": "3-q2",
                         "type": "code_tracing",
-                        "difficulty": "medium",
-                        "question_text": "מה יהיה הפלט?",
-                        "code": "lst = [1, 2, 3]\nlst.append(4)\nlst.pop()\nlst.insert(0, 0)\nprint(lst)",
+                        "difficulty": "hard",
+                        "question_text": "מה יודפס?",
+                        "code": "lst = [1, 2, 3]\ntpl = (1, 2, 3)\nlst[0] = 10\ntpl[0] = 10\nprint(lst[0] + tpl[0])",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "[0, 1, 2, 3, 4]"
+                                "text": "20"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "[1, 2, 3]"
+                                "text": "11"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "[0, 1, 2, 3]"
+                                "text": "שגיאה"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "[0, 1, 2, 4]"
+                                "text": "10"
                             }
                         ],
                         "correct_answer": "c",
-                        "explanation": "append(4) → [1,2,3,4]. pop() מסיר את 4 → [1,2,3]. insert(0,0) מוסיף 0 בהתחלה → [0,1,2,3].",
+                        "explanation": "טאפל הוא Immutable. הניסיון לבצע tpl[0] = 10 יגרום לשגיאת TypeError.",
+                        "trapProfile": "Tuple Immutability",
                         "cumulative_concepts": [
-                            "append()",
-                            "pop()",
-                            "insert()"
+                            "mutability",
+                            "tuple assignment"
                         ]
                     },
                     {
                         "id": "3-q3",
                         "type": "code_tracing",
-                        "difficulty": "hard",
-                        "question_text": "מה יהיה הפלט?",
-                        "code": "nums = [1, 2, 3, 4, 5]\nresult = nums[::2] + nums[1::2]\nprint(result)",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס?",
+                        "code": "matrix = [[1, 2], [3, 4]]\nprint(matrix[1][0])",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "[1, 3, 5, 2, 4]"
+                                "text": "1"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "[1, 2, 3, 4, 5]"
+                                "text": "2"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "[2, 4, 1, 3, 5]"
+                                "text": "3"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "[1, 3, 5] + [2, 4]"
+                                "text": "4"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "matrix[1] מחזיר את הרשימה השנייה [3, 4]. האינדקס 0 בה הוא 3.",
+                        "trapProfile": "Matrix Indexing",
+                        "cumulative_concepts": [
+                            "2D lists",
+                            "indexing"
+                        ]
+                    },
+                    {
+                        "id": "3-q4",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יהיו ערכי a ו-b?",
+                        "code": "a = 1\nb = 2\na, b = b, a + b\nprint(a, b)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "2 3"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "1 2"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "2 2"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "3 2"
                             }
                         ],
                         "correct_answer": "a",
-                        "explanation": "nums[::2] = [1,3,5] (כל שני מההתחלה). nums[1::2] = [2,4] (כל שני מאינדקס 1). חיבור: [1,3,5,2,4].",
+                        "explanation": "בביטוי a, b = b, a + b, פייתון מחשב קודם את צד ימין: (2, 1+2) = (2, 3). ואז מציב אותם לתוך a ו-b.",
+                        "trapProfile": "Parallel Assignment",
                         "cumulative_concepts": [
-                            "slicing with step",
-                            "list concatenation"
+                            "tuple unpacking",
+                            "assignment mechanics"
                         ]
-                    }
-                ],
-                "exam_prep_questions": [
+                    },
                     {
-                        "id": "3-exam1",
+                        "id": "3-q5",
                         "type": "code_tracing",
-                        "difficulty": "exam_level",
-                        "question_text": "מה יהיה ערך result?",
-                        "code": "def mystery(lst):\n    result = []\n    for i in range(len(lst) - 1, -1, -1):\n        if lst[i] % 2 == 0:\n            result.append(lst[i])\n    return result\n\nresult = mystery([1, 2, 3, 4, 5, 6])",
+                        "difficulty": "medium",
+                        "question_text": "מה יהיה אורך הרשימה?",
+                        "code": "lst = [1, 2, 3]\nlst.append([4, 5])\nprint(len(lst))",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "[2, 4, 6]"
+                                "text": "5"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "[6, 4, 2]"
+                                "text": "4"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "[1, 3, 5]"
+                                "text": "3"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "[5, 3, 1]"
+                                "text": "שגיאה"
                             }
                         ],
                         "correct_answer": "b",
-                        "explanation": "הלולאה עוברת מהסוף להתחלה (range הפוך). מוסיפים רק זוגיים: 6, 4, 2. התוצאה [6, 4, 2].",
+                        "explanation": "append מוסיף את האובייקט כולו כאיבר אחד. לכן הרשימה תהיה [1, 2, 3, [4, 5]], ואורכה 4.",
+                        "trapProfile": "Append vs Extend",
                         "cumulative_concepts": [
-                            "range() reverse",
-                            "modulo %",
-                            "for loop",
-                            "append()"
+                            "append method",
+                            "nested objects"
                         ]
                     }
                 ]
@@ -696,198 +737,240 @@
                 "subtitle": "Strings",
                 "isUnlocked": true,
                 "prerequisites": [
-                    "משתנים (מודול 1)",
-                    "לולאות (מודול 2)",
-                    "רשימות (מודול 3)"
+                    1,
+                    2,
+                    3
                 ],
                 "learningObjectives": [
-                    "Slicing במחרוזות",
-                    "מתודות: split, join, find, replace",
-                    "עיבוד טקסט: strip, upper, lower",
-                    "f-strings לעיצוב מחרוזות",
-                    "הבנת Immutability"
+                    "הבנת אי-שתנות (Immutability) של מחרוזות",
+                    "ביצוע חיתוך (Slicing) ושימוש באופרטור in",
+                    "שימוש במתודות לבדיקת תכונות (isdigit, isalpha וכו')",
+                    "שימוש במתודות לשינוי וניקוי (upper, lower, strip)",
+                    "ביצוע חיפוש (find) והחלפה (replace)",
+                    "פיצול (split) וחיבור (join) של מחרוזות"
                 ],
                 "theory_sections": [
                     {
                         "id": "4.1",
-                        "title": "מחרוזות - יסודות",
-                        "content_html": "<div class='theory-section'><h3>📝 מחרוזות בפייתון</h3><p>מחרוזת היא רצף של תווים. בפייתון, מחרוזות הן <strong>Immutable</strong> - לא ניתן לשנות תו בודד לאחר יצירה.</p><pre><code class='python'>s = 'Hello World'\n\n# גישה לתווים\nprint(s[0])    # 'H'\nprint(s[-1])   # 'd'\nprint(len(s))  # 11\n\n# ניסיון שינוי - שגיאה!\n# s[0] = 'h'  # TypeError!</code></pre><div class='cumulative-note'>🔗 <strong>דמיון למודול 3:</strong> מחרוזות תומכות ב<strong>Slicing</strong> בדיוק כמו רשימות!</div></div>"
+                        "title": "מבוא ואי-שתנות (Immutability)",
+                        "content_html": "<div class='theory-section'><h3>🔤 מה זה מחרוזת?</h3><p>מחרוזת היא רצף של תווים. בפייתון, מחרוזות הן <strong>Immutable</strong> - לא ניתן לשנות תו בודד בתוך מחרוזת קיימת.</p><pre><code class='python'>s = 'Python'\n# ❌ יגרום לשגיאה:\ns[0] = 'p'        # TypeError</code></pre><h4>אינדקס וחיתוך:</h4><p>בדיוק כמו ברשימות, אפשר לגשת לתווים ולבצע slicing:</p><pre><code class='python'>s = 'Hello World'\nprint(s[0:5])     # Hello\nprint(s[::-1])    # dlroW olleH (היפוך מחרוזת)</code></pre><h4>אופרטור in:</h4><pre><code class='python'>text = 'Python is fun'\nif 'fun' in text:\n    print('נמצא!')</code></pre></div>"
                     },
                     {
                         "id": "4.2",
-                        "title": "חיתוך מחרוזות - Slicing",
-                        "content_html": "<div class='theory-section'><h3>✂️ Slicing במחרוזות</h3><p>אותו תחביר כמו ברשימות: <code>string[start:end:step]</code></p><pre><code class='python'>text = 'Python Programming'\n\nprint(text[0:6])    # 'Python'\nprint(text[7:])     # 'Programming'\nprint(text[:6])     # 'Python'\nprint(text[::2])    # 'Pto rgamn' (כל תו שני)\nprint(text[::-1])   # היפוך: 'gnimmargorP nohtyP'</code></pre><h4>שימושים נפוצים:</h4><pre><code class='python'># בדיקת פלינדרום (מודול 1 - תנאים)\nword = 'אבא'\nif word == word[::-1]:\n    print('פלינדרום!')</code></pre></div>"
+                        "title": "מתודות לבדיקת תכונות",
+                        "content_html": "<div class='theory-section'><h3>🔍 בדיקת מחרוזות</h3><p>מתודות אלו מחזירות <code>True</code> או <code>False</code>:</p><table class='string-test-table'><tr><th>מתודה</th><th>מה היא בודקת</th></tr><tr><td><code>isalnum()</code></td><td>האם כל התווים הם אותיות או ספרות?</td></tr><tr><td><code>isalpha()</code></td><td>האם כל התווים הם אותיות?</td></tr><tr><td><code>isdigit()</code></td><td>האם כל התווים הם ספרות?</td></tr><tr><td><code>islower()</code></td><td>האם כל האותיות הן קטנות (Lowercase)?</td></tr><tr><td><code>isupper()</code></td><td>האם כל האותיות הן גדולות (Uppercase)?</td></tr><tr><td><code>isspace()</code></td><td>האם המחרוזת מכילה רק רווחים/טאבים?</td></tr></table><pre><code class='python'>s1 = '123'\nprint(s1.isdigit())  # True\n\ns2 = 'abc123'\nprint(s2.isalpha())  # False (מכיל ספרות)</code></pre></div>"
                     },
                     {
                         "id": "4.3",
-                        "title": "מתודות חשובות",
-                        "content_html": "<div class='theory-section'><h3>🔧 מתודות מחרוזת</h3><table class='method-table'><tr><th>מתודה</th><th>תיאור</th><th>דוגמה</th></tr><tr><td><code>split(sep)</code></td><td>פיצול לרשימה</td><td><code>'a,b,c'.split(',') → ['a','b','c']</code></td></tr><tr><td><code>join(list)</code></td><td>חיבור רשימה</td><td><code>'-'.join(['a','b']) → 'a-b'</code></td></tr><tr><td><code>strip()</code></td><td>הסרת רווחים</td><td><code>' hi '.strip() → 'hi'</code></td></tr><tr><td><code>upper()</code></td><td>אותיות גדולות</td><td><code>'hi'.upper() → 'HI'</code></td></tr><tr><td><code>lower()</code></td><td>אותיות קטנות</td><td><code>'HI'.lower() → 'hi'</code></td></tr><tr><td><code>replace(a,b)</code></td><td>החלפה</td><td><code>'cat'.replace('c','b') → 'bat'</code></td></tr><tr><td><code>find(x)</code></td><td>מציאת אינדקס</td><td><code>'hello'.find('l') → 2</code></td></tr></table><pre><code class='python'># שילוב מתודות\ntext = '  Hello World  '\nclean = text.strip().lower().replace(' ', '_')\nprint(clean)  # 'hello_world'</code></pre></div>"
+                        "title": "מתודות לשינוי וניקוי",
+                        "content_html": "<div class='theory-section'><h3>✨ שינוי מחרוזות</h3><p>חשוב לזכור: המתודות מחזירות <strong>מחרוזת חדשה</strong>, הן לא משנות את המקורית!</p><h4>שינוי גודל אותיות:</h4><pre><code class='python'>s = 'Hello World'\nprint(s.upper()) # HELLO WORLD\nprint(s.lower()) # hello world</code></pre><h4>ניקוי רווחים (Strip):</h4><pre><code class='python'>s = '   Python   '\nprint(s.strip())  # 'Python' (מוריד משני הצדדים)\nprint(s.lstrip()) # 'Python   ' (רק משמאל)\nprint(s.rstrip()) # '   Python' (רק מימין)</code></pre></div>"
                     },
                     {
                         "id": "4.4",
-                        "title": "f-strings",
-                        "content_html": "<div class='theory-section'><h3>✨ עיצוב מחרוזות עם f-strings</h3><p>דרך קלה ונוחה לשלב משתנים בתוך מחרוזות:</p><pre><code class='python'>name = 'דני'\nage = 25\n\n# f-string בסיסי\nprint(f'שמי {name} וגילי {age}')\n\n# חישובים בתוך הסוגריים\nprint(f'בעוד 10 שנים אהיה בן {age + 10}')\n\n# עיצוב מספרים\nprice = 19.999\nprint(f'המחיר: {price:.2f}')  # 19.99 (2 ספרות)</code></pre><div class='cumulative-note'>🔗 <strong>שילוב מודול 2:</strong> משתמשים ב-f-strings בתוך <strong>לולאות</strong> להדפסה מעוצבת!</div></div>"
+                        "title": "חיפוש והחלפה",
+                        "content_html": "<div class='theory-section'><h3>📍 איתור טקסט</h3><h4>find(substring):</h4><p>מחזיר את האינדקס של המופע הראשון. אם לא נמצא, מחזיר <strong>-1</strong>.</p><pre><code class='python'>s = 'Python is great'\nprint(s.find('is'))    # 7\nprint(s.find('java'))  # -1</code></pre><h4>replace(old, new):</h4><p>מחליף את כל המופעים של מחרוזת אחת באחרת.</p><pre><code class='python'>s = 'I love Python, Python is fun'\nnew_s = s.replace('Python', 'AI')\nprint(new_s) # I love AI, AI is fun</code></pre></div>"
+                    },
+                    {
+                        "id": "4.5",
+                        "title": "פיצול (split) וחיבור (join)",
+                        "content_html": "<div class='theory-section'><h3>✂️ עבודה עם רשימות של מילים</h3><h4>split(separator):</h4><p>מפרק מחרוזת לרשימה של מילים לפי מפריד (ברירת מחדל: רווח).</p><pre><code class='python'>s = 'one,two,three'\nlst = s.split(',') \nprint(lst) # ['one', 'two', 'three']</code></pre><h4>join(iterable):</h4><p>מחבר רשימה של מחרוזות למחרוזת אחת עם המפריד שצוין.</p><pre><code class='python'>words = ['Python', 'is', 'awesome']\ns = ' '.join(words)\nprint(s)  # 'Python is awesome'\n\ns_dash = '-'.join(words)\nprint(s_dash) # 'Python-is-awesome'</code></pre><div class='info-box'>💡 <strong>טיפ:</strong> Join היא מתודה של <strong>המפריד</strong>, לא של הרשימה!</div></div>"
+                    },
+                    {
+                        "id": "4.6",
+                        "title": "f-strings ומתודות בסיסיות",
+                        "content_html": "<div class='theory-section'><h3>📝 עיצוב מחרוזות</h3><p>הדרך המודרנית והנוחה ביותר לשלב משתנים בטקסט היא באמצעות f-strings.</p><pre><code class='python'>name = 'דני'\nage = 25\nprint(f'שלום {name}, אתה בן {age}.')</code></pre><h4>repetition (*):</h4><pre><code class='python'>print('abc' * 3) # abcabcabc</code></pre><h4>בדיקת סיומת ותחילת מחרוזת:</h4><pre><code class='python'>filename = 'script.py'\nif filename.endswith('.py'):\n    print('קובץ פייתון!')</code></pre></div>"
                     }
                 ],
                 "interactive_code": {
-                    "title": "מעבד טקסט",
-                    "description": "פונקציות לעיבוד מחרוזות עם שילוב רשימות ולולאות",
+                    "title": "מנתח נתיבי קבצים",
+                    "description": "חילוץ שם הקובץ והסיומת מנתיב מלא",
                     "concepts_used": [
-                        "strings (מודול 4)",
-                        "lists (מודול 3)",
-                        "for loop (מודול 2)",
-                        "functions (מודול 2)"
+                        "split",
+                        "endswith",
+                        "f-strings"
                     ],
-                    "code": "def count_words(text):\n    \"\"\"סופר מילים בטקסט - משלב split (מודול 4) ו-len\"\"\"\n    words = text.strip().split()  # פיצול לרשימה (מודול 3)\n    return len(words)\n\ndef reverse_words(text):\n    \"\"\"הופך סדר מילים - משלב split, reverse, join\"\"\"\n    words = text.split()          # מחרוזת → רשימה\n    words.reverse()               # היפוך במקום (מודול 3)\n    return ' '.join(words)        # רשימה → מחרוזת\n\ndef word_frequency(text):\n    \"\"\"סופר תדירות מילים - משלב מילון (מודול 5)\"\"\"\n    words = text.lower().split()\n    freq = {}  # מילון ריק\n    for word in words:  # לולאה (מודול 2)\n        if word in freq:\n            freq[word] += 1\n        else:\n            freq[word] = 1\n    return freq\n\n# בדיקות\ntext = 'שלום עולם שלום'\nprint(count_words(text))       # 3\nprint(reverse_words(text))     # 'שלום עולם שלום'\nprint(word_frequency(text))    # {'שלום': 2, 'עולם': 1}",
-                    "expected_output": "3\nשלום עולם שלום\n{'שלום': 2, 'עולם': 1}"
+                    "code": "path = 'user/downloads/data.csv'\n\n# פיצול לפי / ולקיחת האיבר האחרון\nfilename = path.split('/')[-1]\n\n# בדיקת סיומת\nif filename.endswith('.csv'):\n    type = 'Table Data'\nelse:\n    type = 'Unknown'\n\nprint(f'שם קובץ: {filename}')\nprint(f'סוג: {type}')",
+                    "expected_output": "שם קובץ: data.csv\nסוג: Table Data"
                 },
                 "practice_questions": [
                     {
                         "id": "4-q1",
                         "type": "code_tracing",
-                        "difficulty": "easy",
-                        "question_text": "מה יהיה הפלט?",
-                        "code": "s = 'Python'\nprint(s[1:4])",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס?",
+                        "code": "s = 'abcd'\nprint(s.upper())\nprint(s)",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "Pyt"
+                                "text": "ABCD\nABCD"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "yth"
+                                "text": "ABCD\nabcd"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "ytho"
+                                "text": "abcd\nabcd"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "hon"
+                                "text": "שגיאה"
                             }
                         ],
                         "correct_answer": "b",
-                        "explanation": "s[1:4] לוקח תווים מאינדקס 1 עד 3 (לא כולל 4): 'y', 't', 'h' = 'yth'.",
+                        "explanation": "מחרוזות הן Immutable. הקריאה ל-upper() מחזירה מחרוזת חדשה אבל לא משנה את s המקורית.",
+                        "trapProfile": "String Immutability",
                         "cumulative_concepts": [
-                            "string slicing"
+                            "immutability",
+                            "string methods"
                         ]
                     },
                     {
                         "id": "4-q2",
                         "type": "code_tracing",
-                        "difficulty": "medium",
-                        "question_text": "מה יהיה הפלט?",
-                        "code": "text = 'a,b,c,d'\nparts = text.split(',')\nresult = '-'.join(parts[1:3])\nprint(result)",
+                        "difficulty": "hard",
+                        "question_text": "מה יודפס?",
+                        "code": "s = 'a-b-c'\nlst = s.split('-')\nprint('*'.join(lst))",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "a-b"
+                                "text": "a-b-c"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "b-c"
+                                "text": "a*b*c"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "b-c-d"
+                                "text": "['a', 'b', 'c']"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "a-b-c-d"
+                                "text": "שגיאה"
                             }
                         ],
                         "correct_answer": "b",
-                        "explanation": "split(',') → ['a','b','c','d']. parts[1:3] → ['b','c']. join עם '-' → 'b-c'.",
+                        "explanation": "split('-') הופך את המחרוזת לרשימה ['a', 'b', 'c']. join('*') מחבר אותם חזרה עם כוכביות.",
+                        "trapProfile": "Split & Join Loop",
                         "cumulative_concepts": [
-                            "split()",
-                            "slicing",
-                            "join()"
+                            "split",
+                            "join"
                         ]
                     },
                     {
                         "id": "4-q3",
                         "type": "code_tracing",
                         "difficulty": "medium",
-                        "question_text": "מה יהיה הפלט?",
-                        "code": "s = '  Hello World  '\nresult = s.strip().upper().replace(' ', '_')\nprint(result)",
+                        "question_text": "מה הערך שיחזור?",
+                        "code": "s = 'Hello World'\nprint(s.find('o'))",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "Hello World"
+                                "text": "4"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "HELLO_WORLD"
+                                "text": "7"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "hello_world"
+                                "text": "4, 7"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "__HELLO_WORLD__"
+                                "text": "1"
                             }
                         ],
-                        "correct_answer": "b",
-                        "explanation": "strip() מסיר רווחים מקצוות → 'Hello World'. upper() → 'HELLO WORLD'. replace(' ','_') → 'HELLO_WORLD'.",
+                        "correct_answer": "a",
+                        "explanation": "find מחזיר רק את המופע הראשון של התו. ה-'o' הראשון נמצא באינדקס 4.",
+                        "trapProfile": "Multiple Occurrences",
                         "cumulative_concepts": [
-                            "strip()",
-                            "upper()",
-                            "replace()",
-                            "method chaining"
+                            "find method"
                         ]
-                    }
-                ],
-                "exam_prep_questions": [
+                    },
                     {
-                        "id": "4-exam1",
+                        "id": "4-q4",
                         "type": "code_tracing",
-                        "difficulty": "exam_level",
-                        "question_text": "מה יהיה הפלט?",
-                        "code": "def process(s):\n    words = s.split()\n    result = []\n    for w in words:\n        if len(w) > 3:\n            result.append(w.upper())\n    return '-'.join(result)\n\nprint(process('I love Python programming'))",
+                        "difficulty": "hard",
+                        "question_text": "מה יודפס?",
+                        "code": "s = '123a'\nif s.isdigit():\n    print('Digits')\nelif s.isalnum():\n    print('Alphanumeric')\nelse:\n    print('Other')",
                         "options": [
                             {
                                 "id": "a",
                                 "label": "א",
-                                "text": "I-LOVE-PYTHON-PROGRAMMING"
+                                "text": "Digits"
                             },
                             {
                                 "id": "b",
                                 "label": "ב",
-                                "text": "LOVE-PYTHON-PROGRAMMING"
+                                "text": "Alphanumeric"
                             },
                             {
                                 "id": "c",
                                 "label": "ג",
-                                "text": "love-python-programming"
+                                "text": "Other"
                             },
                             {
                                 "id": "d",
                                 "label": "ד",
-                                "text": "PYTHON-PROGRAMMING"
+                                "text": "Alphanumeric\nOther"
                             }
                         ],
                         "correct_answer": "b",
-                        "explanation": "מפצלים למילים. מוסיפים רק מילים ארוכות מ-3 באותיות גדולות: 'love'(4), 'Python'(6), 'programming'(11). מחברים עם '-'.",
+                        "explanation": "המחרוזת מכילה אות ('a'), לכן isdigit מחזיר False. היא מכילה רק אותיות וספרות, לכן isalnum מחזיר True.",
+                        "trapProfile": "Method Priority",
                         "cumulative_concepts": [
-                            "split()",
-                            "len()",
-                            "for loop",
-                            "if condition",
-                            "upper()",
-                            "join()"
+                            "isalnum",
+                            "isdigit",
+                            "if-elif"
+                        ]
+                    },
+                    {
+                        "id": "4-q5",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יהיה הפלט?",
+                        "code": "print('Python'[-3:])",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "hon"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "tho"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "n"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "yth"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "אינדקס -3 הוא האות 'h'. החיתוך הוא החל מ-'h' ועד הסוף, כלומר 'hon'.",
+                        "trapProfile": "Negative Slicing",
+                        "cumulative_concepts": [
+                            "negative indexing",
+                            "slicing"
                         ]
                     }
                 ]
