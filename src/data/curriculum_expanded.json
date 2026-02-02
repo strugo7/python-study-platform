@@ -1,0 +1,492 @@
+{
+    "curriculum": {
+        "title": "קורס תכנות מתקדם בפייתון עם כלי AI",
+        "description": "קורס מקיף לתכנות בפייתון - מיסודות השפה ועד תכנות מונחה עצמים מתקדם",
+        "lecturer": "ד\"ר הוואנה ריקה",
+        "version": "2.0",
+        "modules": [
+            {
+                "id": 1,
+                "title": "מבוא ויסודות",
+                "subtitle": "Intro & Basics",
+                "isUnlocked": true,
+                "prerequisites": [],
+                "learningObjectives": [
+                    "הבנת מהות פייתון כשפה מפורשת (Interpreted)",
+                    "הגדרת משתנים וטיפוסי נתונים בסיסיים (int, float, str, bool)",
+                    "שימוש באופרטורים חשבוניים והשמה",
+                    "המרה בין טיפוסים (Casting) עם int(), float(), str()",
+                    "קלט ופלט עם input() ו-print()",
+                    "תנאים: if-elif-else ואופרטורים לוגיים"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "1.1",
+                        "title": "מבוא לפייתון",
+                        "content_html": "<div class='theory-section'><h3>🐍 מהי פייתון?</h3><p>פייתון היא שפת תכנות <strong>מפורשת (Interpreted)</strong> ו-<strong>High-level</strong> שמדגישה קריאות קוד.</p><h4>היסטוריה קצרה:</h4><ul><li><strong>1991</strong> - גרסה ראשונה פורסמה על ידי Guido van Rossum</li><li><strong>2000</strong> - Python 2.0 עם List Comprehensions</li><li><strong>2008</strong> - Python 3.0 (שינויים משמעותיים)</li><li>אנחנו משתמשים בגרסה <strong>3.8+</strong></li></ul><h4>למה פייתון?</h4><ul><li>🌍 עובדת על כל פלטפורמה (Windows, Mac, Linux)</li><li>📚 תחביר פשוט דמוי אנגלית</li><li>⚡ פחות שורות קוד מרוב השפות</li><li>🔄 הרצה מיידית - אין צורך בקומפילציה</li><li>📦 מעל 530,000 חבילות זמינות ב-PyPI</li></ul><div class='info-box'>💡 <strong>טיפ:</strong> פייתון יכולה לשמש לפיתוח ווב, Machine Learning, אוטומציה, ניתוח נתונים, ועוד!</div></div>"
+                    },
+                    {
+                        "id": "1.2",
+                        "title": "משתנים וטיפוסי נתונים",
+                        "content_html": "<div class='theory-section'><h3>📦 מה זה משתנה?</h3><p>משתנה הוא כמו <strong>קופסה עם תווית</strong> שמאחסנת מידע. בפייתון, אין צורך להכריז על סוג המשתנה מראש - השפה <strong>דינמית</strong> ומזהה את הסוג אוטומטית.</p><h4>יתרונות הגישה הדינמית:</h4><ul><li>אין צורך להצהיר על סוג המשתנה מראש</li><li>משתנה יכול לשנות טיפוס במהלך הריצה</li><li>כתיבת קוד מהירה יותר</li></ul><pre><code class='python'># דוגמאות להגדרת משתנים\nx = 5           # int - מספר שלם\nx = \"שלום\"      # עכשיו x הוא str בלי בעיה!</code></pre><h4>טיפוסים בסיסיים (Primitive Types):</h4><table class='type-table'><tr><th>טיפוס</th><th>דוגמה</th><th>תיאור</th><th>הערות</th></tr><tr><td><code>int</code></td><td><code>age = 25</code></td><td>מספר שלם</td><td>גודל ללא הגבלה!</td></tr><tr><td><code>float</code></td><td><code>price = 19.99</code></td><td>מספר עשרוני</td><td>דיוק מוגבל</td></tr><tr><td><code>str</code></td><td><code>name = 'דני'</code></td><td>מחרוזת טקסט</td><td>גרשיים בודדים או כפולים</td></tr><tr><td><code>bool</code></td><td><code>is_valid = True</code></td><td>ערך בוליאני</td><td>True או False בלבד</td></tr><tr><td><code>complex</code></td><td><code>c = 3+4j</code></td><td>מספר מרוכב</td><td>חלק מדמיון עם j</td></tr></table><h4>בדיקת טיפוס עם type():</h4><pre><code class='python'>x = 5\nprint(type(x))   # <class 'int'>\n\ny = \"Hello\"\nprint(type(y))   # <class 'str'>\n\nz = 3.14\nprint(type(z))   # <class 'float'></code></pre><div class='warning'>⚠️ <strong>נקודה חשובה:</strong> בפייתון, <code>True</code> שווה ל-1 ו-<code>False</code> שווה ל-0 בפעולות חשבוניות!</div><pre><code class='python'>print(True + True)   # 2\nprint(False * 5)     # 0\nprint(1 + True)      # 2</code></pre></div>"
+                    },
+                    {
+                        "id": "1.3",
+                        "title": "המרות טיפוסים (Casting)",
+                        "content_html": "<div class='theory-section'><h3>🔄 למה צריך המרות?</h3><p>לפעמים נקבל נתונים בטיפוס אחד וצריך להמיר אותם לטיפוס אחר. הדוגמה הכי נפוצה: <code>input()</code> תמיד מחזיר <strong>מחרוזת</strong>!</p><h4>פונקציות המרה:</h4><table class='casting-table'><tr><th>פונקציה</th><th>מה עושה</th><th>דוגמה</th><th>תוצאה</th></tr><tr><td><code>int()</code></td><td>המרה למספר שלם</td><td><code>int(\"42\")</code></td><td>42</td></tr><tr><td><code>int()</code></td><td>חיתוך חלק עשרוני</td><td><code>int(3.9)</code></td><td>3</td></tr><tr><td><code>float()</code></td><td>המרה לעשרוני</td><td><code>float(\"3.14\")</code></td><td>3.14</td></tr><tr><td><code>float()</code></td><td>מספר שלם לעשרוני</td><td><code>float(5)</code></td><td>5.0</td></tr><tr><td><code>str()</code></td><td>המרה למחרוזת</td><td><code>str(123)</code></td><td>\"123\"</td></tr><tr><td><code>bool()</code></td><td>המרה לבוליאני</td><td><code>bool(0)</code></td><td>False</td></tr></table><pre><code class='python'># דוגמה מעשית - קלט מספרי\nage_str = input(\"בן כמה אתה? \")  # מחזיר מחרוזת!\nage = int(age_str)                # המרה למספר\nnext_year = age + 1               # עכשיו אפשר לחשב\n\n# אפשר גם בשורה אחת:\nage = int(input(\"בן כמה אתה? \"))</code></pre><div class='danger'>🚨 <strong>מלכודת!</strong> המרה של מחרוזת לא-מספרית תגרום לשגיאה:</div><pre><code class='python'>int(\"hello\")   # ValueError: invalid literal for int()\nint(\"3.14\")    # ValueError - אי אפשר ישירות!\nint(float(\"3.14\"))  # 3 - עובד!</code></pre><h4>המרה לבוליאני - כללים חשובים:</h4><ul><li>כמעט כל ערך ממיר ל-<code>True</code></li><li>ערכים שממירים ל-<code>False</code>: 0, 0.0, \"\", [], {}, None</li></ul><pre><code class='python'>print(bool(0))      # False\nprint(bool(\"\"))     # False\nprint(bool(1))      # True\nprint(bool(\"hi\"))   # True\nprint(bool(-5))     # True (גם שלילי!)</code></pre></div>"
+                    },
+                    {
+                        "id": "1.4",
+                        "title": "אופרטורים חשבוניים",
+                        "content_html": "<div class='theory-section'><h3>🔢 פעולות מתמטיות</h3><table class='operator-table'><tr><th>אופרטור</th><th>פעולה</th><th>דוגמה</th><th>תוצאה</th></tr><tr><td><code>+</code></td><td>חיבור</td><td><code>5 + 3</code></td><td>8</td></tr><tr><td><code>-</code></td><td>חיסור</td><td><code>5 - 3</code></td><td>2</td></tr><tr><td><code>*</code></td><td>כפל</td><td><code>5 * 3</code></td><td>15</td></tr><tr><td><code>/</code></td><td>חילוק</td><td><code>5 / 2</code></td><td>2.5</td></tr><tr><td><code>//</code></td><td>חילוק שלם (floor)</td><td><code>5 // 2</code></td><td>2</td></tr><tr><td><code>%</code></td><td>מודולו (שארית)</td><td><code>5 % 2</code></td><td>1</td></tr><tr><td><code>**</code></td><td>חזקה</td><td><code>5 ** 2</code></td><td>25</td></tr></table><h4>חילוק שלם vs חילוק רגיל:</h4><pre><code class='python'>print(7 / 2)    # 3.5 - תמיד מחזיר float\nprint(7 // 2)   # 3   - מעגל למטה (floor)\nprint(-7 // 2)  # -4  - שים לב! מעגל למטה, לא לכיוון האפס</code></pre><h4>שימושים נפוצים במודולו:</h4><pre><code class='python'># בדיקת זוגיות\nif num % 2 == 0:\n    print(\"מספר זוגי\")\n\n# חילוץ ספרה אחרונה\nlast_digit = 1234 % 10  # 4\n\n# חילוץ כל הספרות\nn = 852\nwhile n > 0:\n    digit = n % 10    # ספרה אחרונה\n    n = n // 10       # הסר ספרה אחרונה\n    print(digit)</code></pre><h4>אופרטורי השמה מקוצרים:</h4><table class='assignment-table'><tr><th>מקוצר</th><th>שווה ל</th><th>דוגמה</th></tr><tr><td><code>x += 5</code></td><td><code>x = x + 5</code></td><td>הוספה</td></tr><tr><td><code>x -= 3</code></td><td><code>x = x - 3</code></td><td>חיסור</td></tr><tr><td><code>x *= 2</code></td><td><code>x = x * 2</code></td><td>כפל</td></tr><tr><td><code>x /= 4</code></td><td><code>x = x / 4</code></td><td>חילוק</td></tr><tr><td><code>x //= 2</code></td><td><code>x = x // 2</code></td><td>חילוק שלם</td></tr><tr><td><code>x %= 3</code></td><td><code>x = x % 3</code></td><td>שארית</td></tr><tr><td><code>x **= 2</code></td><td><code>x = x ** 2</code></td><td>חזקה</td></tr></table></div>"
+                    },
+                    {
+                        "id": "1.5",
+                        "title": "קלט ופלט - input() ו-print()",
+                        "content_html": "<div class='theory-section'><h3>🖨️ פלט - print()</h3><p>הפונקציה <code>print()</code> מדפיסה ערכים למסך:</p><pre><code class='python'># פלט בסיסי\nprint('Hello World')         # Hello World\nprint('A', 'B', 'C')         # A B C (רווח אוטומטי בין ארגומנטים)</code></pre><h4>פרמטרים מתקדמים של print:</h4><table class='params-table'><tr><th>פרמטר</th><th>ברירת מחדל</th><th>תפקיד</th></tr><tr><td><code>sep</code></td><td>\" \" (רווח)</td><td>מפריד בין ארגומנטים</td></tr><tr><td><code>end</code></td><td>\"\\n\" (שורה חדשה)</td><td>מה להדפיס בסוף</td></tr></table><pre><code class='python'># שינוי מפריד\nprint('A', 'B', 'C', sep='-')     # A-B-C\nprint('A', 'B', 'C', sep='***')   # A***B***C\n\n# שינוי סוף שורה\nprint('Loading', end='...')  # Loading... (בלי ירידת שורה)\nprint('Done!')               # ימשיך באותה שורה: Loading...Done!\n\n# שילוב\nprint(1, 2, 3, sep='|', end='!')\nprint('X')                   # 1|2|3!X</code></pre><h3>⌨️ קלט - input()</h3><p>הפונקציה <code>input()</code> עוצרת את התוכנית ומחכה לקלט מהמשתמש:</p><pre><code class='python'>name = input('מה שמך? ')\nprint('שלום', name)</code></pre><div class='warning'>⚠️ <strong>חשוב לזכור:</strong> <code>input()</code> <strong>תמיד</strong> מחזיר מחרוזת!</div><pre><code class='python'># ❌ שגיאה נפוצה\nage = input('בן כמה אתה? ')  # age הוא מחרוזת!\nnext_year = age + 1           # TypeError!\n\n# ✅ הפתרון - המרה\nage = int(input('בן כמה אתה? '))\nnext_year = age + 1           # עובד!</code></pre><h4>סוגי המרות קלט:</h4><pre><code class='python'>name = input('שם: ')              # נשאר מחרוזת\nage = int(input('גיל: '))         # מספר שלם\nprice = float(input('מחיר: '))    # מספר עשרוני</code></pre></div>"
+                    },
+                    {
+                        "id": "1.6",
+                        "title": "תנאים - if/elif/else",
+                        "content_html": "<div class='theory-section'><h3>🔀 בקרת זרימה</h3><p>תנאים מאפשרים לתוכנית לקבל החלטות לפי מצבים שונים. בפייתון, <strong>הזחה (Indentation)</strong> היא חובה כדי להגדיר בלוקים של קוד!</p><h4>אופרטורי השוואה:</h4><table class='comparison-table'><tr><th>אופרטור</th><th>משמעות</th><th>דוגמה</th></tr><tr><td><code>==</code></td><td>שווה ל</td><td><code>x == 5</code></td></tr><tr><td><code>!=</code></td><td>שונה מ</td><td><code>x != 5</code></td></tr><tr><td><code>></code></td><td>גדול מ</td><td><code>x > 5</code></td></tr><tr><td><code><</code></td><td>קטן מ</td><td><code>x < 5</code></td></tr><tr><td><code>>=</code></td><td>גדול או שווה</td><td><code>x >= 5</code></td></tr><tr><td><code><=</code></td><td>קטן או שווה</td><td><code>x <= 5</code></td></tr></table><h4>אופרטורים לוגיים:</h4><table class='logic-table'><tr><th>אופרטור</th><th>משמעות</th><th>דוגמה</th></tr><tr><td><code>and</code></td><td>וגם (שניהם נכונים)</td><td><code>x > 0 and x < 10</code></td></tr><tr><td><code>or</code></td><td>או (לפחות אחד)</td><td><code>x < 0 or x > 10</code></td></tr><tr><td><code>not</code></td><td>הפוך</td><td><code>not x == 5</code></td></tr></table><h4>מבנה תנאי בסיסי:</h4><pre><code class='python'>age = int(input('הכנס גיל: '))\n\nif age < 18:\n    print('ילד/נער')      # הזחה חובה!\nelif age < 30:\n    print('צעיר')\nelif age < 65:\n    print('מבוגר')\nelse:\n    print('אזרח ותיק')</code></pre><div class='info-box'>💡 <strong>שים לב:</strong> ברגע שתנאי אחד מתקיים, שאר הענפים לא נבדקים!</div><h4>תנאים מקוננים:</h4><pre><code class='python'>x = 41\nif x > 10:\n    print('מעל 10')\n    if x > 20:\n        print('וגם מעל 20!')\n    else:\n        print('אבל לא מעל 20')</code></pre><h4>השוואת טווחים בסגנון פייתוני:</h4><pre><code class='python'># במקום:\nif age >= 18 and age < 30:\n    print('צעיר')\n\n# אפשר לכתוב:\nif 18 <= age < 30:\n    print('צעיר')  # יותר קריא!</code></pre></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "מחשבון קטגוריות גיל",
+                    "description": "תוכנית שמקבלת גיל ומחזירה קטגוריה והנחה",
+                    "concepts_used": [
+                        "input()",
+                        "int() casting",
+                        "if-elif-else",
+                        "print()",
+                        "f-strings"
+                    ],
+                    "code": "# מחשבון קטגוריות גיל\n# משלב: קלט, המרת טיפוסים, תנאים, פלט\n\nage = int(input('הכנס את גילך: '))\n\nif age < 0:\n    print('גיל לא יכול להיות שלילי!')\nelif age < 13:\n    category = 'ילד'\n    discount = 50\nelif age < 18:\n    category = 'נער'\n    discount = 25\nelif age < 65:\n    category = 'מבוגר'\n    discount = 0\nelse:\n    category = 'אזרח ותיק'\n    discount = 30\n\n# הדפסת תוצאה\nprint(f'קטגוריה: {category}')\nprint(f'הנחה: {discount}%')",
+                    "expected_output": "הכנס את גילך: 70\nקטגוריה: אזרח ותיק\nהנחה: 30%"
+                },
+                "practice_questions": [
+                    {
+                        "id": "1-q1",
+                        "type": "code_tracing",
+                        "difficulty": "easy",
+                        "question_text": "מה יהיה הפלט של הקוד הבא?",
+                        "code": "x = 10\ny = 3\nprint(x // y)\nprint(x % y)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "3.33\n1"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "3\n1"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "3\n0"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "10\n3"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "האופרטור // מחזיר חילוק שלם (10//3=3), והאופרטור % מחזיר שארית (10%3=1).",
+                        "trapProfile": "Floor Division",
+                        "cumulative_concepts": [
+                            "floor division //",
+                            "modulo %"
+                        ]
+                    },
+                    {
+                        "id": "1-q2",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס?",
+                        "code": "print(1 + True)\nprint(False * 5)\nprint(bool(\"\"))",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "2\n0\nFalse"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "1True\n0\nTrue"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "2\n5\nFalse"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "True שווה ל-1 בחישובים, False שווה ל-0, ומחרוזת ריקה ממירה ל-False.",
+                        "trapProfile": "Boolean Arithmetic",
+                        "cumulative_concepts": [
+                            "boolean values",
+                            "type conversion"
+                        ]
+                    },
+                    {
+                        "id": "1-q3",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס בהרצת הקוד?",
+                        "code": "age = 25\nhas_license = True\n\nif age >= 18 and has_license:\n    print('יכול לנהוג')\nelif age >= 18:\n    print('צריך רישיון')\nelse:\n    print('קטן מדי')",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "יכול לנהוג"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "צריך רישיון"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "קטן מדי"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "יכול לנהוג\nצריך רישיון"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "הגיל 25 >= 18 ויש רישיון, אז התנאי הראשון מתקיים. ברגע שתנאי אחד מתקיים, שאר הענפים לא מורצים.",
+                        "trapProfile": "If-Elif Priority",
+                        "cumulative_concepts": [
+                            "if-elif-else",
+                            "and operator",
+                            "boolean"
+                        ]
+                    },
+                    {
+                        "id": "1-q4",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יהיה ערך x בסוף הקוד?",
+                        "code": "x = 10\nx = x + 5\nx = x * 2\nx = x // 3\nx = x % 4",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "10"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "2"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "0"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "1"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "x=10→15→30→10→2. שלבים: 10+5=15, 15*2=30, 30//3=10, 10%4=2.",
+                        "trapProfile": "Sequential Operations",
+                        "cumulative_concepts": [
+                            "arithmetic operators",
+                            "step-by-step tracing"
+                        ]
+                    },
+                    {
+                        "id": "1-q5",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יודפס?",
+                        "code": "print('A', 'B', 'C', sep='-', end='!')\nprint('X')",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "A-B-C!\nX"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "A-B-C!X"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "A B C!X"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "A-B-C\n!X"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "sep מגדיר מפריד בין ארגומנטים (-)‏, end מגדיר מה בסוף (! במקום \\n), אז X ימשיך באותה שורה.",
+                        "trapProfile": "Print Parameters",
+                        "cumulative_concepts": [
+                            "print sep",
+                            "print end"
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "title": "פונקציות ולולאות",
+                "subtitle": "Functions & Loops",
+                "isUnlocked": true,
+                "prerequisites": [
+                    1
+                ],
+                "learningObjectives": [
+                    "הגדרת פונקציות עם def ו-return",
+                    "הבנת פרמטרים וערכי ברירת מחדל",
+                    "הבנת ההבדל בין משתנה גלובלי ללוקאלי (Scope)",
+                    "שימוש בלולאות while עם break, continue ו-else",
+                    "שימוש בלולאות for ופונקציית range()"
+                ],
+                "theory_sections": [
+                    {
+                        "id": "2.1",
+                        "title": "הגדרת פונקציות",
+                        "content_html": "<div class='theory-section'><h3>🔧 מה זה פונקציה?</h3><p>פונקציה היא בלוק קוד שניתן להריץ שוב ושוב על ידי קריאה לשם שלה. זה עוזר להימנע מחזרות ולארגן את הקוד.</p><h4>תחביר בסיסי:</h4><pre><code class='python'>def function_name(param1, param2):\n    # גוף הפונקציה\n    return result</code></pre><h4>דוגמאות:</h4><pre><code class='python'># פונקציה פשוטה ללא פרמטרים\ndef say_hello():\n    print(\"Hello from a function!\")\n\n# פונקציה עם פרמטרים ו-return\ndef multiply(x, y):\n    z = x * y\n    return z\n\n# קריאה לפונקציות\nsay_hello()           # מדפיס Hello...\nresult = multiply(3, 4)  # result = 12</code></pre><div class='warning'>⚠️ <strong>ההבדל בין print ל-return:</strong></div><ul><li><code>print()</code> - מדפיס למסך, לא מחזיר ערך</li><li><code>return</code> - מחזיר ערך שאפשר להשתמש בו</li></ul><pre><code class='python'>def with_print(a, b):\n    print(a + b)    # רק מדפיס\n\ndef with_return(a, b):\n    return a + b    # מחזיר תוצאה\n\nx = with_print(2, 3)   # מדפיס 5, x = None!\ny = with_return(2, 3)  # y = 5</code></pre><div class='danger'>🚨 <strong>מלכודת מבחן!</strong> פונקציה בלי return מחזירה <code>None</code>!</div><pre><code class='python'>def calc(a, b):\n    res = a + b\n    print(res)       # מדפיס 5\n\nx = calc(2, 3)\nprint(x)             # מדפיס None!</code></pre></div>"
+                    },
+                    {
+                        "id": "2.2",
+                        "title": "פרמטרים וערכי ברירת מחדל",
+                        "content_html": "<div class='theory-section'><h3>📥 פרמטרים</h3><p>פרמטרים הם משתנים שמקבלים ערכים בעת קריאה לפונקציה.</p><h4>ערכי ברירת מחדל:</h4><pre><code class='python'>def power(x, y=2):     # y=2 הוא ברירת מחדל\n    return x ** y\n\nprint(power(3, 4))     # 81 (3^4)\nprint(power(5))        # 25 (5^2) - השתמש בברירת מחדל</code></pre><h4>Keyword Arguments:</h4><p>אפשר להעביר ארגומנטים לפי שם, ואז הסדר לא משנה:</p><pre><code class='python'>def greet(name, greeting=\"שלום\"):\n    print(f\"{greeting}, {name}!\")\n\ngreet(\"דני\")                    # שלום, דני!\ngreet(\"דני\", \"בוקר טוב\")        # בוקר טוב, דני!\ngreet(greeting=\"ערב טוב\", name=\"יוסי\")  # ערב טוב, יוסי!</code></pre><h4>החזרת ערכים מרובים:</h4><pre><code class='python'>def get_name():\n    first = input('שם פרטי: ')\n    last = input('שם משפחה: ')\n    return first, last    # מחזיר tuple\n\n# שימוש:\nfirst_name, last_name = get_name()</code></pre><h4>החזרת None לציון שגיאה:</h4><pre><code class='python'>def divide(num1, num2):\n    if num2 == 0:\n        return None    # לא ניתן לחלק ב-0\n    return num1 / num2\n\nresult = divide(10, 0)\nif result is None:\n    print(\"שגיאה: חלוקה באפס\")</code></pre></div>"
+                    },
+                    {
+                        "id": "2.3",
+                        "title": "טווח משתנים - Global vs Local",
+                        "content_html": "<div class='theory-section'><h3>🌍 Scope - טווח משתנים</h3><p>משתנה <strong>לוקאלי</strong> קיים רק בתוך הפונקציה. משתנה <strong>גלובלי</strong> קיים בכל התוכנית.</p><h4>משתנה לוקאלי:</h4><pre><code class='python'>def my_func():\n    x = 10        # משתנה לוקאלי\n    print(x)\n\nmy_func()         # מדפיס 10\nprint(x)          # שגיאה! x לא קיים פה</code></pre><h4>משתנה גלובלי:</h4><pre><code class='python'>x = 10            # משתנה גלובלי\n\ndef read_global():\n    print(x)      # קורא את הגלובלי\n\ndef create_local():\n    x = 5         # יוצר משתנה לוקאלי חדש!\n    print(x)      # מדפיס 5\n\nread_global()     # 10\ncreate_local()    # 5\nprint(x)          # 10 - הגלובלי לא השתנה!</code></pre><div class='danger'>🚨 <strong>מלכודת מבחן קלאסית!</strong></div><pre><code class='python'>x = 10\n\ndef my_func(y):\n    x = 2              # משתנה לוקאלי חדש!\n    return x * y\n\nres = my_func(3)       # res = 6\nprint(res + x)         # 6 + 10 = 16</code></pre><h4>שינוי משתנה גלובלי מתוך פונקציה:</h4><pre><code class='python'>counter = 0\n\ndef increment():\n    global counter     # מכריז שרוצים את הגלובלי\n    counter += 1\n\nincrement()\nincrement()\nprint(counter)         # 2</code></pre><h4>קבועים גלובליים (Convention):</h4><pre><code class='python'>VAT = 0.17             # שם באותיות גדולות = קבוע\n\ndef calculate_price(base_price):\n    return base_price * (1 + VAT)</code></pre></div>"
+                    },
+                    {
+                        "id": "2.4",
+                        "title": "לולאת while",
+                        "content_html": "<div class='theory-section'><h3>🔄 לולאת while</h3><p>לולאה שממשיכה כל עוד התנאי מתקיים:</p><pre><code class='python'>count = 0\nwhile count < 5:\n    print(count)\n    count += 1        # חשוב! אחרת לולאה אינסופית</code></pre><h4>break - יציאה מהלולאה:</h4><pre><code class='python'>while True:           # לולאה \"אינסופית\"\n    user_input = input('הכנס מספר (0 ליציאה): ')\n    if user_input == '0':\n        break         # יוצא מהלולאה\n    print(f'הזנת: {user_input}')</code></pre><h4>continue - דילוג לאיטרציה הבאה:</h4><pre><code class='python'>num = 0\nwhile num < 10:\n    num += 1\n    if num % 2 == 0:  # אם זוגי\n        continue      # דלג להמשך\n    print(num)        # מדפיס רק אי-זוגיים: 1,3,5,7,9</code></pre><h4>else בלולאה - מתבצע רק אם הלולאה לא נעצרה עם break:</h4><pre><code class='python'>val = 0\nfor i in range(1, 4):\n    if i == 2:\n        break\n    val += i\nelse:\n    val = 10         # לא יתבצע כי היה break!\n\nprint(val)           # 1 (רק i=1 הוסף לפני הbreak)</code></pre><div class='danger'>🚨 <strong>מלכודת מבחן!</strong> ה-else של לולאה רץ רק אם לא היה break!</div></div>"
+                    },
+                    {
+                        "id": "2.5",
+                        "title": "לולאת for ו-range()",
+                        "content_html": "<div class='theory-section'><h3>🔢 לולאת for</h3><p>לולאה שעוברת על כל איבר ברצף (רשימה, מחרוזת, range וכו'):</p><pre><code class='python'># על רשימה\nfor fruit in ['תפוח', 'בננה', 'תפוז']:\n    print(fruit)\n\n# על מחרוזת\nfor char in 'Hello':\n    print(char)</code></pre><h4>פונקציית range():</h4><pre><code class='python'>range(end)              # 0, 1, 2, ..., end-1\nrange(start, end)       # start, start+1, ..., end-1\nrange(start, end, step) # start, start+step, ..., עד end</code></pre><h4>דוגמאות range:</h4><pre><code class='python'># range(5) → 0, 1, 2, 3, 4\nfor i in range(5):\n    print(i)\n\n# range(2, 6) → 2, 3, 4, 5\nfor i in range(2, 6):\n    print(i)\n\n# range(10, 0, -2) → 10, 8, 6, 4, 2\nfor i in range(10, 0, -2):\n    print(i)</code></pre><div class='danger'>🚨 <strong>מלכודת range!</strong></div><pre><code class='python'># כמה פעמים תרוץ הלולאה?\nfor i in range(10, 2, -3):\n    count += 1\n# i = 10, 7, 4 → 3 פעמים!</code></pre><h4>לולאות מקוננות:</h4><pre><code class='python'>rows = 3\ncols = 4\nfor r in range(rows):\n    for c in range(cols):\n        print('*', end='')\n    print()   # ירידת שורה אחרי כל שורה\n\n# פלט:\n# ****\n# ****\n# ****</code></pre></div>"
+                    }
+                ],
+                "interactive_code": {
+                    "title": "פירוק מספר לספרות",
+                    "description": "תוכנית שמפרקת מספר לספרות וסוכמת את הגדולות מ-5",
+                    "concepts_used": [
+                        "while loop",
+                        "// floor div",
+                        "% modulo",
+                        "if condition"
+                    ],
+                    "code": "# פירוק מספר לספרות\n# סוכם רק ספרות גדולות מ-5\n\nn = 852\nresult = 0\n\nwhile n > 0:\n    digit = n % 10      # הספרה האחרונה\n    if digit > 5:\n        result += digit\n    n = n // 10         # הסר ספרה אחרונה\n\nprint(f'סכום הספרות הגדולות מ-5: {result}')",
+                    "expected_output": "סכום הספרות הגדולות מ-5: 8"
+                },
+                "practice_questions": [
+                    {
+                        "id": "2-q1",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס?",
+                        "code": "def calc(a, b):\n    res = a + b\n    print(res)\n\nx = calc(2, 3)\nprint(x)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "5"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "5\n5"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "5\nNone"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "None"
+                            }
+                        ],
+                        "correct_answer": "c",
+                        "explanation": "הפונקציה מדפיסה 5 אבל לא עושה return, לכן מחזירה None. print(x) מדפיס None.",
+                        "trapProfile": "Return vs Print",
+                        "cumulative_concepts": [
+                            "return vs print",
+                            "None value"
+                        ]
+                    },
+                    {
+                        "id": "2-q2",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יודפס למסך?",
+                        "code": "x = 10\ndef my_func(y):\n    x = 2\n    return x * y\n\nres = my_func(3)\nprint(res + x)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "6"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "16"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "36"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "בתוך הפונקציה x=2 הוא לוקאלי. res = 2*3 = 6. ה-x הגלובלי עדיין 10. לכן 6+10=16.",
+                        "trapProfile": "Global vs Local Scope",
+                        "cumulative_concepts": [
+                            "local variable",
+                            "global variable",
+                            "scope"
+                        ]
+                    },
+                    {
+                        "id": "2-q3",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "מה יהיה ערכו של val?",
+                        "code": "val = 0\nfor i in range(1, 4):\n    if i == 2:\n        break\n    val += i\nelse:\n    val = 10\nprint(val)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "1"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "3"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "10"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "11"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "הלולאה רצה כש i=1 (מוסיף 1), ואז ב-i=2 מבצעת break. בלוק else של לולאה רץ רק אם לא היה break!",
+                        "trapProfile": "Loop Else with Break",
+                        "cumulative_concepts": [
+                            "for loop",
+                            "break",
+                            "loop else"
+                        ]
+                    },
+                    {
+                        "id": "2-q4",
+                        "type": "code_tracing",
+                        "difficulty": "hard",
+                        "question_text": "כמה פעמים תרוץ הלולאה?",
+                        "code": "count = 0\nfor i in range(10, 2, -3):\n    count += 1\nprint(count)",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "2"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "3"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "4"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "לולאה אינסופית"
+                            }
+                        ],
+                        "correct_answer": "b",
+                        "explanation": "range(10, 2, -3) מייצר: 10, 7, 4. המספר הבא (1) קטן מ-2 ולכן הלולאה עוצרת. סה\"כ 3 איטרציות.",
+                        "trapProfile": "Range with Negative Step",
+                        "cumulative_concepts": [
+                            "range function",
+                            "negative step"
+                        ]
+                    },
+                    {
+                        "id": "2-q5",
+                        "type": "code_tracing",
+                        "difficulty": "medium",
+                        "question_text": "מה יודפס?",
+                        "code": "def power(x, y=2):\n    return x ** y\n\nprint(power(3))\nprint(power(2, 3))",
+                        "options": [
+                            {
+                                "id": "a",
+                                "label": "א",
+                                "text": "9\n8"
+                            },
+                            {
+                                "id": "b",
+                                "label": "ב",
+                                "text": "6\n6"
+                            },
+                            {
+                                "id": "c",
+                                "label": "ג",
+                                "text": "9\n6"
+                            },
+                            {
+                                "id": "d",
+                                "label": "ד",
+                                "text": "שגיאה - חסר פרמטר"
+                            }
+                        ],
+                        "correct_answer": "a",
+                        "explanation": "power(3) משתמש בברירת מחדל y=2, לכן 3²=9. power(2,3) מחשב 2³=8.",
+                        "trapProfile": "Default Parameters",
+                        "cumulative_concepts": [
+                            "default parameter",
+                            "function call"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
