@@ -160,11 +160,11 @@ function TreeNode({ node, depth = 0, expanded, toggleExpand }: TreeNodeProps) {
                 ) : (
                     <span className="w-4"></span>
                 )}
-                <code className={`font-bold ${node.common ? 'text-orange-400' : node.highlight ? 'text-primary' : 'text-white'}`}>
+                <code className={`font-bold text-sm md:text-base ${node.common ? 'text-orange-400' : node.highlight ? 'text-primary' : 'text-white'}`}>
                     {node.name}
                 </code>
-                {node.common && <span className="text-xs bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded">נפוץ</span>}
-                <span className="text-text-muted text-sm mr-2">- {node.description}</span>
+                {node.common && <span className="text-xs bg-orange-500/20 text-orange-400 px-1.5 md:px-2 py-0.5 rounded">נפוץ</span>}
+                <span className="text-text-muted text-xs md:text-sm mr-2 hidden md:inline">- {node.description}</span>
             </div>
             {hasChildren && isExpanded && (
                 <div className="border-r border-border-dark mr-4">
@@ -276,12 +276,12 @@ export default function ExceptionsGuide() {
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-            <main className="flex-1 p-6 overflow-auto">
+            <main className="flex-1 p-4 md:p-6 overflow-auto">
                 <div className="max-w-5xl mx-auto">
                     {/* Header */}
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl font-black mb-3">🌳 עץ החריגות בפייתון</h1>
-                        <p className="text-text-muted text-lg">היררכיית החריגות וסדר התפיסה</p>
+                    <div className="text-center mb-6 md:mb-8">
+                        <h1 className="text-2xl md:text-4xl font-black mb-3">🌳 עץ החריגות בפייתון</h1>
+                        <p className="text-text-muted text-sm md:text-lg">היררכיית החריגות וסדר התפיסה</p>
                     </div>
 
                     {/* Controls */}
@@ -310,11 +310,11 @@ export default function ExceptionsGuide() {
                     </div>
 
                     {/* Tree Section */}
-                    <section className="mb-12">
-                        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <section className="mb-8 md:mb-12">
+                        <h2 className="text-xl md:text-2xl font-bold mb-4 flex items-center gap-2">
                             <span className="text-primary">🌲</span> מבנה ההיררכיה
                         </h2>
-                        <div className="bg-surface-dark rounded-xl border border-border-dark p-4">
+                        <div className="bg-surface-dark rounded-xl border border-border-dark p-3 md:p-4 overflow-x-auto">
                             <TreeNode
                                 node={exceptionTree}
                                 expanded={expanded}
@@ -327,20 +327,20 @@ export default function ExceptionsGuide() {
                     </section>
 
                     {/* Order Example */}
-                    <section className="mb-12">
-                        <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                    <section className="mb-8 md:mb-12">
+                        <h2 className="text-xl md:text-2xl font-bold mb-4 flex items-center gap-2">
                             <span className="text-primary">📋</span> סדר תפיסת חריגות
                         </h2>
                         <div className="bg-surface-dark rounded-xl border border-border-dark overflow-hidden">
-                            <pre className="p-6 text-sm overflow-x-auto text-left" dir="ltr">
+                            <pre className="p-4 md:p-6 text-xs md:text-sm overflow-x-auto text-left" dir="ltr">
                                 <code>{tryExceptOrder}</code>
                             </pre>
                         </div>
                     </section>
 
                     {/* Common Examples */}
-                    <section className="mb-12">
-                        <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <section className="mb-8 md:mb-12">
+                        <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-2">
                             <span className="text-primary">🔥</span> חריגות נפוצות ואיך לטפל בהן
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

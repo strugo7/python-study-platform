@@ -250,7 +250,7 @@ function FinalExamContent() {
                                             </div>
                                             <div className="bg-background-dark p-4 rounded-lg border border-primary/20">
                                                 <p className="text-sm text-primary font-bold mb-1">💡 הסבר:</p>
-                                                <p className="text-text-muted text-sm">{q.explanation}</p>
+                                                <p className="text-text-muted text-sm whitespace-pre-wrap">{q.explanation}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -280,6 +280,9 @@ function FinalExamContent() {
 
     // Exam View
     if (view === 'exam' && currentExam && currentQuestion) {
+        const isAnswered = userAnswers[currentQuestion.id] !== undefined;
+        const isCorrect = isAnswered && userAnswers[currentQuestion.id] === currentQuestion.correct;
+
         return (
             <div className="min-h-screen flex flex-col">
                 <Header />
@@ -359,6 +362,16 @@ function FinalExamContent() {
                                         </div>
                                     ))}
                                 </div>
+
+                                {/* Immediate Explanation */}
+                                {isAnswered && (
+                                    <div className={`mt-6 p-4 rounded-lg border ${isCorrect ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                                        <div className="font-bold mb-2 flex items-center gap-2">
+                                            <span>{isCorrect ? '✅ תשובה נכונה!' : '❌ תשובה שגויה'}</span>
+                                        </div>
+                                        <p className="text-sm text-text-muted whitespace-pre-wrap">{currentQuestion.explanation}</p>
+                                    </div>
+                                )}
                             </div>
                             <div className="p-4 md:p-6 border-t border-border-dark flex justify-between">
                                 <button
