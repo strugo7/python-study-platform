@@ -15,6 +15,7 @@ function FinalExamContent() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
     const [examSubmitted, setExamSubmitted] = useState(false);
+    const [showExplanation, setShowExplanation] = useState(false);
     const [view, setView] = useState<'library' | 'exam' | 'results'>('library');
 
     useEffect(() => {
@@ -43,17 +44,20 @@ function FinalExamContent() {
     const handleNext = () => {
         if (currentQuestionIndex < totalQuestions - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setShowExplanation(false);
         }
     };
 
     const handlePrev = () => {
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex(currentQuestionIndex - 1);
+            setShowExplanation(false);
         }
     };
 
     const handleGoToQuestion = (index: number) => {
         setCurrentQuestionIndex(index);
+        setShowExplanation(false);
     };
 
     const handleSubmit = () => {
@@ -71,6 +75,7 @@ function FinalExamContent() {
         setCurrentQuestionIndex(0);
         setUserAnswers({});
         setExamSubmitted(false);
+        setShowExplanation(false);
         setView('exam');
     };
 
@@ -80,6 +85,7 @@ function FinalExamContent() {
         setCurrentExam(null);
         setUserAnswers({});
         setExamSubmitted(false);
+        setShowExplanation(false);
     };
 
     // Library View
@@ -346,10 +352,13 @@ function FinalExamContent() {
                                     {currentQuestion.options.map((opt, i) => (
                                         <div
                                             key={i}
-                                            onClick={() => handleSelectAnswer(currentQuestion.id, i)}
-                                            className={`p-4 rounded-lg border cursor-pointer flex items-center gap-3 transition-all ${userAnswers[currentQuestion.id] === i
-                                                ? 'border-primary bg-primary/10'
-                                                : 'border-border-dark hover:border-primary/50'
+                                            onClick={() => !showExplanation && handleSelectAnswer(currentQuestion.id, i)}
+                                            className={`p-4 rounded-lg border flex items-center gap-3 transition-all ${showExplanation
+                                                ? '' // Disable hover effects when explanation is shown
+                                                : 'cursor-pointer hover:border-primary/50'
+                                                } ${userAnswers[currentQuestion.id] === i
+                                                    ? 'border-primary bg-primary/10'
+                                                    : 'border-border-dark'
                                                 }`}
                                         >
                                             <span className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${userAnswers[currentQuestion.id] === i
@@ -364,12 +373,21 @@ function FinalExamContent() {
                                 </div>
 
                                 {/* Immediate Explanation */}
-                                {isAnswered && (
-                                    <div className={`mt-6 p-4 rounded-lg border ${isCorrect ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+                                {showExplanation && (
+                                    <div className={`mt-6 p-4 rounded-lg border ${userAnswers[currentQuestion.id] === currentQuestion.correct
+                                        ? 'bg-green-500/10 border-green-500/30'
+                                        : 'bg-red-500/10 border-red-500/30'
+                                        }`}>
                                         <div className="font-bold mb-2 flex items-center gap-2">
-                                            <span>{isCorrect ? '✅ תשובה נכונה!' : '❌ תשובה שגויה'}</span>
+                                            <span>
+                                                {userAnswers[currentQuestion.id] === currentQuestion.correct
+                                                    ? '✅ תשובה נכונה!'
+                                                    : '❌ תשובה שגויה'}
+                                            </span>
                                         </div>
-                                        <p className="text-sm text-text-muted whitespace-pre-wrap">{currentQuestion.explanation}</p>
+                                        <p className="text-sm text-text-muted whitespace-pre-wrap">
+                                            {currentQuestion.explanation.replace(/\\n/g, '\n')}
+                                        </p>
                                     </div>
                                 )}
                             </div>
@@ -382,12 +400,26 @@ function FinalExamContent() {
                                 >
                                     → הקודם
                                 </button>
-                                <button
-                                    onClick={currentQuestionIndex === totalQuestions - 1 ? handleSubmit : handleNext}
-                                    className="px-4 md:px-6 py-2 md:py-3 bg-primary text-background-dark font-bold rounded-lg flex items-center gap-2 hover:opacity-90 text-sm md:text-base"
-                                >
-                                    {currentQuestionIndex === totalQuestions - 1 ? 'הגש מבחן' : 'הבא ←'}
-                                </button>
+
+                                {showExplanation ? (
+                                    <button
+                                        onClick={currentQuestionIndex === totalQuestions - 1 ? handleSubmit : handleNext}
+                                        className="px-4 md:px-6 py-2 md:py-3 bg-primary text-background-dark font-bold rounded-lg flex items-center gap-2 hover:opacity-90 text-sm md:text-base"
+                                    >
+                                        {currentQuestionIndex === totalQuestions - 1 ? 'הגש מבחן' : 'הבא ←'}
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => setShowExplanation(true)}
+                                        disabled={userAnswers[currentQuestion.id] === undefined}
+                                        className={`px-4 md:px-6 py-2 md:py-3 font-bold rounded-lg flex items-center gap-2 text-sm md:text-base ${userAnswers[currentQuestion.id] === undefined
+                                            ? 'bg-border-dark text-text-muted opacity-50 cursor-not-allowed'
+                                            : 'bg-primary text-background-dark hover:opacity-90'
+                                            }`}
+                                    >
+                                        בדוק תשובה
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
