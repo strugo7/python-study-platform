@@ -171,18 +171,26 @@ export default function Dashboard() {
                 </svg>
               </div>
               <div>
-                <h4 className="text-xl font-bold">מוכן למבחן המסכם?</h4>
+                <h4 className="text-xl font-bold">📝 מבחנים מסכמים</h4>
                 <p className="text-text-muted text-sm">
-                  בחן את עצמך עם שאלות אקראיות מכל המודולים
+                  3 מבחנים ברמת המרצה עם 60 שאלות ייחודיות
                 </p>
               </div>
             </div>
-            <Link
-              href="/exam"
-              className="w-full md:w-auto px-8 py-3 bg-white text-background-dark font-black rounded-xl hover:bg-slate-100 transition-colors"
-            >
-              התחל סימולציית מבחן
-            </Link>
+            <div className="flex gap-3 w-full md:w-auto">
+              <Link
+                href="/exam"
+                className="flex-1 md:flex-none px-6 py-3 border border-primary text-primary font-bold rounded-xl hover:bg-primary/10 transition-colors text-center"
+              >
+                תרגול אקראי
+              </Link>
+              <Link
+                href="/exam/final"
+                className="flex-1 md:flex-none px-6 py-3 bg-white text-background-dark font-black rounded-xl hover:bg-slate-100 transition-colors text-center"
+              >
+                מבחנים מסכמים
+              </Link>
+            </div>
           </motion.div>
         </div>
       </main>

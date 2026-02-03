@@ -19,7 +19,7 @@ export default function Header() {
                 </h2>
             </div>
 
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-5">
                 <Link
                     href="/"
                     className="text-white/70 hover:text-primary transition-colors text-sm font-medium"
@@ -33,16 +33,28 @@ export default function Header() {
                     שיעורים
                 </Link>
                 <Link
+                    href="/guides/data-types"
+                    className="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+                >
+                    טיפוסי נתונים
+                </Link>
+                <Link
+                    href="/guides/exceptions"
+                    className="text-white/70 hover:text-primary transition-colors text-sm font-medium"
+                >
+                    עץ חריגות
+                </Link>
+                <Link
                     href="/exam"
                     className="text-white/70 hover:text-primary transition-colors text-sm font-medium"
                 >
-                    תרגול
+                    🎯 תרגול לפי נושא
                 </Link>
                 <Link
-                    href="/exam/advanced"
+                    href="/exam/final"
                     className="text-primary font-bold text-sm"
                 >
-                    🎯 מבחן מסכם
+                    📝 מאגר מבחנים
                 </Link>
             </nav>
 
