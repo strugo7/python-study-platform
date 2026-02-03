@@ -87,27 +87,27 @@ function FinalExamContent() {
         return (
             <div className="min-h-screen flex flex-col">
                 <Header />
-                <main className="flex-1 p-6">
+                <main className="flex-1 p-4 md:p-6">
                     <div className="max-w-5xl mx-auto">
-                        <div className="text-center mb-8">
-                            <h1 className="text-3xl font-black mb-2">📝 מאגר מבחנים</h1>
-                            <p className="text-text-muted">4 מבחנים ברמת המרצה - 80 שאלות ייחודיות</p>
+                        <div className="text-center mb-6 md:mb-8">
+                            <h1 className="text-2xl md:text-3xl font-black mb-2">📝 מאגר מבחנים</h1>
+                            <p className="text-text-muted text-sm md:text-base">4 מבחנים ברמת המרצה - 80 שאלות ייחודיות</p>
                         </div>
 
                         {/* Timed Exam Card - Featured */}
                         <div className="mb-8">
                             <Link href="/exam/timed">
-                                <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-xl border-2 border-red-500/50 p-6 hover:border-red-400 transition-all">
-                                    <div className="flex flex-col md:flex-row items-center gap-6">
-                                        <div className="text-6xl">⏱️</div>
+                                <div className="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-xl border-2 border-red-500/50 p-4 md:p-6 hover:border-red-400 transition-all">
+                                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                                        <div className="text-5xl md:text-6xl">⏱️</div>
                                         <div className="flex-1 text-center md:text-right">
                                             <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
-                                                <h3 className="text-2xl font-black">מבחן סיום מקיף</h3>
+                                                <h3 className="text-xl md:text-2xl font-black">מבחן סיום מקיף</h3>
                                                 <span className="text-xs px-3 py-1 rounded-full bg-red-500/20 text-red-400">
                                                     מבחן אמיתי
                                                 </span>
                                             </div>
-                                            <p className="text-text-muted mb-3">20 שאלות מאתגרות מכל החומר | שעתיים | ציון בסיום בלבד</p>
+                                            <p className="text-text-muted text-sm mb-3">20 שאלות מאתגרות | שעתיים | ציון בסיום</p>
                                             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                                                 <span className="text-xs bg-border-dark px-2 py-1 rounded">⏰ מוגבל בזמן</span>
                                                 <span className="text-xs bg-border-dark px-2 py-1 rounded">🔒 ללא הסברים במהלך</span>
@@ -180,22 +180,22 @@ function FinalExamContent() {
         return (
             <div className="min-h-screen flex flex-col">
                 <Header />
-                <main className="flex-1 p-6 overflow-auto">
+                <main className="flex-1 p-4 md:p-6 overflow-auto">
                     <div className="max-w-3xl mx-auto">
                         {/* Score Card */}
                         <div className="bg-surface-dark rounded-xl border border-border-dark p-8 text-center mb-8">
                             <div className={`text-6xl font-black mb-4 ${percentage >= 60 ? 'text-primary' : 'text-red-400'}`}>
                                 {percentage}%
                             </div>
-                            <p className="text-xl mb-2">{correctCount} מתוך {totalQuestions} תשובות נכונות</p>
+                            <p className="text-lg md:text-xl mb-2">{correctCount} מתוך {totalQuestions} תשובות נכונות</p>
                             <p className="text-text-muted">
                                 {percentage >= 90 ? '🏆 מצוין!' : percentage >= 70 ? '👍 טוב מאוד!' : percentage >= 60 ? '✓ עברת!' : '📚 צריך תרגול'}
                             </p>
                         </div>
 
                         {/* Questions Review */}
-                        <h2 className="text-2xl font-bold mb-4">📋 סקירת השאלות</h2>
-                        <div className="space-y-6">
+                        <h2 className="text-xl md:text-2xl font-bold mb-4">📋 סקירת השאלות</h2>
+                        <div className="space-y-4 md:space-y-6">
                             {currentExam.questions.map((q, idx) => {
                                 const userAnswer = userAnswers[q.id];
                                 const isCorrect = userAnswer === q.correct;
@@ -209,10 +209,10 @@ function FinalExamContent() {
                                                 {isUnanswered ? '⚪ לא נענתה' : isCorrect ? '✓ נכון' : '✗ שגוי'}
                                             </span>
                                         </div>
-                                        <div className="p-6">
-                                            <p className="mb-3">{q.question}</p>
+                                        <div className="p-4 md:p-6">
+                                            <p className="mb-3 text-sm md:text-base">{q.question}</p>
                                             {q.code && (
-                                                <pre className="bg-background-dark p-4 rounded-lg mb-4 text-sm overflow-x-auto text-left" dir="ltr">
+                                                <pre className="bg-background-dark p-3 md:p-4 rounded-lg mb-4 text-xs md:text-sm overflow-x-auto text-left" dir="ltr">
                                                     <code>{q.code}</code>
                                                 </pre>
                                             )}
@@ -258,7 +258,7 @@ function FinalExamContent() {
                             })}
                         </div>
 
-                        <div className="mt-8 flex gap-4 justify-center">
+                        <div className="mt-6 md:mt-8 flex flex-col md:flex-row gap-4 justify-center">
                             <button
                                 onClick={handleRetake}
                                 className="px-8 py-3 bg-primary text-background-dark font-bold rounded-xl hover:opacity-90"
@@ -285,15 +285,15 @@ function FinalExamContent() {
                 <Header />
 
                 {/* Exam Header */}
-                <div className="bg-surface-dark border-b border-border-dark p-4">
+                <div className="bg-surface-dark border-b border-border-dark p-3 md:p-4">
                     <div className="max-w-4xl mx-auto">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-3">
                                 <button onClick={handleBackToLibrary} className="text-text-muted hover:text-white">✕</button>
                                 <h1 className="font-bold">{currentExam.title}</h1>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <span className="text-text-muted text-sm">
+                            <div className="flex items-center gap-2 md:gap-4">
+                                <span className="text-text-muted text-xs md:text-sm">
                                     <span className="text-primary font-bold">{answeredCount}</span>/{totalQuestions} נענו
                                 </span>
                                 <button
@@ -311,7 +311,7 @@ function FinalExamContent() {
                                 <button
                                     key={q.id}
                                     onClick={() => handleGoToQuestion(i)}
-                                    className={`w-10 h-10 rounded-lg text-sm font-bold transition-all ${i === currentQuestionIndex
+                                    className={`w-8 h-8 md:w-10 md:h-10 rounded-lg text-xs md:text-sm font-bold transition-all ${i === currentQuestionIndex
                                         ? 'border-2 border-primary bg-primary/20'
                                         : userAnswers[q.id] !== undefined
                                             ? 'bg-primary text-background-dark'
@@ -326,16 +326,16 @@ function FinalExamContent() {
                 </div>
 
                 {/* Question Content */}
-                <main className="flex-1 p-6">
+                <main className="flex-1 p-3 md:p-6">
                     <div className="max-w-3xl mx-auto">
                         <div className="bg-surface-dark rounded-xl border border-border-dark overflow-hidden">
-                            <div className="p-4 border-b border-border-dark bg-border-dark/30">
-                                <span className="text-primary font-bold">שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}</span>
+                            <div className="p-3 md:p-4 border-b border-border-dark bg-border-dark/30">
+                                <span className="text-primary font-bold text-sm md:text-base">שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}</span>
                             </div>
-                            <div className="p-6">
-                                <h2 className="text-xl font-bold mb-4">{currentQuestion.question}</h2>
+                            <div className="p-4 md:p-6">
+                                <h2 className="text-base md:text-xl font-bold mb-4">{currentQuestion.question}</h2>
                                 {currentQuestion.code && (
-                                    <pre className="bg-background-dark p-4 rounded-lg mb-6 text-sm overflow-x-auto text-left" dir="ltr">
+                                    <pre className="bg-background-dark p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-xs md:text-sm overflow-x-auto text-left" dir="ltr">
                                         <code>{currentQuestion.code}</code>
                                     </pre>
                                 )}
@@ -360,18 +360,18 @@ function FinalExamContent() {
                                     ))}
                                 </div>
                             </div>
-                            <div className="p-6 border-t border-border-dark flex justify-between">
+                            <div className="p-4 md:p-6 border-t border-border-dark flex justify-between">
                                 <button
                                     onClick={handlePrev}
                                     disabled={currentQuestionIndex === 0}
-                                    className={`px-6 py-3 bg-border-dark text-text-muted font-bold rounded-lg flex items-center gap-2 ${currentQuestionIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary/20 hover:text-white'
+                                    className={`px-4 md:px-6 py-2 md:py-3 bg-border-dark text-text-muted font-bold rounded-lg flex items-center gap-2 text-sm md:text-base ${currentQuestionIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary/20 hover:text-white'
                                         }`}
                                 >
                                     → הקודם
                                 </button>
                                 <button
                                     onClick={currentQuestionIndex === totalQuestions - 1 ? handleSubmit : handleNext}
-                                    className="px-6 py-3 bg-primary text-background-dark font-bold rounded-lg flex items-center gap-2 hover:opacity-90"
+                                    className="px-4 md:px-6 py-2 md:py-3 bg-primary text-background-dark font-bold rounded-lg flex items-center gap-2 hover:opacity-90 text-sm md:text-base"
                                 >
                                     {currentQuestionIndex === totalQuestions - 1 ? 'הגש מבחן' : 'הבא ←'}
                                 </button>

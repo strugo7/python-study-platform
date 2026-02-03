@@ -152,7 +152,7 @@ export default function TimedExamPage() {
                                                     <code>{q.code}</code>
                                                 </pre>
                                             )}
-                                            <div className="grid grid-cols-2 gap-2 mb-3">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
                                                 {q.options.map((opt, i) => (
                                                     <div
                                                         key={i}
@@ -194,19 +194,19 @@ export default function TimedExamPage() {
             <Header />
 
             {/* Timer Bar */}
-            <div className="bg-surface-dark border-b border-border-dark p-3 sticky top-16 z-40">
-                <div className="max-w-4xl mx-auto flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <span className={`text-2xl font-mono font-bold ${timeRemaining < 600000 ? 'text-red-400 animate-pulse' : 'text-primary'}`}>
+            <div className="bg-surface-dark border-b border-border-dark p-2 md:p-3 sticky top-16 z-40">
+                <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 md:gap-4">
+                        <span className={`text-lg md:text-2xl font-mono font-bold ${timeRemaining < 600000 ? 'text-red-400 animate-pulse' : 'text-primary'}`}>
                             ⏱️ {formatTime(timeRemaining)}
                         </span>
-                        <span className="text-text-muted text-sm">
+                        <span className="text-text-muted text-xs md:text-sm">
                             {answeredCount}/{totalQuestions} נענו
                         </span>
                     </div>
                     <button
                         onClick={handleSubmit}
-                        className="px-6 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600"
+                        className="px-3 md:px-6 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 text-sm md:text-base"
                     >
                         סיים מבחן
                     </button>
@@ -214,13 +214,13 @@ export default function TimedExamPage() {
             </div>
 
             {/* Question Navigation */}
-            <div className="bg-background-dark p-3 border-b border-border-dark">
-                <div className="max-w-4xl mx-auto flex flex-wrap gap-2 justify-center">
+            <div className="bg-background-dark p-2 md:p-3 border-b border-border-dark overflow-x-auto">
+                <div className="max-w-4xl mx-auto flex flex-wrap gap-1 md:gap-2 justify-center">
                     {shuffledQuestions.map((q, i) => (
                         <button
                             key={q.id}
                             onClick={() => setCurrentQuestionIndex(i)}
-                            className={`w-10 h-10 rounded-lg font-bold text-sm ${i === currentQuestionIndex
+                            className={`w-8 h-8 md:w-10 md:h-10 rounded-lg font-bold text-xs md:text-sm ${i === currentQuestionIndex
                                 ? 'ring-2 ring-primary bg-primary/20'
                                 : userAnswers[q.id] !== undefined
                                     ? 'bg-primary text-background-dark'
@@ -234,16 +234,16 @@ export default function TimedExamPage() {
             </div>
 
             {/* Question Content */}
-            <main className="flex-1 p-6">
+            <main className="flex-1 p-3 md:p-6">
                 <div className="max-w-3xl mx-auto">
                     <div className="bg-surface-dark rounded-xl border border-border-dark overflow-hidden">
                         <div className="p-4 bg-border-dark/30 border-b border-border-dark">
                             <span className="text-primary font-bold">שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}</span>
                         </div>
                         <div className="p-6">
-                            <h2 className="text-xl font-bold mb-4">{currentQuestion.question}</h2>
+                            <h2 className="text-base md:text-xl font-bold mb-4">{currentQuestion.question}</h2>
                             {currentQuestion.code && (
-                                <pre className="bg-background-dark p-4 rounded-lg mb-6 text-sm overflow-x-auto text-left" dir="ltr">
+                                <pre className="bg-background-dark p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-xs md:text-sm overflow-x-auto text-left" dir="ltr">
                                     <code>{currentQuestion.code}</code>
                                 </pre>
                             )}
