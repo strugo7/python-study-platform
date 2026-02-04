@@ -1,0 +1,914 @@
+< !DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>מבחן תרגול 2 - מודולים בפייתון</title><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet"><style>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #7c3aed;
+    --secondary: #a78bfa;
+    --accent: #f59e0b;
+    --success: #14b8a6;
+    --warning: #f59e0b;
+    --bg: #f5f3ff;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e9d5ff;
+}
+
+body {
+    font-family: 'Assistant', 'Heebo', sans-serif;
+    background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+.exam-badge {
+    background: rgba(245, 158, 11, 0.95);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.exam-info {
+    background: linear-gradient(to bottom, #f5f3ff, white);
+    padding: 1.5rem 2.5rem;
+    border-bottom: 2px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.info-item strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.progress-bar {
+    background: var(--bg);
+    height: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content {
+    padding: 2.5rem;
+}
+
+.question-card {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.question-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.question-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.question-number {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.question-text {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
+    direction: ltr;
+    text-align: left;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    position: relative;
+}
+
+.option:hover {
+    background: #ede9fe;
+    border-color: var(--secondary);
+    transform: translateX(-3px);
+}
+
+.option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+}
+
+.option label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.option.selected {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.option.correct {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border-color: var(--success);
+}
+
+.option.incorrect {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border-color: #ef4444;
+}
+
+.submit-section {
+    text-align: center;
+    padding: 2rem;
+    border-top: 2px solid var(--border);
+    background: linear-gradient(to top, #f5f3ff, white);
+}
+
+.btn {
+    background: linear-gradient(135deg, var(--accent), #d97706);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    font-family: inherit;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.results {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    text-align: center;
+    border: 2px solid var(--border);
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.score-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+}
+
+.score-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.score-label {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.results h2 {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.results-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.result-stat {
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.result-stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.result-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
+
+.share-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.share-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    font-family: inherit;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .container {
+        border-radius: 16px;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .content {
+        padding: 1.5rem;
+    }
+
+    .question-card {
+        padding: 1.5rem;
+    }
+
+    .results-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+</style></head><body><div class="container"><div class="header"><h1>מבחן תרגול 2 - מודולים בפייתון</h1><p>המכללה האקדמית תל אביב יפו - קורס 271033</p><div class="exam-badge">מבחן תרגול</div></div><div class="exam-info"><div class="info-item"><strong>סוג:</strong><span>תרגול מס' 2</span>
+ </div><div class="info-item"><strong>משך מומלץ:</strong><span>שעתיים</span></div><div class="info-item"><strong>שאלות:</strong><span>20 שאלות × 5 נק'</span>
+ </div><div class="info-item"><strong>ציון מקסימלי:</strong><span>100 נקודות</span></div></div><div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div><div class="content"><div id="questionsContainer"></div><div class="submit-section"><button class="btn" id="submitBtn">בדוק תשובות</button></div><div id="resultsSection" class="hidden"></div></div></div><script>const questions=[ {
+    number: 1,
+        text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+        code: `def process(text, reverse=False): if reverse: return text[::-1] return text.upper() print(process("hello")) print(process("world", True))`,
+        options: [ 'יודפס HELLO ואז dlrow.',
+        'יודפס hello ואז WORLD.',
+        'תתקבל שגיאת זמן ריצה כי True לא ניתן כערך לפרמטר.',
+        'יודפס HELLO ואז world.'
+        ],
+        correct: 0
+}
+
+,
+{
+number: 2,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `numbers=[10, 20, 30] numbers.extend([40, 50]) numbers.append([60, 70]) print(len(numbers))`,
+    options: [ 'יודפס 6.',
+    'יודפס 7.',
+    'יודפס 5.',
+    'תתקבל שגיאת זמן ריצה כי לא ניתן לערבב extend ו-append.'
+    ],
+    correct: 1
+}
+
+,
+{
+number: 3,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class Counter: count=0 def __init__(self): Counter.count +=1 c1=Counter() c2=Counter() c3=Counter() print(Counter.count)`,
+    options: [ 'יודפס 3.',
+    'יודפס 0.',
+    'יודפס 1.',
+    'תתקבל שגיאת זמן ריצה כי count לא מאותחל.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 4,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `def make_multiplier(n): def multiply(x): return x * n return multiply times_three=make_multiplier(3) print(times_three(10))`,
+    options: [ 'יודפס 30.',
+    'יודפס 13.',
+    'תתקבל שגיאת זמן ריצה כי n לא מוגדר במתודה הפנימית.',
+    'יודפס 3.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 5,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `try: result=10 / 2 print("Result:", result) except ZeroDivisionError: print("Cannot divide by zero") else: print("Success") finally: print("End")`,
+    options: [ 'יודפס Result: 5.0 ואז Success ואז End.',
+    'יודפס Result: 5.0 ואז End.',
+    'יודפס Success ואז End.',
+    'יודפס רק End.'
+    ],
+    correct: 0
+}
+
+,
+{
+
+number: 6,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `data= {
+    "name": "Alice", "age": 25
+}
+
+data["city"]="Tel Aviv"
+del data["age"] print(len(data))`,
+options: [ 'יודפס 2.',
+'יודפס 3.',
+'יודפס 1.',
+'תתקבל שגיאת זמן ריצה כי del לא עובד על מילונים.'
+],
+correct: 0
+}
+
+,
+{
+number: 7,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `def countdown(n): while n > 0: print(n) n -=1 else: print("Done!") countdown(3)`,
+    options: [ 'יודפס 3 2 1 Done!',
+    'יודפס 3 2 1 0 Done!',
+    'יודפס רק Done!',
+    'תתקבל שגיאת זמן ריצה כי else לא יכול להופיע אחרי while.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 8,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `matrix=[[1, 2, 3], [4, 5, 6], [7, 8, 9]] print(matrix[1][2])`,
+    options: [ 'יודפס 6.',
+    'יודפס 5.',
+    'יודפס [4, 5, 6].',
+    'תתקבל שגיאת זמן ריצה כי אין אינדקס כפול.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 9,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `text="Programming"
+    vowels="aeiou"
+    count=sum(1 for char in text.lower() if char in vowels) print(count)`,
+    options: [ 'יודפס 3.',
+    'יודפס 4.',
+    'יודפס 8.',
+    'תתקבל שגיאת זמן ריצה בגלל תחביר שגוי.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 10,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class Person: def __init__(self, name, age): self.name=name self.__age=age def get_age(self): return self.__age p=Person("Bob", 30) print(p.get_age())`,
+    options: [ 'יודפס 30.',
+    'תתקבל שגיאת זמן ריצה כי __age פרטי.',
+    'יודפס None.',
+    'יודפס Bob.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 11,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `numbers=[1, 2, 3, 4, 5] squared=list(map(lambda x: x**2, numbers)) print(squared)`,
+    options: [ 'יודפס [1, 4, 9, 16, 25].',
+    'יודפס [2, 4, 6, 8, 10].',
+    'תתקבל שגיאת זמן ריצה כי lambda לא תקין.',
+    'יודפס <map object>.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 12,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `a=[1, 2, 3] b=a b.append(4) print(len(a))`,
+    options: [ 'יודפס 4.',
+    'יודפס 3.',
+    'תתקבל שגיאת זמן ריצה.',
+    'יודפס 7.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 13,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `def sum_all(*numbers): return sum(numbers) result=sum_all(1, 2, 3, 4, 5) print(result)`,
+    options: [ 'יודפס 15.',
+    'יודפס (1, 2, 3, 4, 5).',
+    'תתקבל שגיאת זמן ריצה כי sum לא מקבל tuple.',
+    'יודפס 0.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 14,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `s="hello world"
+    words=s.split() result="-" .join(words) print(result)`,
+    options: [ 'יודפס hello-world.',
+    'יודפס hello world.',
+    'יודפס h-e-l-l-o- -w-o-r-l-d.',
+    'תתקבל שגיאת זמן ריצה.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 15,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `def func(x, y=10, z=20): return x + y + z print(func(5, z=15))`,
+    options: [ 'יודפס 30.',
+    'יודפס 35.',
+    'יודפס 40.',
+    'תתקבל שגיאת זמן ריצה כי חסר פרמטר y.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 16,
+    text: "בחרו את הטענה הלא נכונה העוסקת בחריגות בפייתון:",
+    options: [ 'ניתן לזרוק חריגה באמצעות raise.',
+    'בלוק finally מתבצע תמיד, גם אם הייתה חריגה.',
+    'בלוק else מתבצע רק אם לא הייתה חריגה.',
+    'חייבים לתפוס כל חריגה שנזרקת בתוכנית.'
+    ],
+    correct: 3
+}
+
+,
+{
+number: 17,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `numbers=[1, 2, 2, 3, 3, 3, 4] unique=list(set(numbers)) print(len(unique))`,
+    options: [ 'יודפס 4.',
+    'יודפס 7.',
+    'יודפס 3.',
+    'תתקבל שגיאת זמן ריצה.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 18,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `x=5 def outer(): x=10 def inner(): global x x=15 inner() print(x) outer() print(x)`,
+    options: [ 'יודפס 10 ואז 15.',
+    'יודפס 15 ואז 15.',
+    'יודפס 10 ואז 10.',
+    'יודפס 15 ואז 10.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 19,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `fruits=["apple",
+"banana",
+"cherry"] for i,
+fruit in enumerate(fruits, 1): print(f"{i}. {fruit}")`,
+options: [ 'יודפס 1. apple, 2. banana, 3. cherry.',
+    'יודפס 0. apple, 1. banana, 2. cherry.',
+    'תתקבל שגיאת זמן ריצה כי enumerate לא מקבל 2 פרמטרים.',
+    'יודפס apple, banana, cherry.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 20,
+    text: "בחרו את הטענה הלא נכונה העוסקת בפונקציות בפייתון:",
+    options: [ 'פונקציה יכולה להחזיר יותר מערך אחד באמצעות tuple.',
+    'פרמטרים עם ערך ברירת מחדל חייבים להופיע אחרי פרמטרים רגילים.',
+    'ניתן להגדיר פונקציה בתוך פונקציה.',
+    'פונקציה חייבת להחזיר ערך באמצעות return.'
+    ],
+    correct: 3
+}
+
+];
+
+let userAnswers=new Array(questions.length).fill(null);
+let submitted=false;
+
+function renderQuestions() {
+    const container=document.getElementById('questionsContainer');
+
+    questions.forEach((q, index)=> {
+            const card=document.createElement('div');
+            card.className='question-card';
+
+            card.style.animationDelay=`$ {
+                index * 0.05
+            }
+
+            s`;
+
+            let html=` <div class="question-header" > <div class="question-number" >$ {
+                q.number
+            }
+
+            </div> <div class="question-text" >$ {
+                q.text
+            }
+
+            </div> </div> `;
+
+            if (q.code) {
+                html +=`<div class="code-block" >$ {
+                    escapeHtml(q.code)
+                }
+
+                </div>`;
+            }
+
+            html +='<div class="options">';
+
+            q.options.forEach((option, optIndex)=> {
+                    html +=` <div class="option" data-question="${index}" data-option="${optIndex}" > <input type="radio" name="q${index}" id="q${index}_${optIndex}" value="${optIndex}" > <label for="q${index}_${optIndex}" >$ {
+                        String.fromCharCode(97 + optIndex)
+                    }
+
+                    . $ {
+                        option
+                    }
+
+                    </label> </div> `;
+                });
+            html +='</div>';
+
+            card.innerHTML=html;
+            container.appendChild(card);
+        });
+
+    document.querySelectorAll('.option').forEach(opt=> {
+            opt.addEventListener('click', function() {
+                    if (submitted) return;
+
+                    const qIndex=parseInt(this.dataset.question);
+                    const optIndex=parseInt(this.dataset.option);
+                    const radio=this.querySelector('input[type="radio"]');
+                    radio.checked=true;
+
+                    this.parentElement.querySelectorAll('.option').forEach(o=> {
+                            o.classList.remove('selected');
+                        });
+                    this.classList.add('selected');
+
+                    userAnswers[qIndex]=optIndex;
+                    updateProgress();
+                });
+        });
+}
+
+function updateProgress() {
+    const answered=userAnswers.filter(a=> a !==null).length;
+    const percentage=(answered / questions.length) * 100;
+    document.getElementById('progressBar').style.width=percentage+'%';
+}
+
+function escapeHtml(text) {
+    const div=document.createElement('div');
+    div.textContent=text;
+    return div.innerHTML;
+}
+
+function submitExam() {
+    if (submitted) return;
+
+    const unanswered=userAnswers.filter(a=> a===null).length;
+
+    if (unanswered > 0) {
+        if ( !confirm(`יש לך $ {
+                    unanswered
+                }
+
+                שאלות ללא תשובה. האם אתה בטוח שאתה רוצה לשלוח?`)) {
+            return;
+        }
+    }
+
+    submitted=true;
+    document.getElementById('submitBtn').disabled=true;
+    document.getElementById('submitBtn').textContent='המבחן נבדק';
+
+    let correct=0;
+
+    document.querySelectorAll('.question-card').forEach((card, qIndex)=> {
+            const options=card.querySelectorAll('.option');
+            const correctAnswer=questions[qIndex].correct;
+            const userAnswer=userAnswers[qIndex];
+
+            options.forEach((opt, optIndex)=> {
+                    if (optIndex===correctAnswer) {
+                        opt.classList.add('correct');
+                    }
+
+                    if (userAnswer !==null && optIndex===userAnswer && userAnswer !==correctAnswer) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+            if (userAnswer===correctAnswer) {
+                correct++;
+            }
+        });
+
+    showResults(correct);
+}
+
+function showResults(correct) {
+    const score=correct * 5;
+    const percentage=(correct / questions.length) * 100;
+    const wrong=questions.length - correct - userAnswers.filter(a=> a===null).length;
+    const unanswered=userAnswers.filter(a=> a===null).length;
+
+    let grade='';
+    if (percentage >=90) grade='מצוין! 🌟';
+    else if (percentage >=80) grade='טוב מאוד! 👏';
+    else if (percentage >=70) grade='יפה! 👍';
+    else if (percentage >=60) grade='עבר ✓';
+    else grade='צריך לשפר 📚';
+
+    const resultsHtml=` <div class="results"><div class="score-circle"><div class="score-number">$ {
+        score
+    }
+
+    </div><div class="score-label">מתוך 100</div></div><h2>$ {
+        grade
+    }
+
+    </h2><div class="results-details"><div class="result-stat"><div class="result-stat-value" style="color: #10b981;">$ {
+        correct
+    }
+
+    </div><div class="result-stat-label">תשובות נכונות</div></div><div class="result-stat"><div class="result-stat-value" style="color: #ef4444;">$ {
+        wrong
+    }
+
+    </div><div class="result-stat-label">תשובות שגויות</div></div><div class="result-stat"><div class="result-stat-value" style="color: #f59e0b;">$ {
+        unanswered
+    }
+
+    </div><div class="result-stat-label">לא נענו</div></div></div><div class="share-section"><p style="color: var(--text-light); margin-bottom: 1rem;">שתף את התוצאה שלך עם חברים !</p><button class="share-btn" onclick="shareResults(${score})">📱 שתף בווטסאפ</button><button class="share-btn" onclick="copyResults(${score})">📋 העתק קישור</button></div></div>`;
+
+    document.getElementById('resultsSection').innerHTML=resultsHtml;
+    document.getElementById('resultsSection').classList.remove('hidden');
+
+    document.getElementById('resultsSection').scrollIntoView({
+        behavior: 'smooth', block: 'nearest'
+    });
+}
+
+function shareResults(score) {
+    const text=`סיימתי מבחן תרגול 2 במודולים בפייתון וקיבלתי $ {
+        score
+    }
+
+    /100 ! 🎓`;
+    const url=`https: //wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+}
+
+function copyResults(score) {
+    const text=`סיימתי מבחן תרגול 2 במודולים בפייתון וקיבלתי $ {
+        score
+    }
+
+    /100 ! 🎓`;
+    navigator.clipboard.writeText(text).then(()=> {
+            alert('הועתק ללוח! ✓');
+        });
+}
+
+renderQuestions();
+document.getElementById('submitBtn').addEventListener('click', submitExam);
+</script></body></html>
