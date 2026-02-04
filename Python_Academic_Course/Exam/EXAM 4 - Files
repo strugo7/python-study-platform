@@ -1,0 +1,772 @@
+< !DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>מבחן מיוחד - עבודה עם קבצים</title><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet"><style>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #dc2626;
+    --secondary: #ef4444;
+    --accent: #f59e0b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --bg: #fef2f2;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #fecaca;
+}
+
+body {
+    font-family: 'Assistant', 'Heebo', sans-serif;
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+.exam-badge {
+    background: rgba(245, 158, 11, 0.95);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.exam-info {
+    background: linear-gradient(to bottom, #fef2f2, white);
+    padding: 1.5rem 2.5rem;
+    border-bottom: 2px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.info-item strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.progress-bar {
+    background: var(--bg);
+    height: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content {
+    padding: 2.5rem;
+}
+
+.question-card {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.question-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.question-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.question-number {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.question-text {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
+    direction: ltr;
+    text-align: left;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    position: relative;
+}
+
+.option:hover {
+    background: #fee2e2;
+    border-color: var(--secondary);
+    transform: translateX(-3px);
+}
+
+.option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+}
+
+.option label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.option.selected {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.option.correct {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border-color: var(--success);
+}
+
+.option.incorrect {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border-color: #ef4444;
+}
+
+.submit-section {
+    text-align: center;
+    padding: 2rem;
+    border-top: 2px solid var(--border);
+    background: linear-gradient(to top, #fef2f2, white);
+}
+
+.btn {
+    background: linear-gradient(135deg, var(--primary), #b91c1c);
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    font-family: inherit;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(220, 38, 38, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.results {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    text-align: center;
+    border: 2px solid var(--border);
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.score-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+}
+
+.score-number {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.score-label {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.results h2 {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.results-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.result-stat {
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.result-stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.result-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
+
+.share-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.share-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    font-family: inherit;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .container {
+        border-radius: 16px;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .content {
+        padding: 1.5rem;
+    }
+
+    .question-card {
+        padding: 1.5rem;
+    }
+
+    .results-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+</style></head><body><div class="container"><div class="header"><h1>מבחן מיוחד - עבודה עם קבצים</h1><p>המכללה האקדמית תל אביב יפו - קורס 271033</p><div class="exam-badge">📁 File I/O</div></div><div class="exam-info"><div class="info-item"><strong>נושא:</strong><span>קריאה וכתיבה לקבצים</span></div><div class="info-item"><strong>משך מומלץ:</strong><span>שעה</span></div><div class="info-item"><strong>שאלות:</strong><span>10 שאלות × 10 נק'</span>
+ </div><div class="info-item"><strong>ציון מקסימלי:</strong><span>100 נקודות</span></div></div><div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div><div class="content"><div id="questionsContainer"></div><div class="submit-section"><button class="btn" id="submitBtn">בדוק תשובות</button></div><div id="resultsSection" class="hidden"></div></div></div><script>const questions=[ {
+    number: 1,
+        text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+        code: `with open("data.txt", "w") as f: f.write("Hello") f.write("World") with open("data.txt", "r") as f: content=f.read() print(content)`,
+        options: [ 'יודפס HelloWorld.',
+        'יודפס Hello\\nWorld.',
+        'תתקבל שגיאת זמן ריצה כי הקובץ לא קיים.',
+        'יודפס World בלבד.'
+        ],
+        correct: 0
+}
+
+,
+{
+number: 2,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `try: f=open("test.txt", "r") data=f.read() print(data) except FileNotFoundError: print("File not found") finally: f.close()`,
+    options: [ 'תתקבל שגיאת זמן ריצה אם הקובץ לא קיים, כי f לא מוגדר בבלוק finally.',
+    'הקוד תקין לחלוטין ויטפל בכל המקרים.',
+    'הקוד ידפיס File not found אם הקובץ לא קיים וייסגר בהצלחה.',
+    'צריך להוסיף בדיקה אם f קיים לפני close.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 3,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `with open("numbers.txt", "w") as f: for i in range(5): f.write(str(i) + "\\n") with open("numbers.txt", "r") as f: lines=f.readlines() print(len(lines))`,
+    options: [ 'יודפס 5.',
+    'יודפס 10.',
+    'יודפס 1.',
+    'תתקבל שגיאת זמן ריצה כי לא ניתן לכתוב מספרים לקובץ.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 4,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `with open("data.txt", "a") as f: f.write("First\\n") with open("data.txt", "a") as f: f.write("Second\\n") with open("data.txt", "r") as f: print(f.read())`,
+    options: [ 'יודפס First\\nSecond\\n (בתוספת לתוכן קודם אם היה).',
+    'יודפס Second\\n בלבד.',
+    'יודפס First\\n בלבד.',
+    'תתקבל שגיאת זמן ריצה כי לא ניתן לפתוח את אותו קובץ פעמיים.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 5,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `f=open("output.txt", "w") f.write("Line 1\\n") f.write("Line 2\\n") # האם הקובץ נסגר?`,
+    options: [ 'לא, הקובץ לא נסגר ויש לסגור אותו באמצעות f.close().',
+    'כן, הקובץ נסגר אוטומטית בסוף התוכנית.',
+    'כן, הקובץ נסגר אוטומטית אחרי כל write.',
+    'לא משנה, Python סוגרת קבצים אוטומטית תמיד.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 6,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `with open("test.txt", "w") as f: f.write("Apple\\n") f.write("Banana\\n") f.write("Cherry\\n") with open("test.txt", "r") as f: for line in f: print(line, end="")`,
+    options: [ 'יודפס Apple\\nBanana\\nCherry\\n.',
+    'יודפס Apple\\n\\nBanana\\n\\nCherry\\n\\n.',
+    'יודפס AppleBananaCherry.',
+    'תתקבל שגיאת זמן ריצה כי אי אפשר לעבור על קובץ ב-for.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 7,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `with open("data.txt", "w") as f: numbers=[1, 2, 3, 4, 5] f.writelines(numbers)`,
+    options: [ 'תתקבל שגיאת זמן ריצה כי writelines מצפה לרשימה של מחרוזות.',
+    'יכתוב לקובץ: 12345.',
+    'יכתוב לקובץ: 1\\n2\\n3\\n4\\n5\\n.',
+    'הקוד תקין ויכתוב את המספרים לקובץ.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 8,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `import os if os.path.exists("myfile.txt"): with open("myfile.txt", "r") as f: print(f.read()) else: print("File does not exist")`,
+    options: [ 'הקוד בודק אם הקובץ קיים לפני שמנסה לקרוא אותו.',
+    'תתקבל שגיאת זמן ריצה כי os.path.exists לא קיים.',
+    'הקוד ידפיס תמיד File does not exist.',
+    'צריך להשתמש ב-try-except במקום os.path.exists.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 9,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `with open("data.txt", "r+") as f: content=f.read() f.write("New Data") with open("data.txt", "r") as f: print(f.read())`,
+    options: [ 'New Data יתווסף בסוף התוכן הקיים.',
+    'New Data ידרוס את כל התוכן הקיים.',
+    'תתקבל שגיאת זמן ריצה כי r+ לא תקין.',
+    'הקובץ יהיה ריק.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 10,
+    text: "בחרו את הטענה הלא נכונה העוסקת בעבודה עם קבצים בפייתון:",
+    options: [ 'מצב "w" יוצר קובץ חדש אם הוא לא קיים, ומוחק את התוכן אם הוא קיים.',
+    'מצב "a" מוסיף תוכן לסוף הקובץ.',
+    'מצב "r" הוא ברירת המחדל לפתיחת קבצים.',
+    'with statement אינו סוגר את הקובץ אוטומטית.'
+    ],
+    correct: 3
+}
+
+];
+
+let userAnswers=new Array(questions.length).fill(null);
+let submitted=false;
+
+function renderQuestions() {
+    const container=document.getElementById('questionsContainer');
+
+    questions.forEach((q, index)=> {
+            const card=document.createElement('div');
+            card.className='question-card';
+
+            card.style.animationDelay=`$ {
+                index * 0.05
+            }
+
+            s`;
+
+            let html=` <div class="question-header" > <div class="question-number" >$ {
+                q.number
+            }
+
+            </div> <div class="question-text" >$ {
+                q.text
+            }
+
+            </div> </div> `;
+
+            if (q.code) {
+                html +=`<div class="code-block" >$ {
+                    escapeHtml(q.code)
+                }
+
+                </div>`;
+            }
+
+            html +='<div class="options">';
+
+            q.options.forEach((option, optIndex)=> {
+                    html +=` <div class="option" data-question="${index}" data-option="${optIndex}" > <input type="radio" name="q${index}" id="q${index}_${optIndex}" value="${optIndex}" > <label for="q${index}_${optIndex}" >$ {
+                        String.fromCharCode(97 + optIndex)
+                    }
+
+                    . $ {
+                        option
+                    }
+
+                    </label> </div> `;
+                });
+            html +='</div>';
+
+            card.innerHTML=html;
+            container.appendChild(card);
+        });
+
+    document.querySelectorAll('.option').forEach(opt=> {
+            opt.addEventListener('click', function() {
+                    if (submitted) return;
+
+                    const qIndex=parseInt(this.dataset.question);
+                    const optIndex=parseInt(this.dataset.option);
+                    const radio=this.querySelector('input[type="radio"]');
+                    radio.checked=true;
+
+                    this.parentElement.querySelectorAll('.option').forEach(o=> {
+                            o.classList.remove('selected');
+                        });
+                    this.classList.add('selected');
+
+                    userAnswers[qIndex]=optIndex;
+                    updateProgress();
+                });
+        });
+}
+
+function updateProgress() {
+    const answered=userAnswers.filter(a=> a !==null).length;
+    const percentage=(answered / questions.length) * 100;
+    document.getElementById('progressBar').style.width=percentage+'%';
+}
+
+function escapeHtml(text) {
+    const div=document.createElement('div');
+    div.textContent=text;
+    return div.innerHTML;
+}
+
+function submitExam() {
+    if (submitted) return;
+
+    const unanswered=userAnswers.filter(a=> a===null).length;
+
+    if (unanswered > 0) {
+        if ( !confirm(`יש לך $ {
+                    unanswered
+                }
+
+                שאלות ללא תשובה. האם אתה בטוח שאתה רוצה לשלוח?`)) {
+            return;
+        }
+    }
+
+    submitted=true;
+    document.getElementById('submitBtn').disabled=true;
+    document.getElementById('submitBtn').textContent='המבחן נבדק';
+
+    let correct=0;
+
+    document.querySelectorAll('.question-card').forEach((card, qIndex)=> {
+            const options=card.querySelectorAll('.option');
+            const correctAnswer=questions[qIndex].correct;
+            const userAnswer=userAnswers[qIndex];
+
+            options.forEach((opt, optIndex)=> {
+                    if (optIndex===correctAnswer) {
+                        opt.classList.add('correct');
+                    }
+
+                    if (userAnswer !==null && optIndex===userAnswer && userAnswer !==correctAnswer) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+            if (userAnswer===correctAnswer) {
+                correct++;
+            }
+        });
+
+    showResults(correct);
+}
+
+function showResults(correct) {
+    const score=correct * 10;
+    const percentage=(correct / questions.length) * 100;
+    const wrong=questions.length - correct - userAnswers.filter(a=> a===null).length;
+    const unanswered=userAnswers.filter(a=> a===null).length;
+
+    let grade='';
+    if (percentage >=90) grade='מצוין! 🌟';
+    else if (percentage >=80) grade='טוב מאוד! 👏';
+    else if (percentage >=70) grade='יפה! 👍';
+    else if (percentage >=60) grade='עבר ✓';
+    else grade='צריך לשפר 📚';
+
+    const resultsHtml=` <div class="results"><div class="score-circle"><div class="score-number">$ {
+        score
+    }
+
+    </div><div class="score-label">מתוך 100</div></div><h2>$ {
+        grade
+    }
+
+    </h2><div class="results-details"><div class="result-stat"><div class="result-stat-value" style="color: #10b981;">$ {
+        correct
+    }
+
+    </div><div class="result-stat-label">תשובות נכונות</div></div><div class="result-stat"><div class="result-stat-value" style="color: #ef4444;">$ {
+        wrong
+    }
+
+    </div><div class="result-stat-label">תשובות שגויות</div></div><div class="result-stat"><div class="result-stat-value" style="color: #f59e0b;">$ {
+        unanswered
+    }
+
+    </div><div class="result-stat-label">לא נענו</div></div></div><div class="share-section"><p style="color: var(--text-light); margin-bottom: 1rem;">שתף את התוצאה שלך עם חברים !</p><button class="share-btn" onclick="shareResults(${score})">📱 שתף בווטסאפ</button><button class="share-btn" onclick="copyResults(${score})">📋 העתק קישור</button></div></div>`;
+
+    document.getElementById('resultsSection').innerHTML=resultsHtml;
+    document.getElementById('resultsSection').classList.remove('hidden');
+
+    document.getElementById('resultsSection').scrollIntoView({
+        behavior: 'smooth', block: 'nearest'
+    });
+}
+
+function shareResults(score) {
+    const text=`סיימתי מבחן עבודה עם קבצים בפייתון וקיבלתי $ {
+        score
+    }
+
+    /100 ! 📁`;
+    const url=`https: //wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+}
+
+function copyResults(score) {
+    const text=`סיימתי מבחן עבודה עם קבצים בפייתון וקיבלתי $ {
+        score
+    }
+
+    /100 ! 📁`;
+    navigator.clipboard.writeText(text).then(()=> {
+            alert('הועתק ללוח! ✓');
+        });
+}
+
+renderQuestions();
+document.getElementById('submitBtn').addEventListener('click', submitExam);
+</script></body></html>

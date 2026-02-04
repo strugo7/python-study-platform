@@ -1,0 +1,1011 @@
+< !DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>מבחן מסכם - כל החומר</title><link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet"><style>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #6366f1;
+    --secondary: #8b5cf6;
+    --accent: #ec4899;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --bg: #f5f3ff;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #ddd6fe;
+}
+
+body {
+    font-family: 'Assistant', 'Heebo', sans-serif;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+    color: white;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.1) rotate(180deg);
+        opacity: 0.5;
+    }
+}
+
+.header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+.exam-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.exam-info {
+    background: linear-gradient(to bottom, #f5f3ff, white);
+    padding: 1.5rem 2.5rem;
+    border-bottom: 2px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.info-item strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.progress-bar {
+    background: var(--bg);
+    height: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+}
+
+.content {
+    padding: 2.5rem;
+}
+
+.question-card {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+.question-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    border-color: var(--secondary);
+}
+
+.question-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.question-number {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.question-text {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
+    direction: ltr;
+    text-align: left;
+    border: 1px solid #3d3d3d;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.option {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    position: relative;
+}
+
+.option:hover {
+    background: #ede9fe;
+    border-color: var(--secondary);
+    transform: translateX(-3px);
+}
+
+.option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+}
+
+.option label {
+    cursor: pointer;
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.option.selected {
+    background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25);
+}
+
+.option.correct {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    border-color: var(--success);
+}
+
+.option.incorrect {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border-color: #ef4444;
+}
+
+.submit-section {
+    text-align: center;
+    padding: 2rem;
+    border-top: 2px solid var(--border);
+    background: linear-gradient(to top, #f5f3ff, white);
+}
+
+.btn {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    border: none;
+    padding: 1.2rem 3.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    font-family: inherit;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.results {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    text-align: center;
+    border: 2px solid var(--border);
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.score-circle {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+}
+
+.score-number {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.score-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.results h2 {
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.results-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.result-stat {
+    padding: 1.5rem;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 2px solid var(--border);
+}
+
+.result-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.result-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+}
+
+.share-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+}
+
+.share-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    font-family: inherit;
+}
+
+.share-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .container {
+        border-radius: 16px;
+    }
+
+    .header h1 {
+        font-size: 1.6rem;
+    }
+
+    .content {
+        padding: 1.5rem;
+    }
+
+    .question-card {
+        padding: 1.5rem;
+    }
+
+    .results-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+</style></head><body><div class="container"><div class="header"><h1>🎓 מבחן מסכם - כל החומר</h1><p>המכללה האקדמית תל אביב יפו - קורס 271033</p><div class="exam-badge">מבחן מקיף סופי</div></div><div class="exam-info"><div class="info-item"><strong>כיסוי:</strong><span>כל נושאי הקורס</span></div><div class="info-item"><strong>משך מומלץ:</strong><span>2.5 שעות</span></div><div class="info-item"><strong>שאלות:</strong><span>25 שאלות × 4 נק'</span>
+ </div><div class="info-item"><strong>ציון מקסימלי:</strong><span>100 נקודות</span></div></div><div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div><div class="content"><div id="questionsContainer"></div><div class="submit-section"><button class="btn" id="submitBtn">בדוק תשובות</button></div><div id="resultsSection" class="hidden"></div></div></div><script>const questions=[ {
+    number: 1,
+        text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+        code: `def outer(): x=[] def inner(item): x.append(item) return x return inner f1=outer() f2=outer() print(f1(1)) print(f2(2)) print(f1(3))`,
+        options: [ 'יודפס [1], [2], [1, 3].',
+        'יודפס [1], [1, 2], [1, 2, 3].',
+        'יודפס [1], [2], [3].',
+        'תתקבל שגיאת זמן ריצה כי x לא מוגדר ב-inner.'
+        ],
+        correct: 0
+}
+
+,
+{
+number: 2,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `with open("data.txt", "w") as f: f.write("Line 1\\n") f.write("Line 2\\n") with open("data.txt", "r") as f: lines=f.readlines() for i,
+line in enumerate(lines): print(f"{i}: {line.strip()}")`,
+options: [ 'יודפס 0: Line 1 ואז 1: Line 2.',
+    'יודפס Line 1 ואז Line 2.',
+    'תתקבל שגיאת זמן ריצה כי strip() לא קיים.',
+    'יודפס 1: Line 1 ואז 2: Line 2.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 3,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class Meta(type): def __new__(cls, name, bases, attrs): attrs['class_id']=id(cls) return super().__new__(cls, name, bases, attrs) class MyClass(metaclass=Meta): pass class AnotherClass(metaclass=Meta): pass print(MyClass.class_id==AnotherClass.class_id)`,
+    options: [ 'יודפס False כי כל מחלקה מקבלת id שונה.',
+    'יודפס True כי שתיהן משתמשות באותה metaclass.',
+    'תתקבל שגיאת זמן ריצה כי class_id לא מוגדר.',
+    'יודפס None.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 4,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `import unittest class Calculator: def divide(self, a, b): if b==0: raise ValueError("Division by zero") return a / b class TestCalculator(unittest.TestCase): def test_divide_by_zero(self): calc=Calculator() with self.assertRaises(ValueError): calc.divide(10, 0) self.assertEqual(calc.divide(10, 2), 5)`,
+    options: [ 'שני ה-assertions יעברו בהצלחה.',
+    'רק assertRaises יעבור.',
+    'רק assertEqual יעבור.',
+    'הטסט ייכשל כי לא ניתן לשלב assertRaises עם assertEqual.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 5,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `def decorator_with_args(prefix): def decorator(func): def wrapper(*args, **kwargs): print(f"{prefix}: {func.__name__}") return func(*args, **kwargs) return wrapper return decorator @decorator_with_args("CALL") def greet(name): print(f"Hello {name}") greet("Alice")`,
+options: [ 'יודפס CALL: greet ואז Hello Alice.',
+'יודפס Hello Alice בלבד.',
+'תתקבל שגיאת זמן ריצה כי decorator מקבל ארגומנט.',
+'יודפס CALL: Alice.'
+],
+correct: 0
+}
+
+,
+{
+number: 6,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class Parent: def __init__(self): self.value=10 def method(self): return self.value * 2 class Child(Parent): def __init__(self): super().__init__() self.value=20 def method(self): result=super().method() return result + self.value c=Child() print(c.method())`,
+    options: [ 'יודפס 60 (20*2 + 20).',
+    'יודפס 40 (20*2).',
+    'יודפס 30 (10*2 + 10).',
+    'תתקבל שגיאת זמן ריצה.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 7,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `from collections import defaultdict d=defaultdict(list) words=["apple", "banana", "apricot", "blueberry", "cherry"] for word in words: d[word[0]].append(word) print(len(d['a']))`,
+    options: [ 'יודפס 2.',
+    'יודפס 3.',
+    'תתקבל שגיאת KeyError.',
+    'יודפס 5.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 8,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `def gen(): x=0 while True: value=yield x if value is not None: x=value else: x +=1 g=gen() next(g) print(g.send(5)) print(next(g))`,
+    options: [ 'יודפס 5 ואז 6.',
+    'יודפס 0 ואז 1.',
+    'יודפס 5 ואז 5.',
+    'תתקבל שגיאת זמן ריצה כי send לא תקין.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 9,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `class Context: def __init__(self, name): self.name=name def __enter__(self): print(f"Enter {self.name}") return self def __exit__(self, exc_type, exc_val, exc_tb): print(f"Exit {self.name}") return True with Context("A"):
+    print("Inside A") with Context("B"): print("Inside B") raise ValueError("Error") print("After B") print("End")`,
+    options: [ 'יודפס Enter A, Inside A, Enter B, Inside B, Exit B, After B, Exit A, End.',
+    'יודפס Enter A, Inside A, Enter B, Inside B, Exit B, Exit A.',
+    'תתקבל חריגה שלא נתפוס.',
+    'יודפס Enter A, Inside A, Enter B, Inside B, Exit B, Exit A, End.'
+    ],
+    correct: 3
+}
+
+,
+{
+
+number: 10,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `import copy original= {
+
+    'a': [1,
+    2,
+    3],
+    'b': {
+        'x': 10
+    }
+}
+
+shallow=copy.copy(original) deep=copy.deepcopy(original) original['a'].append(4) original['b']['x']=20 print(len(shallow['a'])) print(deep['b']['x'])`,
+options: [ 'יודפס 4 ואז 10.',
+'יודפס 3 ואז 10.',
+'יודפס 4 ואז 20.',
+'יודפס 3 ואז 20.'
+],
+correct: 0
+}
+
+,
+{
+
+number: 11,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `def func(**kwargs): return {
+    k: v*2 for k, v in kwargs.items() if isinstance(v, int)
+}
+
+result=func(a=5, b="hello", c=10, d=None, e=3) print(len(result))`,
+options: [ 'יודפס 3.',
+'יודפס 5.',
+'יודפס 2.',
+'תתקבל שגיאת זמן ריצה.'
+],
+correct: 0
+}
+
+,
+{
+number: 12,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class Property: def __init__(self): self._value=0 @property def value(self): return self._value @value.setter def value(self, val): if val < 0: raise ValueError("Value must be positive") self._value=val p=Property() p.value=10 print(p.value)`,
+    options: [ 'יודפס 10.',
+    'תתקבל שגיאת זמן ריצה כי value הוא property.',
+    'יודפס 0.',
+    'תתקבל שגיאת זמן ריצה כי setter לא מוגדר נכון.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 13,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `from functools import lru_cache @lru_cache(maxsize=3) def fib(n): if n < 2: return n return fib(n-1) + fib(n-2) result=[fib(i) for i in range(10)] print(fib.cache_info().hits > 0)`,
+    options: [ 'יודפס True כי lru_cache שמר תוצאות ביניים.',
+    'יודפס False כי maxsize=3 קטן מדי.',
+    'תתקבל שגיאת זמן ריצה כי cache_info לא קיים.',
+    'יודפס None.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 14,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class MyList: def __init__(self, data): self.data=data def __getitem__(self, index): return self.data[index] def __len__(self): return len(self.data) ml=MyList([1, 2, 3, 4, 5]) print(ml[1:3]) print(len(ml))`,
+    options: [ 'יודפס [2, 3] ואז 5.',
+    'תתקבל שגיאת זמן ריצה כי slicing לא נתמך.',
+    'יודפס 2 ואז 5.',
+    'יודפס [1, 2, 3] ואז 5.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 15,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `try: with open("test.txt", "w") as f: f.write("Hello") raise Exception("Error") f.write("World") except Exception as e: print("Caught") with open("test.txt", "r") as f: print(f.read())`,
+    options: [ 'יודפס Caught ואז Hello.',
+    'יודפס Caught ואז HelloWorld.',
+    'יודפס Caught בלבד.',
+    'תתקבל חריגה שלא נתפוס.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 16,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class A: def method(self): return "A"
+
+    class B(A): def method(self): return "B"
+
+    class C(A): def method(self): return "C"
+
+    class D(B, C): pass d=D() print(d.method())`,
+    options: [ 'יודפס B כי B מופיע ראשון ב-MRO.',
+    'יודפס C.',
+    'תתקבל שגיאת זמן ריצה בגלל diamond problem.',
+    'יודפס A.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 17,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `import unittest from unittest.mock import Mock class TestMock(unittest.TestCase): def test_mock(self): mock=Mock() mock.method.return_value=42 result=mock.method() self.assertEqual(result, 42) mock.method.assert_called_once()`,
+    options: [ 'שני ה-assertions יעברו בהצלחה.',
+    'רק assertEqual יעבור.',
+    'תתקבל שגיאת זמן ריצה כי Mock לא קיים.',
+    'הטסט ייכשל כי assert_called_once לא תקין.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 18,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `def outer(x): def middle(y): def inner(z): return x + y + z return inner return middle f=outer(1)(2)(3) print(f)`,
+    options: [ 'יודפס 6.',
+    'יודפס <function inner>.',
+    'תתקבל שגיאת זמן ריצה.',
+    'יודפס None.'
+    ],
+    correct: 0
+}
+
+,
+{
+
+number: 19,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `class Singleton: _instances= {}
+
+def __new__(cls, *args, **kwargs): if cls not in cls._instances: cls._instances[cls]=super().__new__(cls) return cls._instances[cls] class A(Singleton): pass class B(Singleton): pass a1=A() a2=A() b1=B() print(a1 is a2, a1 is b1)`,
+options: [ 'יודפס True False.',
+'יודפס True True.',
+'יודפס False False.',
+'תתקבל שגיאת זמן ריצה.'
+],
+correct: 0
+}
+
+,
+{
+number: 20,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `import os if not os.path.exists("output"): os.makedirs("output") with open("output/test.txt", "w") as f: f.write("Test") print(os.path.isfile("output/test.txt"))`,
+    options: [ 'יודפס True לאחר יצירת התיקייה והקובץ.',
+    'תתקבל שגיאת זמן ריצה כי התיקייה לא קיימת.',
+    'יודפס False.',
+    'תתקבל שגיאת זמן ריצה כי makedirs לא תקין.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 21,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `from itertools import chain, combinations def powerset(iterable): s=list(iterable) return chain.from_iterable(combinations(s, r) for r in range(len(s)+1)) result=list(powerset([1, 2])) print(len(result))`,
+    options: [ 'יודפס 4 (כל הקבוצות האפשריות).',
+    'יודפס 2.',
+    'יודפס 3.',
+    'תתקבל שגיאת זמן ריצה.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 22,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class Descriptor: def __init__(self, name): self.name=name def __get__(self, obj, objtype=None): if obj is None: return self return obj.__dict__.get(self.name, None) def __set__(self, obj, value): obj.__dict__[self.name]=value.upper() class MyClass: attr=Descriptor('attr') m=MyClass() m.attr="hello"
+    print(m.attr)`,
+    options: [ 'יודפס HELLO.',
+    'יודפס hello.',
+    'תתקבל שגיאת זמן ריצה כי Descriptor לא מוגדר נכון.',
+    'יודפס None.'
+    ],
+    correct: 0
+}
+
+,
+{
+
+number: 23,
+text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+code: `import json data= {
+    "name": "Alice",
+        "scores": [95, 87, 92],
+        "active": True
+}
+
+json_str=json.dumps(data) loaded=json.loads(json_str) print(type(loaded["active"]).__name__)`,
+options: [ 'יודפס bool.',
+'יודפס str.',
+'יודפס int.',
+'תתקבל שגיאת זמן ריצה.'
+],
+correct: 0
+}
+
+,
+{
+number: 24,
+    text: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:",
+    code: `class MyException(Exception): def __init__(self, message, code): super().__init__(message) self.code=code try: raise MyException("Error occurred", 500) except MyException as e: print(e.code)`,
+    options: [ 'יודפס 500.',
+    'יודפס Error occurred.',
+    'תתקבל שגיאת זמן ריצה כי MyException לא מוגדר נכון.',
+    'יודפס None.'
+    ],
+    correct: 0
+}
+
+,
+{
+number: 25,
+    text: "בחרו את הטענה הלא נכונה העוסקת בתכנות מתקדם בפייתון:",
+    options: [ 'Decorators יכולים לשנות את התנהגות הפונקציה שהם מעטרים.',
+    'Context managers חייבים להגדיר __enter__ ו-__exit__.',
+    'Metaclasses הן מחלקות שיוצרות מחלקות אחרות.',
+    'Generators תמיד מהירים יותר מ-list comprehension.'
+    ],
+    correct: 3
+}
+
+];
+
+let userAnswers=new Array(questions.length).fill(null);
+let submitted=false;
+
+function renderQuestions() {
+    const container=document.getElementById('questionsContainer');
+
+    questions.forEach((q, index)=> {
+            const card=document.createElement('div');
+            card.className='question-card';
+
+            card.style.animationDelay=`$ {
+                index * 0.03
+            }
+
+            s`;
+
+            let html=` <div class="question-header" > <div class="question-number" >$ {
+                q.number
+            }
+
+            </div> <div class="question-text" >$ {
+                q.text
+            }
+
+            </div> </div> `;
+
+            if (q.code) {
+                html +=`<div class="code-block" >$ {
+                    escapeHtml(q.code)
+                }
+
+                </div>`;
+            }
+
+            html +='<div class="options">';
+
+            q.options.forEach((option, optIndex)=> {
+                    html +=` <div class="option" data-question="${index}" data-option="${optIndex}" > <input type="radio" name="q${index}" id="q${index}_${optIndex}" value="${optIndex}" > <label for="q${index}_${optIndex}" >$ {
+                        String.fromCharCode(97 + optIndex)
+                    }
+
+                    . $ {
+                        option
+                    }
+
+                    </label> </div> `;
+                });
+            html +='</div>';
+
+            card.innerHTML=html;
+            container.appendChild(card);
+        });
+
+    document.querySelectorAll('.option').forEach(opt=> {
+            opt.addEventListener('click', function() {
+                    if (submitted) return;
+
+                    const qIndex=parseInt(this.dataset.question);
+                    const optIndex=parseInt(this.dataset.option);
+                    const radio=this.querySelector('input[type="radio"]');
+                    radio.checked=true;
+
+                    this.parentElement.querySelectorAll('.option').forEach(o=> {
+                            o.classList.remove('selected');
+                        });
+                    this.classList.add('selected');
+
+                    userAnswers[qIndex]=optIndex;
+                    updateProgress();
+                });
+        });
+}
+
+function updateProgress() {
+    const answered=userAnswers.filter(a=> a !==null).length;
+    const percentage=(answered / questions.length) * 100;
+    document.getElementById('progressBar').style.width=percentage+'%';
+}
+
+function escapeHtml(text) {
+    const div=document.createElement('div');
+    div.textContent=text;
+    return div.innerHTML;
+}
+
+function submitExam() {
+    if (submitted) return;
+
+    const unanswered=userAnswers.filter(a=> a===null).length;
+
+    if (unanswered > 0) {
+        if ( !confirm(`יש לך $ {
+                    unanswered
+                }
+
+                שאלות ללא תשובה. האם אתה בטוח שאתה רוצה לשלוח?`)) {
+            return;
+        }
+    }
+
+    submitted=true;
+    document.getElementById('submitBtn').disabled=true;
+    document.getElementById('submitBtn').textContent='המבחן נבדק';
+
+    let correct=0;
+
+    document.querySelectorAll('.question-card').forEach((card, qIndex)=> {
+            const options=card.querySelectorAll('.option');
+            const correctAnswer=questions[qIndex].correct;
+            const userAnswer=userAnswers[qIndex];
+
+            options.forEach((opt, optIndex)=> {
+                    if (optIndex===correctAnswer) {
+                        opt.classList.add('correct');
+                    }
+
+                    if (userAnswer !==null && optIndex===userAnswer && userAnswer !==correctAnswer) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+
+            if (userAnswer===correctAnswer) {
+                correct++;
+            }
+        });
+
+    showResults(correct);
+}
+
+function showResults(correct) {
+    const score=correct * 4;
+    const percentage=(correct / questions.length) * 100;
+    const wrong=questions.length - correct - userAnswers.filter(a=> a===null).length;
+    const unanswered=userAnswers.filter(a=> a===null).length;
+
+    let grade='';
+    if (percentage >=90) grade='מעולה! אתה מומחה! 🏆';
+    else if (percentage >=80) grade='מצוין! רמה גבוהה! 🌟';
+    else if (percentage >=70) grade='טוב מאוד! 👏';
+    else if (percentage >=60) grade='עבר בהצלחה ✓';
+    else grade='צריך עוד תרגול 📚';
+
+    const resultsHtml=` <div class="results"><div class="score-circle"><div class="score-number">$ {
+        score
+    }
+
+    </div><div class="score-label">מתוך 100</div></div><h2>$ {
+        grade
+    }
+
+    </h2><div class="results-details"><div class="result-stat"><div class="result-stat-value" style="color: #10b981;">$ {
+        correct
+    }
+
+    </div><div class="result-stat-label">תשובות נכונות</div></div><div class="result-stat"><div class="result-stat-value" style="color: #ef4444;">$ {
+        wrong
+    }
+
+    </div><div class="result-stat-label">תשובות שגויות</div></div><div class="result-stat"><div class="result-stat-value" style="color: #f59e0b;">$ {
+        unanswered
+    }
+
+    </div><div class="result-stat-label">לא נענו</div></div></div><div class="share-section"><p style="color: var(--text-light); margin-bottom: 1rem;">שתף את התוצאה המרשימה שלך !</p><button class="share-btn" onclick="shareResults(${score})">📱 שתף בווטסאפ</button><button class="share-btn" onclick="copyResults(${score})">📋 העתק קישור</button></div></div>`;
+
+    document.getElementById('resultsSection').innerHTML=resultsHtml;
+    document.getElementById('resultsSection').classList.remove('hidden');
+
+    document.getElementById('resultsSection').scrollIntoView({
+        behavior: 'smooth', block: 'nearest'
+    });
+}
+
+function shareResults(score) {
+    const text=`סיימתי את המבחן המסכם במודולים בפייתון וקיבלתי $ {
+        score
+    }
+
+    /100 ! 🎓`;
+    const url=`https: //wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+}
+
+function copyResults(score) {
+    const text=`סיימתי את המבחן המסכם במודולים בפייתון וקיבלתי $ {
+        score
+    }
+
+    /100 ! 🎓`;
+    navigator.clipboard.writeText(text).then(()=> {
+            alert('הועתק ללוח! ✓');
+        });
+}
+
+renderQuestions();
+document.getElementById('submitBtn').addEventListener('click', submitExam);
+</script></body></html>

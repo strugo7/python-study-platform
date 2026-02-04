@@ -102,6 +102,76 @@ export const finalExams: Record<string, FinalExam> = {
             { id: 19, question: "מה יודפס?", code: `class A:\n    def foo(self):\n        return self.bar()\n    def bar(self):\n        return 1\n\nclass B(A):\n    def bar(self):\n        return 2\n\nprint(B().foo())`, options: ["1", "2", "None", "TypeError"], correct: 1, explanation: "Polymorphism (פולימורפיזם):\\n\\n💡 self תמיד מתייחס לאובייקט האמיתי!\\n\\nזרימת הקוד:\\n1. B().foo() → יוצר אובייקט B וקורא ל-foo\\n2. foo נמצא ב-A (B יורש)\\n3. בתוך foo: return self.bar()\\n   - self הוא אובייקט של B!\\n   - B.bar() מחזיר 2\\n\\nהתוצאה: 2\\n\\n💡 זה פולימורפיזם:\\n   המתודה foo() קוראת ל-bar()\\n   אבל איזה bar() נקרא תלוי בסוג האובייקט!" },
             { id: 20, question: "מה יודפס?", code: `def decorator(func):\n    def wrapper(*args):\n        return func(*args) + 10\n    return wrapper\n\n@decorator\ndef add(a, b):\n    return a + b\n\nprint(add(3, 4))`, options: ["7", "17", "10", "TypeError"], correct: 1, explanation: "Decorators - עטיפת פונקציות:\\n\\n💡 @decorator שקול ל: add = decorator(add)\\n\\nמה קורה?\\n1. decorator מקבלת את add\\n2. מחזירה wrapper\\n3. עכשיו add = wrapper\\n\\nכשקוראים add(3, 4):\\n→ wrapper(3, 4)\\n→ func(3, 4) + 10\\n→ add_המקורי(3, 4) + 10\\n→ 7 + 10 = 17\\n\\n💡 *args מאפשר לקבל כמות משתנה של ארגומנטים\\n\\n💡 Decorators שימושיים ל:\\n   - Logging\\n   - Caching\\n   - Authentication" }
         ]
+    },
+    exam4: {
+        id: "exam4",
+        title: "מבחן מסכם 4 (מעורב)",
+        description: "מבחן מעורב הכולל עבודה עם קבצים, בדיקות יחידה, ושאלות תיאורטיות.",
+        difficulty: "בינונית-גבוהה",
+        questions: [
+            // Files (3)
+            { id: 1, question: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:", code: `with open("data.txt", "w") as f:\n    f.write("Hello")\n    f.write("World")\n\nwith open("data.txt", "r") as f:\n    content = f.read()\n    print(content)`, options: ["יודפס HelloWorld.", "יודפס Hello\\nWorld.", "תתקבל שגיאת זמן ריצה כי הקובץ לא קיים.", "יודפס World בלבד."], correct: 0, explanation: "מצב 'w' יוצר קובץ או דורס תוכן קיים. f.write() לא מוסיף ירידת שורה אוטומטית, לכן המחרוזות נכתבות ברצף." },
+            { id: 2, question: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:", code: `try:\n    f = open("test.txt", "r")\n    data = f.read()\n    print(data)\nexcept FileNotFoundError:\n    print("File not found")\nfinally:\n    f.close()`, options: ["תתקבל שגיאת זמן ריצה אם הקובץ לא קיים (f לא הוגדר ל-close).", "הקוד תקין לחלוטין ויטפל בכל המקרים.", "יודפס File not found והתוכנית תמשיך.", "ה-finally מיותר כאן."], correct: 0, explanation: "אם open זורק שגיאה (למשל הקובץ לא קיים), המשתנה f לא נוצר. בבלוק finally מנסים לגשת ל-f.close() וזה יזרוק NameError!" },
+            { id: 3, question: "בחרו את הטענה המדויקת ביותר העוסקת בקטע הקוד הבא:", code: `with open("numbers.txt", "w") as f:\n    for i in range(5):\n        f.write(str(i) + "\\n")\n\nwith open("numbers.txt", "r") as f:\n    lines = f.readlines()\n    print(len(lines))`, options: ["יודפס 5.", "יודפס 10.", "יודפס 1.", "תתקבל שגיאת זמן ריצה."], correct: 0, explanation: "הקוד כותב 5 מספרים, כל אחד בשורה נפרדת (עם \\n). readlines() מחזיר רשימה של השורות, ולכן אורכה 5." },
+
+            // Unit Tests (3)
+            { id: 4, question: "מה ההבדל בין assertEqual ל-assertTrue ב-unittest?", options: ["אין הבדל, שניהם בודקים אמת.", "assertEqual בודק שוויון בין שני ערכים, assertTrue בודק תנאי בוליאני.", "assertTrue עובד רק על מחרוזות.", "assertEqual מיועד רק למספרים."], correct: 1, explanation: "unittest מספקת מתודות ספציפיות כדי לתת הודעות שגיאה ברורות יותר. assertEqual מציג את ההבדל בין הערכים, בעוד assertTrue רק אומר שנכשל." },
+            { id: 5, question: "מהי הדרך הנכונה לבדוק שגיאה ב-pytest?", code: `def test_error():\n    with pytest.raises(ValueError):\n        int("abc")`, options: ["שימוש ב-try-except בתוך הטסט.", "שימוש ב-context manager: with pytest.raises(...).", "שימוש ב-assert False.", "בדיקת ערך החזרה None."], correct: 1, explanation: "ב-pytest בודקים שנזרקת שגיאה צפויה באמצעות with pytest.raises(ErrorType). אם השגיאה לא נזרקת, הטסט נכשל." },
+            { id: 6, question: "מה מטרת ה-setUp ב-unittest?", options: ["להריץ את הטסטים בסדר אקראי.", "להכין את הסביבה (משתנים, חיבורים) לפני כל טסט.", "לנקות את הזיכרון אחרי הטסט.", "להגדיר את שם הטסט."], correct: 1, explanation: "מתודת setUp רצה **לפני** כל מתודת טסט במחלקה, ומשמשת לאתחול אובייקטים או מצב התחלתי משותף." },
+
+            // Theory (5)
+            { id: 7, question: "איזו פעולה על קבוצה (set) עלולה לגרום לשגיאה?", code: `s = {1, 2, 3}\n1. s.add(4)\n2. s.remove(5)\n3. s.discard(5)\n4. len(s)`, options: ["שורה 2: remove לאיבר שלא קיים.", "שורה 1: לא ניתן להוסיף לקבוצה.", "שורה 3: discard לאיבר שלא קיים.", "אף שורה."], correct: 0, explanation: "remove() זורקת KeyError אם האיבר לא קיים. discard() לא זורקת שגיאה ופשוט לא עושה כלום." },
+            { id: 8, question: "מה יודפס?", code: `lst = [1, 2, 3]\nnums = lst\nnums.append(4)\nprint(len(lst))`, options: ["4", "3", "0", "שגיאה"], correct: 0, explanation: "השמה בפייתון מעתיקה את ה-reference (מצביע), לא את האובייקט. nums ו-lst מצביעים לאותה רשימה בזיכרון." },
+            { id: 9, question: "מה היתרון של רשימה (list) על פני tuple?", options: ["רשימה היא mutable (ניתנת לשינוי), tuple לא.", "רשימה מהירה יותר.", "רשימה תופסת פחות זיכרון.", "tuple יכול להכיל רק מספרים."], correct: 0, explanation: "ההבדל העיקרי: רשימות ניתנות לשינוי (הוספה/מחיקה) לאחר היצירה, בעוד tuples הם immutable (קבועים)." },
+            { id: 10, question: "מה תפקיד ה-decorator?", options: ["לשנות או להרחיב התנהגות של פונקציה/מחלקה בלי לשנות את הקוד שלהן.", "לתקן באגים אוטומטית.", "להגדיר משתנים גלובליים.", "ליצור גרפיקה."], correct: 0, explanation: "Decorator הוא 'עטיפה' לפונקציה המאפשרת להוסיף קוד לפני ואחרי הריצה המקורית." },
+            { id: 11, question: "מה יקרה כשנבצע import למודול פעמיים?", options: ["הקוד שלו ירוץ פעמיים.", "הקוד ירוץ רק בפעם הראשונה.", "פייתון יזרוק שגיאה.", "המודול יימחק."], correct: 1, explanation: "פייתון שומרת cache של מודולים (sys.modules). ייבוא חוזר משתמש בגרסה הטעונה ולא מריץ את קובץ המודול מחדש." },
+
+            // Mixed (9)
+            { id: 12, question: "מה יודפס?", code: `result = (lambda x: x*2)(5)`, options: ["10", "5", "x*2", "SyntaxError"], correct: 0, explanation: "קריאה מידית ל-lambda (IIFE). הפונקציה המוכפלת ב-2 מופעלת על 5." },
+            { id: 13, question: "מה יודפס?", code: `d = {'a': 1}\nprint(d.get('b', 0))`, options: ["0", "None", "KeyError", "1"], correct: 0, explanation: "מתודת get(key, default) מחזירה את ערך ברירת המחדל (כאן 0) אם המפתח לא קיים, מבלי לזרוק שגיאה." },
+            { id: 14, question: "מה יודפס?", code: `vals = [1, 2, 3, 4]\nres = [x for x in vals if x % 2 == 0]\nprint(res)`, options: ["[2, 4]", "[1, 3]", "[True, False]", "2"], correct: 0, explanation: "List Comprehension המסנן רק מספרים זוגיים." },
+            { id: 15, question: "מה עושה super()?", options: ["מאפשר גישה לשיטות של מחלקת האב.", "יוצר מחלקה חדשה.", "מוחק את האובייקט.", "קורא לפונקציית main."], correct: 0, explanation: "super() מחזיר אובייקט זמני המאפשר לקרוא למתודות של מחלקת האב (Parent Class)." },
+            { id: 16, question: "מה יודפס?", code: `def gen():\n    yield 1\n    yield 2\n\ng = gen()\nprint(next(g))\nprint(next(g))`, options: ["1 ואז 2", "1 ואז 1", "שגיאה", "None"], correct: 0, explanation: "generator זוכר את המצב שלו בין קריאות. next() ראשון מחזיר 1, השני מחזיר 2." },
+            { id: 17, question: "מה יודפס?", code: `text = "Python"\nprint(text[::-1])`, options: ["nohtyP", "Python", "P", "n"], correct: 0, explanation: "סלייסינג עם צעד שלילי [::-1] הופך את המחרוזת." },
+            { id: 18, question: "מה יודפס?", code: `nums = [1, 2, 3]\nsq = map(lambda x: x**2, nums)\nprint(list(sq))`, options: ["[1, 4, 9]", "[1, 2, 3]", "map object", "Error"], correct: 0, explanation: "map מחזיר איטרטור (לכן צריך list() כדי להדפיס), ומפעיל את ה-lambda על כל איבר." },
+            { id: 19, question: "מה יודפס?", code: `x = 10\ndef foo():\n    global x\n    x = 20\nfoo()\nprint(x)`, options: ["20", "10", "Error", "None"], correct: 0, explanation: "keyword global מאפשר לפונקציה לשנות משתנה ב-scope הגלובלי." },
+            { id: 20, question: "מה יודפס?", code: `def f(n):\n    if n == 0: return 0\n    return n + f(n-1)\nprint(f(3))`, options: ["6", "3", "0", "Error"], correct: 0, explanation: "רקורסיה: f(3) = 3 + f(2) = 3 + 2 + f(1) = 3+2+1+0 = 6." }
+        ]
+    },
+    exam5: {
+        id: "exam5",
+        title: "מבחן מסכם 5 (מעורב)",
+        description: "מבחן מתקדם המשלב נושאים: קבצים, Unit Testing, ומבני נתונים מתקדמים.",
+        difficulty: "גבוהה",
+        questions: [
+            // Files (3)
+            { id: 1, question: "מה יקרה בקוד הבא?", code: `with open("file.txt", "w") as f:\n    f.write("Test")\n    f.seek(0)\n    f.write("H")`, options: ["הקובץ יכיל 'Hest'.", "הקובץ יכיל 'TestH'.", "שגיאה.", "הקובץ יכיל 'H'."], correct: 0, explanation: "seek(0) מחזיר את הסמן להתחלה. כתיבת 'H' דורסת את התו הראשון 'T', והשאר נשאר." },
+            { id: 2, question: "מה ההבדל בין read() ל-readlines()?", options: ["read מחזיר מחרוזת אחת, readlines מחזיר רשימת שורות.", "read קורא שורה אחת, readlines הכל.", "אין הבדל.", "readlines מהיר יותר."], correct: 0, explanation: "read() קורא את כל הקובץ למחרוזת בודדת (או מספר בתים). readlines() מפרק אוטומטית לרשימה לפי תווי ירידת שורה." },
+            { id: 3, question: "מדוע חשוב להשתמש ב-with בעבודה עם קבצים?", options: ["כי זה סוגר את הקובץ אוטומטית גם במקרה של שגיאה.", "כי זה מהיר יותר.", "כי זה חוסך זיכרון.", "כי זה מאפשר כתיבה מקבילית."], correct: 0, explanation: "זו הסיבה העיקרית: context manager מבטיח ש-__exit__ ירוץ (וסגירת הקובץ תתבצע) גם אם יש Exception בתוך הבלוק." },
+
+            // Unit Tests (3)
+            { id: 4, question: "מה הבעיה בטסט הבא?", code: `def test_add():\n    assert (1 + 1 == 3, "Error message")`, options: ["הוא תמיד עובר (True) כי זה טאפל.", "הוא נכשל עם ההודעה.", "שגיאת סינטקס.", "אין בעיה."], correct: 0, explanation: "המוקש הקלאסי: assert עם סוגריים ופסיק יוצר tuple. טאפל לא ריק הוא תמיד Truthy, ולכן הטסט עובר גם אם התנאי בפנים שקרי." },
+            { id: 5, question: "ב-pytest, מהו ה-scope של fixture כברירת מחדל?", options: ["function (רץ לכל פונקציית טסט מחדש).", "module (פעם אחת לקובץ).", "session (פעם אחת לכל הריצה).", "class (פעם אחת למחלקה)."], correct: 0, explanation: "ברירת המחדל היא function. כדי לשנות, צריך להגדיר @pytest.fixture(scope='module')." },
+            { id: 6, question: "מה עושה Mock.side_effect?", options: ["מאפשר להגדיר חריגה (Exception) שתיזרק או ערכים מתחלפים בקריאות רצופות.", "משנה את ערך החזרה הקבוע.", "מוחק את האובייקט.", "מדפיס לוג."], correct: 0, explanation: "side_effect חזק יותר מ-return_value: הוא יכול לקבל רשימה (ערכים שונים לכל קריאה) או חריגה לזריקה." },
+
+            // Theory (5)
+            { id: 7, question: "מה ההבדל בין == ל-is?", options: ["== בודק שוויון ערכים, is בודק זהות אובייקט (זיכרון).", "is בודק שוויון ערכים.", "אין הבדל.", "is עובד רק על מספרים."], correct: 0, explanation: "== מפעיל את __eq__, בעוד is בודק את ה-id() (כתובת בזיכרון) של האובייקטים." },
+            { id: 8, question: "מה יודפס?", code: `def f(a, *args, **kwargs):\n    print(len(args))\nf(1, 2, 3, x=4)`, options: ["2", "3", "1", "0"], correct: 0, explanation: "a מקבל 1. args מקבל את כל השאר שלא בשמם (2, 3) -> אורך 2. kwargs מקבל את x=4." },
+            { id: 9, question: "מה יודפס?", code: `class A:\n    x = 1\na1 = A()\na2 = A()\na1.x = 2\nprint(A.x, a2.x)`, options: ["1 1", "2 2", "1 2", "2 1"], correct: 0, explanation: "a1.x = 2 יוצר משתנה instance חדש ל-a1 שמסתיר את משתנה המחלקה. A.x ו-a2.x עדיין רואים את משתנה המחלקה המקורי (1)." },
+            { id: 10, question: "מהו MRO?", options: ["סדר חיפוש המתודות בירושה (Method Resolution Order).", "שיטה לניהול זיכרון.", "מודול ליצירת מספרים רנדומליים.", "סוג של שגיאה."], correct: 0, explanation: "MRO קובע את הסדר שבו פייתון מחפש שם של מתודה או משתנה במחלקות האב במקרה של ירושה (ובפרט ירושה מרובה)." },
+            { id: 11, question: "מה יקרה?", code: `vals = (1, 2)\nvals[0] = 3`, options: ["TypeError", "vals משתנה ל-(3, 2)", "התעלמות", "חדש נוצר"], correct: 0, explanation: "tuple הוא immutable. אי אפשר לשנות איבר בתוכו אחרי שנוצר." },
+
+            // Mixed (9)
+            { id: 12, question: "מה יודפס?", code: `s = {x for x in range(3)}\nprint(type(s))`, options: ["set", "dict", "list", "generator"], correct: 0, explanation: "שימוש בסוגריים מסולסלים {} ללא נקודותיים יוצר set comprehension." },
+            { id: 13, question: "איך מוסיפים רשימה אחת לשנייה?", options: ["extend()", "push()", "insert()", "add()"], correct: 0, explanation: "list.extend(other_list) או אופרטור +=, מוסיפים את כל איברי הרשימה השנייה. append() היה מוסיף את הרשימה כאובייקט בודד." },
+            { id: 14, question: "מה עושה d.update(d2)?", options: ["ממזג את d2 לתוך d (דורס כפילויות).", "יוצר מילון חדש.", "מוחק את d.", "מוסיף רק מפתחות חדשים."], correct: 0, explanation: "update מעדכן את המילון במקום (in-place) עם מפתחות/ערכים ממילון אחר." },
+            { id: 15, question: "מתי רץ בלוק else ב-try-except?", options: ["אם לא נזרקה שום חריגה ב-try.", "אם נזרקה חריגה שטופלה.", "תמיד.", "רק אם יש finally."], correct: 0, explanation: "בלוק else רץ רק אם ה-try הסתיים בהצלחה מלאה (ללא exception). זה שונה מ-finally שרץ תמיד." },
+            { id: 16, question: "מה מחזיר enumerate?", options: ["זוגות של (אינדקס, ערך).", "רק את האינדקסים.", "רשימה ממויינת.", "מילון."], correct: 0, explanation: "enumerate(iterable) מחזיר איטרטור שמניב (index, item) לכל איבר." },
+            { id: 17, question: "איזו ספריה משמשת לעבודה עם JSON?", options: ["json", "xml", "csv", "yaml"], correct: 0, explanation: "import json היא הספריה הסטנדרטית." },
+            { id: 18, question: "מה היתרון של defaultdict?", options: ["מטפל במפתחות חסרים אוטומטית ע\"י יצירת ערך ברירת מחדל.", "מהיר יותר מכל מילון.", "לא תופס זיכרון.", "שומר על סדר הכנסה."], correct: 0, explanation: "כשפונים למפתח שלא קיים, defaultdict קורא לפונקציית ברירת המחדל (factory) שהוגדרה לו במקום לזרוק KeyError." },
+            { id: 19, question: "איך ממיינים רשימת מחרוזות לפי האורך?", options: ["sorted(lst, key=len)", "lst.sort(len)", "sort(lst, length)", "lst.sort(key=length)"], correct: 0, explanation: "הפרמטר key מקבל פונקציה ליישום על כל איבר לפני ההשוואה. len תחזיר את האורך." },
+            { id: 20, question: "מה יודפס?", code: `matrix = [[1, 2], [3, 4]]\nflat = [n for row in matrix for n in row]\nprint(flat)`, options: ["[1, 2, 3, 4]", "[[1, 2], [3, 4]]", "[1, 3, 2, 4]", "Error"], correct: 0, explanation: "שיטוח רשימה מקוננת: הלולאה החיצונית היא for row in matrix והפנימית for n in row." }
+        ]
     }
 };
 
