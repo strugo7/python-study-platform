@@ -53,9 +53,9 @@ c = counter()
 print(a, b, c)`,
         question: "מה יודפס?",
         options: [
-            "1 1 1",
-            "1 2 3",
-            "3 3 3",
+            "a = 1, b = 1, c = 1",
+            "a = 1, b = 2, c = 3",
+            "a = 3, b = 3, c = 3",
             "שגיאה"
         ],
         correctAnswer: 1,

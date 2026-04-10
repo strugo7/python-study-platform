@@ -23,6 +23,7 @@ export default function LearnPage({ params }: LearnPageProps) {
     const [highlightedLine, setHighlightedLine] = useState<number | undefined>(undefined);
     const [activeSection, setActiveSection] = useState(0);
     const [showSimulator, setShowSimulator] = useState(false);
+    const [showSummary, setShowSummary] = useState(false);
     const [memorySlots, setMemorySlots] = useState<{
         name?: string;
         value?: string | number;
@@ -154,8 +155,8 @@ export default function LearnPage({ params }: LearnPageProps) {
                             {theorySections.map((section, idx) => (
                                 <button
                                     key={section.id}
-                                    onClick={() => setActiveSection(idx)}
-                                    className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${activeSection === idx
+                                    onClick={() => { setActiveSection(idx); setShowSummary(false); }}
+                                    className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${!showSummary && activeSection === idx
                                             ? 'bg-primary text-background-dark'
                                             : 'bg-surface-dark text-text-muted hover:bg-border-dark'
                                         }`}
@@ -163,11 +164,49 @@ export default function LearnPage({ params }: LearnPageProps) {
                                     {section.title}
                                 </button>
                             ))}
+                            <button
+                                onClick={() => setShowSummary(true)}
+                                className={`px-3 md:px-4 py-2 rounded-lg text-xs md:text-sm font-medium transition-all flex items-center gap-1.5 ${showSummary
+                                        ? 'bg-primary text-background-dark'
+                                        : 'bg-surface-dark text-text-muted hover:bg-border-dark'
+                                    }`}
+                            >
+                                <span>🎬</span> סיכום וידאו
+                            </button>
                         </div>
                     </motion.div>
 
+                    {/* Summary Video Panel */}
+                    {showSummary && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mb-8 md:mb-12"
+                        >
+                            <div className="bg-surface-dark/30 rounded-xl p-4 md:p-6 border border-primary/30">
+                                <h2 className="text-xl md:text-2xl font-bold mb-4 text-white flex items-center gap-3">
+                                    <span className="text-primary text-xs md:text-sm bg-primary/20 px-2 py-1 rounded">🎬</span>
+                                    סיכום וידאו — {module.title}
+                                </h2>
+                                <div className="rounded-xl overflow-hidden bg-black aspect-video">
+                                    <video
+                                        key={module.id}
+                                        className="w-full h-full"
+                                        controls
+                                        src={`/videos/module-${module.id}.mp4`}
+                                    >
+                                        הדפדפן שלך לא תומך בתגית video.
+                                    </video>
+                                </div>
+                                <p className="mt-3 text-sm text-text-muted">
+                                    סרטון סיכום בעברית המכסה את כל נושאי המודול — מיוצר באמצעות NotebookLM
+                                </p>
+                            </div>
+                        </motion.div>
+                    )}
+
                     {/* Theory Content - Full Width */}
-                    <div className="space-y-6 md:space-y-8">
+                    <div className="space-y-6 md:space-y-8" style={{ display: showSummary ? 'none' : undefined }}>
                         {theorySections.map((section, idx) => (
                             <motion.div
                                 key={section.id}
