@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { getShuffledExam, getAllFinalExams, type FinalExam, type FinalExamQuestion } from "@/data/finalExams";
+import { fixCodeDirection } from "@/utils/bidi";
 
 function FinalExamContent() {
     const searchParams = useSearchParams();
@@ -252,8 +253,8 @@ function FinalExamContent() {
                                                                 : userAnswer === i && userAnswer !== q.correct
                                                                     ? 'text-red-400'
                                                                     : 'text-text-muted'
-                                                        }`} dir="ltr">
-                                                            {opt.split('\n').map((line, li) => (
+                                                        }`}>
+                                                            {fixCodeDirection(opt).split('\n').map((line, li) => (
                                                                 <span key={li}>{line}</span>
                                                             ))}
                                                         </div>
@@ -379,8 +380,8 @@ function FinalExamContent() {
                                                 }`}>
                                                 {String.fromCharCode(65 + i)}
                                             </span>
-                                            <div className="flex flex-col" dir="ltr">
-                                                {opt.split('\n').map((line, i) => (
+                                            <div className="flex flex-col">
+                                                {fixCodeDirection(opt).split('\n').map((line, i) => (
                                                     <span key={i}>{line}</span>
                                                 ))}
                                             </div>

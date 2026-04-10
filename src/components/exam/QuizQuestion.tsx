@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { fixCodeDirection } from "@/utils/bidi";
 
 interface AnswerOption {
     id: string;
@@ -174,8 +175,8 @@ export default function QuizQuestion({
                                     >
                                         {option.label}
                                     </span>
-                                    <div className={`text-lg ${isSelected || showAsCorrect ? "font-bold" : "font-medium"} flex flex-col`} dir="ltr">
-                                        {option.text.split('\n').map((line, i) => (
+                                    <div className={`text-lg ${isSelected || showAsCorrect ? "font-bold" : "font-medium"} flex flex-col`}>
+                                        {fixCodeDirection(option.text).split('\n').map((line, i) => (
                                             <span key={i}>{line}</span>
                                         ))}
                                     </div>

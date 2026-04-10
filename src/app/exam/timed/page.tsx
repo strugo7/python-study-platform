@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { timedExam, shuffleExamAnswers, EXAM_DURATION_MS } from "@/data/timedExam";
+import { fixCodeDirection } from "@/utils/bidi";
 
 export default function TimedExamPage() {
     const [examStarted, setExamStarted] = useState(false);
@@ -169,8 +170,8 @@ export default function TimedExamPage() {
                                                             }`}
                                                     >
                                                         <span className="font-bold ml-2">{String.fromCharCode(1488 + i)}.</span>
-                                                        <span dir="ltr" className="flex flex-col">
-                                                            {opt.split('\n').map((line, li) => (
+                                                        <span className="flex flex-col">
+                                                            {fixCodeDirection(opt).split('\n').map((line, li) => (
                                                                 <span key={li}>{line}</span>
                                                             ))}
                                                         </span>
@@ -277,8 +278,8 @@ export default function TimedExamPage() {
                                             }`}>
                                             {String.fromCharCode(1488 + i)}
                                         </span>
-                                        <div className="flex flex-col" dir="ltr">
-                                            {opt.split('\n').map((line, i) => (
+                                        <div className="flex flex-col">
+                                            {fixCodeDirection(opt).split('\n').map((line, i) => (
                                                 <span key={i}>{line}</span>
                                             ))}
                                         </div>

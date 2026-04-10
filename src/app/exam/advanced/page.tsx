@@ -4,6 +4,7 @@ import { useState, useMemo, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import { questionBank, generateExam, getCategories, type ExamQuestion } from "@/data/examQuestions";
+import { fixCodeDirection } from "@/utils/bidi";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -275,8 +276,8 @@ function AdvancedExamContent() {
                                                 }`}>
                                                 {String.fromCharCode(65 + idx)}
                                             </span>
-                                            <div className="font-mono flex flex-col" dir="ltr">
-                                                {option.split('\n').map((line, i) => (
+                                            <div className="font-mono flex flex-col">
+                                                {fixCodeDirection(option).split('\n').map((line, i) => (
                                                     <span key={i}>{line}</span>
                                                 ))}
                                             </div>

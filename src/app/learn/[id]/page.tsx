@@ -301,7 +301,7 @@ export default function LearnPage({ params }: LearnPageProps) {
                                                 <h4 className="text-sm font-bold mb-3 flex items-center gap-2">
                                                     <span>🧠</span> זיכרון (RAM)
                                                 </h4>
-                                                <MemoryGrid slots={memorySlots} highlightedLine={highlightedLine} />
+                                                <MemoryGrid slots={memorySlots} highlightedLine={highlightedLine} heapObjects={heapObjects} />
                                             </div>
                                         </div>
 
