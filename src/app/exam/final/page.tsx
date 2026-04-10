@@ -218,8 +218,13 @@ function FinalExamContent() {
                                         <div className="p-4 md:p-6">
                                             <p className="mb-3 text-sm md:text-base">{q.question}</p>
                                             {q.code && (
-                                                <pre className="bg-background-dark p-3 md:p-4 rounded-lg mb-4 text-xs md:text-sm overflow-x-auto text-left" dir="ltr">
-                                                    <code>{q.code}</code>
+                                                <pre className="bg-background-dark p-3 md:p-4 rounded-lg mb-4 text-xs md:text-sm overflow-x-auto text-left font-mono" dir="ltr">
+                                                    {q.code.split('\n').map((line: string, idx: number) => (
+                                                        <div key={idx} className="flex">
+                                                            <span className="text-primary/30 w-6 md:w-8 select-none text-right mr-3 md:mr-4 shrink-0">{idx + 1}</span>
+                                                            <span className="text-white">{line}</span>
+                                                        </div>
+                                                    ))}
                                                 </pre>
                                             )}
                                             <div className="space-y-2 mb-4">
@@ -346,8 +351,13 @@ function FinalExamContent() {
                             <div className="p-4 md:p-6">
                                 <h2 className="text-base md:text-xl font-bold mb-4">{currentQuestion.question}</h2>
                                 {currentQuestion.code && (
-                                    <pre className="bg-background-dark p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-xs md:text-sm overflow-x-auto text-left" dir="ltr">
-                                        <code>{currentQuestion.code}</code>
+                                    <pre className="bg-background-dark p-3 md:p-4 rounded-lg mb-4 md:mb-6 text-xs md:text-sm overflow-x-auto text-left font-mono" dir="ltr">
+                                        {currentQuestion.code.split('\n').map((line: string, idx: number) => (
+                                            <div key={idx} className="flex">
+                                                <span className="text-primary/30 w-6 md:w-8 select-none text-right mr-3 md:mr-4 shrink-0">{idx + 1}</span>
+                                                <span className="text-white">{line}</span>
+                                            </div>
+                                        ))}
                                     </pre>
                                 )}
                                 <div className="space-y-3">

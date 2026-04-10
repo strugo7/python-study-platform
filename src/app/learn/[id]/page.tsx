@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import MemoryGrid from "@/components/visualizers/MemoryGrid";
 import PyTutorStepper from "@/components/visualizers/PyTutorStepper";
 import type { StepState } from "@/components/visualizers/PyTutorStepper";
+import type { ComplexValue } from "@/data/curriculum.types";
 import { getModuleByStringId, getNextModule, getPreviousModule, getAllModules } from "@/data/curriculumLoader";
 
 interface LearnPageProps {
@@ -24,11 +25,17 @@ export default function LearnPage({ params }: LearnPageProps) {
     const [activeSection, setActiveSection] = useState(0);
     const [showSimulator, setShowSimulator] = useState(false);
     const [showSummary, setShowSummary] = useState(false);
+    const [heapObjects, setHeapObjects] = useState<ComplexValue[]>([]);
     const [memorySlots, setMemorySlots] = useState<{
         name?: string;
         value?: string | number;
         address: string;
+        type?: string;
         isActive?: boolean;
+        isNew?: boolean;
+        isChanged?: boolean;
+        hasPointer?: boolean;
+        pointerTo?: string;
     }[]>([
         { address: "0x4F00" },
         { address: "0x4F01" },
@@ -65,36 +72,27 @@ export default function LearnPage({ params }: LearnPageProps) {
     const handleStepChange = useCallback((step: StepState, stepIndex: number) => {
         setHighlightedLine(step.lineNumber);
 
-        // Convert step variables to memory slots
-        const baseSlots: {
-            name?: string;
-            value?: string | number;
-            address: string;
-            isActive?: boolean;
-        }[] = [
-                { address: "0x4F00" },
-                { address: "0x4F01" },
-                { address: "0x4F02" },
-                { address: "0x4F03" },
-                { address: "0x4F04" },
-                { address: "0x4F05" },
-                { address: "0x4F06" },
-                { address: "0x4F07" },
-            ];
+        // Build variable slots
+        const varSlots = step.variables.map((variable) => ({
+            name: variable.name,
+            value: variable.value === null ? 'None' : String(variable.value),
+            address: variable.address,
+            type: variable.type,
+            isActive: true,
+            isNew: variable.isNew || false,
+            isChanged: variable.changed || false,
+            hasPointer: !!variable.pointsTo,
+            pointerTo: variable.pointsTo,
+        }));
 
-        // Place variables in slots
-        step.variables.forEach((variable, idx) => {
-            if (idx < baseSlots.length) {
-                baseSlots[idx] = {
-                    name: variable.name,
-                    value: variable.value === null ? 'None' : String(variable.value),
-                    address: variable.address,
-                    isActive: true,
-                };
-            }
-        });
+        // Fill remaining empty slots
+        const emptyCount = Math.max(0, 8 - varSlots.length);
+        const emptySlots = Array.from({ length: emptyCount }, (_, i) => ({
+            address: `0x${(0x4F00 + varSlots.length + i).toString(16).toUpperCase()}`,
+        }));
 
-        setMemorySlots(baseSlots);
+        setMemorySlots([...varSlots, ...emptySlots]);
+        setHeapObjects(step.heapObjects || []);
     }, []);
 
     return (
@@ -292,6 +290,7 @@ export default function LearnPage({ params }: LearnPageProps) {
                                             <div className="order-2 lg:order-1">
                                                 <PyTutorStepper
                                                     code={interactiveCode.code}
+                                                    steps={interactiveCode.steps}
                                                     title="סימולטור"
                                                     onStepChange={handleStepChange}
                                                 />

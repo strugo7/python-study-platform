@@ -88,7 +88,10 @@ export default function QuizQuestion({
                                 </div>
                                 <pre className="code-font text-sm md:text-base leading-loose text-white">
                                     {codeSnippet.map((line, idx) => (
-                                        <div key={idx}>{line}</div>
+                                        <div key={idx} className="flex">
+                                            <span className="text-primary/30 w-8 select-none text-right mr-4 shrink-0">{idx + 1}</span>
+                                            <span>{line}</span>
+                                        </div>
                                     ))}
                                 </pre>
                             </div>

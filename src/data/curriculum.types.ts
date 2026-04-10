@@ -6,12 +6,55 @@ export interface TheorySection {
     content_html: string;
 }
 
+// Complex value types for heap visualization
+export interface ListValue {
+    type: 'list';
+    items: (string | number | boolean | null)[];
+    address: string;
+}
+
+export interface DictValue {
+    type: 'dict';
+    entries: { key: string; value: string | number | boolean | null }[];
+    address: string;
+}
+
+export interface ObjectValue {
+    type: 'object';
+    className: string;
+    attributes: { name: string; value: string | number | boolean | null | ListValue }[];
+    address: string;
+}
+
+export type ComplexValue = ListValue | DictValue | ObjectValue;
+
+export interface SimVariable {
+    name: string;
+    value: string | number | boolean | null;
+    type: string;
+    address: string;
+    changed?: boolean;
+    isNew?: boolean;
+    scope?: string;
+    pointsTo?: string; // address of heap object this variable references
+}
+
+export interface SimStepState {
+    lineNumber: number;
+    variables: SimVariable[];
+    output: string[];
+    description?: string;
+    callStack?: string[];
+    heapObjects?: ComplexValue[];
+}
+
 export interface InteractiveCode {
     title: string;
     description: string;
     concepts_used: string[];
     code: string;
     expected_output: string;
+    steps?: SimStepState[];
 }
 
 export interface QuestionOption {

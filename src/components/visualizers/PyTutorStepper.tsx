@@ -1,33 +1,19 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CodeBlock from "../CodeBlock";
+import type { SimVariable, SimStepState, ComplexValue } from "@/data/curriculum.types";
 
-export interface Variable {
-    name: string;
-    value: string | number | boolean | null;
-    type: string;
-    address: string;
-}
-
-export interface StepState {
-    lineNumber: number;
-    variables: Variable[];
-    output: string[];
-    description?: string;
-    waitingForInput?: {
-        varName: string;
-        prompt: string;
-        wrapperType?: 'int' | 'float' | 'str';
-    };
-}
+// Re-export for backward compat
+export type Variable = SimVariable;
+export type StepState = SimStepState;
 
 interface PyTutorStepperProps {
     code: string;
-    steps?: StepState[];
+    steps?: SimStepState[];
     title?: string;
-    onStepChange?: (step: StepState, stepIndex: number) => void;
+    onStepChange?: (step: SimStepState, stepIndex: number) => void;
 }
 
 // Generate a fake memory address
@@ -35,7 +21,61 @@ function generateAddress(index: number): string {
     return `0x${(0x4F00 + index).toString(16).toUpperCase()}`;
 }
 
-// Interactive Python interpreter
+// Safe arithmetic evaluator for simple expressions like "3 + 5", "10 / 2"
+// Only supports numbers, +, -, *, /, (), and whitespace
+function safeEvalArithmetic(expr: string): number | null {
+    if (!/^[\d\s+\-*/().]+$/.test(expr)) return null;
+    try {
+        // Parse and compute using a simple recursive descent approach
+        let pos = 0;
+        const str = expr.replace(/\s/g, '');
+
+        function parseExpr(): number {
+            let result = parseTerm();
+            while (pos < str.length && (str[pos] === '+' || str[pos] === '-')) {
+                const op = str[pos++];
+                const term = parseTerm();
+                result = op === '+' ? result + term : result - term;
+            }
+            return result;
+        }
+
+        function parseTerm(): number {
+            let result = parseFactor();
+            while (pos < str.length && (str[pos] === '*' || str[pos] === '/')) {
+                const op = str[pos++];
+                const factor = parseFactor();
+                result = op === '*' ? result * factor : result / factor;
+            }
+            return result;
+        }
+
+        function parseFactor(): number {
+            if (str[pos] === '(') {
+                pos++;
+                const result = parseExpr();
+                pos++; // skip ')'
+                return result;
+            }
+            if (str[pos] === '-') {
+                pos++;
+                return -parseFactor();
+            }
+            let numStr = '';
+            while (pos < str.length && (/\d/.test(str[pos]) || str[pos] === '.')) {
+                numStr += str[pos++];
+            }
+            return parseFloat(numStr);
+        }
+
+        const result = parseExpr();
+        return isNaN(result) ? null : result;
+    } catch {
+        return null;
+    }
+}
+
+// Interactive Python interpreter (fallback for Module 1 with input)
 class InteractiveInterpreter {
     private lines: string[];
     private variables: Map<string, { value: string | number | boolean | null; type: string }>;
@@ -61,19 +101,18 @@ class InteractiveInterpreter {
         this.currentLineIndex = 0;
     }
 
-    getNextStep(): StepState | null {
+    getNextStep(): SimStepState | null {
         while (this.currentLineIndex < this.lines.length) {
             const line = this.lines[this.currentLineIndex].trim();
             const lineNum = this.currentLineIndex + 1;
             this.currentLineIndex++;
 
-            // Skip empty lines and comments
             if (!line || line.startsWith('#')) {
                 continue;
             }
 
             let description = '';
-            let waitingForInput: StepState['waitingForInput'] = undefined;
+            let waitingForInput: { varName: string; prompt: string; wrapperType?: 'int' | 'float' | 'str' } | undefined = undefined;
 
             // Parse assignment with input()
             const inputAssignMatch = line.match(/^(\w+)\s*=\s*(int\(|float\()?input\(['"](.*)['"](?:\))?/);
@@ -83,7 +122,6 @@ class InteractiveInterpreter {
                     inputAssignMatch[2] === 'float(' ? 'float' : 'str';
                 const prompt = inputAssignMatch[3];
 
-                // Check if we have input for this
                 if (this.userInputs.has(varName)) {
                     let value = this.userInputs.get(varName)!;
                     let type = typeof value === 'number' ? (wrapperType || 'int') : 'str';
@@ -99,23 +137,25 @@ class InteractiveInterpreter {
                     this.variables.set(varName, { value, type });
                     description = `משתנה ${varName} מקבל ערך "${value}" מהמשתמש`;
                 } else {
-                    // Wait for user input
                     waitingForInput = { varName, prompt, wrapperType };
                     description = `מחכה לקלט מהמשתמש: "${prompt}"`;
                 }
 
-                return this.createStep(lineNum, description, waitingForInput);
+                const step = this.createStep(lineNum, description);
+                if (waitingForInput) {
+                    (step as any).waitingForInput = waitingForInput;
+                }
+                return step;
             }
 
-            // Parse simple assignments: x = 10
+            // Parse simple assignments
             const assignMatch = line.match(/^(\w+)\s*=\s*(.+)$/);
             if (assignMatch) {
                 const varName = assignMatch[1];
-                let valueExpr = assignMatch[2];
+                const valueExpr = assignMatch[2];
                 let value: string | number | boolean | null = valueExpr;
                 let type = 'unknown';
 
-                // Determine type and value
                 if (valueExpr === 'True') { value = true; type = 'bool'; }
                 else if (valueExpr === 'False') { value = false; type = 'bool'; }
                 else if (valueExpr === 'None') { value = null; type = 'NoneType'; }
@@ -125,23 +165,15 @@ class InteractiveInterpreter {
                     type = 'str';
                     value = valueExpr.slice(1, -1);
                 }
-                else if (valueExpr.startsWith('[')) {
-                    type = 'list';
-                    value = valueExpr;
-                }
-                else if (valueExpr.startsWith('{')) {
-                    type = 'dict';
-                    value = valueExpr;
-                }
+                else if (valueExpr.startsWith('[')) { type = 'list'; value = valueExpr; }
+                else if (valueExpr.startsWith('{')) { type = 'dict'; value = valueExpr; }
                 else {
-                    // Try to evaluate expression with known variables
                     value = this.evaluateExpression(valueExpr);
                     type = typeof value === 'number' ? 'int' : 'expression';
                 }
 
                 this.variables.set(varName, { value, type });
                 description = `משתנה ${varName} מקבל ערך ${JSON.stringify(value)}`;
-
                 return this.createStep(lineNum, description);
             }
 
@@ -151,18 +183,13 @@ class InteractiveInterpreter {
                 const content = printMatch[1];
                 let outputLine = '';
 
-                // f-string handling
                 if (content.startsWith('f"') || content.startsWith("f'")) {
                     outputLine = this.evaluateFString(content);
                     description = `מדפיס פלט מעוצב`;
-                }
-                // Variable reference
-                else if (this.variables.has(content)) {
+                } else if (this.variables.has(content)) {
                     outputLine = String(this.variables.get(content)?.value);
                     description = `מדפיס את הערך של ${content}`;
-                }
-                // Plain string
-                else {
+                } else {
                     outputLine = content.replace(/['"]/g, '');
                     description = `מדפיס טקסט`;
                 }
@@ -171,7 +198,7 @@ class InteractiveInterpreter {
                 return this.createStep(lineNum, description);
             }
 
-            // Parse if/elif statements
+            // Parse if/elif
             if (line.startsWith('if ') || line.startsWith('elif ')) {
                 const conditionMatch = line.match(/^(?:if|elif)\s+(.+?):/);
                 if (conditionMatch) {
@@ -187,15 +214,14 @@ class InteractiveInterpreter {
                 return this.createStep(lineNum, description);
             }
 
-            // Default - just show the line
             return this.createStep(lineNum, '');
         }
 
         return null;
     }
 
-    private createStep(lineNumber: number, description: string, waitingForInput?: StepState['waitingForInput']): StepState {
-        const currentVars: Variable[] = Array.from(this.variables.entries()).map(([name, data], idx) => ({
+    private createStep(lineNumber: number, description: string): SimStepState {
+        const currentVars: SimVariable[] = Array.from(this.variables.entries()).map(([name, data], idx) => ({
             name,
             value: data.value,
             type: data.type,
@@ -207,37 +233,22 @@ class InteractiveInterpreter {
             variables: [...currentVars],
             output: [...this.output],
             description,
-            waitingForInput,
         };
     }
 
     private evaluateExpression(expr: string): string | number {
-        // Try to resolve variables and simple math
         let resolved = expr;
-
         this.variables.forEach((data, name) => {
             const regex = new RegExp(`\\b${name}\\b`, 'g');
             resolved = resolved.replace(regex, String(data.value));
         });
-
-        // Try to evaluate simple math
-        try {
-            if (/^[\d\s+\-*/().]+$/.test(resolved)) {
-                return eval(resolved);
-            }
-        } catch {
-            // Failed to evaluate
-        }
-
-        return resolved;
+        const result = safeEvalArithmetic(resolved);
+        return result !== null ? result : resolved;
     }
 
     private evaluateFString(fstring: string): string {
-        // Extract content between f" and "
         const content = fstring.slice(2, -1);
-
         let result = content;
-        // Replace {varName} with actual values
         const matches = content.matchAll(/\{(\w+)\}/g);
         for (const match of matches) {
             const varName = match[1];
@@ -246,26 +257,32 @@ class InteractiveInterpreter {
                 result = result.replace(match[0], String(varData.value));
             }
         }
-
         return result;
     }
 
     private evaluateCondition(condition: string): boolean {
-        // Simple condition evaluation
         let resolved = condition;
-
         this.variables.forEach((data, name) => {
             const regex = new RegExp(`\\b${name}\\b`, 'g');
             resolved = resolved.replace(regex, String(data.value));
         });
-
-        try {
-            // Replace Python operators with JS
-            resolved = resolved.replace(' and ', ' && ').replace(' or ', ' || ');
-            return Boolean(eval(resolved));
-        } catch {
-            return false;
+        // Simple comparison evaluator
+        const compMatch = resolved.match(/^(.+?)\s*(<=|>=|<|>|==|!=)\s*(.+)$/);
+        if (compMatch) {
+            const left = safeEvalArithmetic(compMatch[1].trim());
+            const right = safeEvalArithmetic(compMatch[3].trim());
+            if (left !== null && right !== null) {
+                switch (compMatch[2]) {
+                    case '<': return left < right;
+                    case '>': return left > right;
+                    case '<=': return left <= right;
+                    case '>=': return left >= right;
+                    case '==': return left === right;
+                    case '!=': return left !== right;
+                }
+            }
         }
+        return false;
     }
 }
 
@@ -277,20 +294,28 @@ export default function PyTutorStepper({
 }: PyTutorStepperProps) {
     const [currentStep, setCurrentStep] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [steps, setSteps] = useState<StepState[]>([]);
+    const [steps, setSteps] = useState<SimStepState[]>([]);
     const [inputValue, setInputValue] = useState('');
-    const [waitingForInput, setWaitingForInput] = useState<StepState['waitingForInput']>(undefined);
+    const [waitingForInput, setWaitingForInput] = useState<{ varName: string; prompt: string; wrapperType?: 'int' | 'float' | 'str' } | undefined>(undefined);
     const interpreterRef = useRef<InteractiveInterpreter | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // Initialize interpreter
+    const usePreDefined = providedSteps && providedSteps.length > 0;
+
+    // Initialize: use pre-defined steps or interpreter
     useEffect(() => {
-        interpreterRef.current = new InteractiveInterpreter(code);
-        runToNextStep();
-    }, [code]);
+        if (usePreDefined) {
+            setSteps(providedSteps);
+            setCurrentStep(0);
+        } else {
+            interpreterRef.current = new InteractiveInterpreter(code);
+            runToNextStep();
+        }
+    }, [code, providedSteps]);
 
     const lines = code.split('\n');
     const currentState = steps[currentStep] || { lineNumber: 0, variables: [], output: [] };
+    const totalSteps = usePreDefined ? providedSteps.length : steps.length;
 
     // Notify parent of step changes
     useEffect(() => {
@@ -314,8 +339,8 @@ export default function PyTutorStepper({
             setSteps(prev => [...prev, step]);
             setCurrentStep(prev => prev + 1);
 
-            if (step.waitingForInput) {
-                setWaitingForInput(step.waitingForInput);
+            if ((step as any).waitingForInput) {
+                setWaitingForInput((step as any).waitingForInput);
                 setIsPlaying(false);
             } else {
                 setWaitingForInput(undefined);
@@ -337,18 +362,14 @@ export default function PyTutorStepper({
         setInputValue('');
         setWaitingForInput(undefined);
 
-        // Re-run current line with input
-        // Get next step with the input value applied
         const step = interpreterRef.current.getNextStep();
         if (step) {
-            // Update last step with the new value
             setSteps(prev => {
                 const updated = [...prev];
                 updated[updated.length - 1] = {
                     ...updated[updated.length - 1],
                     variables: step.variables,
                     description: `משתנה ${waitingForInput.varName} מקבל ערך "${value}" מהמשתמש`,
-                    waitingForInput: undefined,
                 };
                 return updated;
             });
@@ -356,14 +377,20 @@ export default function PyTutorStepper({
     }, [inputValue, waitingForInput]);
 
     const handleNext = useCallback(() => {
-        if (waitingForInput) return; // Can't proceed without input
+        if (waitingForInput) return;
 
-        if (currentStep < steps.length - 1) {
-            setCurrentStep(prev => prev + 1);
+        if (usePreDefined) {
+            if (currentStep < providedSteps.length - 1) {
+                setCurrentStep(prev => prev + 1);
+            }
         } else {
-            runToNextStep();
+            if (currentStep < steps.length - 1) {
+                setCurrentStep(prev => prev + 1);
+            } else {
+                runToNextStep();
+            }
         }
-    }, [currentStep, steps.length, waitingForInput, runToNextStep]);
+    }, [currentStep, steps.length, waitingForInput, runToNextStep, usePreDefined, providedSteps]);
 
     const handlePrev = useCallback(() => {
         if (currentStep > 0) {
@@ -372,27 +399,30 @@ export default function PyTutorStepper({
     }, [currentStep]);
 
     const handleReset = useCallback(() => {
-        interpreterRef.current = new InteractiveInterpreter(code);
-        setSteps([]);
-        setCurrentStep(-1);
-        setInputValue('');
-        setWaitingForInput(undefined);
-        setIsPlaying(false);
+        if (usePreDefined) {
+            setCurrentStep(0);
+            setIsPlaying(false);
+        } else {
+            interpreterRef.current = new InteractiveInterpreter(code);
+            setSteps([]);
+            setCurrentStep(-1);
+            setInputValue('');
+            setWaitingForInput(undefined);
+            setIsPlaying(false);
 
-        // Run first step
-        setTimeout(() => {
-            const step = interpreterRef.current?.getNextStep();
-            if (step) {
-                setSteps([step]);
-                setCurrentStep(0);
-                if (step.waitingForInput) {
-                    setWaitingForInput(step.waitingForInput);
+            setTimeout(() => {
+                const step = interpreterRef.current?.getNextStep();
+                if (step) {
+                    setSteps([step]);
+                    setCurrentStep(0);
+                    if ((step as any).waitingForInput) {
+                        setWaitingForInput((step as any).waitingForInput);
+                    }
                 }
-            }
-        }, 0);
-    }, [code]);
+            }, 0);
+        }
+    }, [code, usePreDefined]);
 
-    // Auto-play functionality
     const handlePlay = useCallback(() => {
         if (isPlaying) {
             setIsPlaying(false);
@@ -405,16 +435,26 @@ export default function PyTutorStepper({
     useEffect(() => {
         if (!isPlaying || waitingForInput) return;
 
+        const maxStep = usePreDefined ? providedSteps.length - 1 : Infinity;
+
         const interval = setInterval(() => {
-            if (currentStep >= steps.length - 1) {
-                runToNextStep();
-            } else {
-                setCurrentStep(prev => prev + 1);
-            }
+            setCurrentStep(prev => {
+                if (prev >= maxStep) {
+                    setIsPlaying(false);
+                    return prev;
+                }
+                if (!usePreDefined && prev >= steps.length - 1) {
+                    runToNextStep();
+                    return prev;
+                }
+                return prev + 1;
+            });
         }, 1500);
 
         return () => clearInterval(interval);
-    }, [isPlaying, waitingForInput, currentStep, steps.length, runToNextStep]);
+    }, [isPlaying, waitingForInput, steps.length, runToNextStep, usePreDefined, providedSteps]);
+
+    const isAtEnd = usePreDefined ? currentStep >= providedSteps.length - 1 : false;
 
     return (
         <div className="bg-surface-dark rounded-xl border border-border-dark overflow-hidden">
@@ -426,7 +466,7 @@ export default function PyTutorStepper({
                         {title}
                     </h3>
                     <p className="text-text-muted text-sm">
-                        שלב {Math.max(0, currentStep) + 1} מתוך {Math.max(steps.length, 1)}
+                        שלב {Math.max(0, currentStep) + 1} מתוך {Math.max(totalSteps, 1)}
                     </p>
                 </div>
 
@@ -453,7 +493,7 @@ export default function PyTutorStepper({
                     </button>
                     <button
                         onClick={handlePlay}
-                        disabled={!!waitingForInput}
+                        disabled={!!waitingForInput || isAtEnd}
                         className={`p-2 rounded-lg transition-colors ${isPlaying
                                 ? 'bg-orange-500 hover:bg-orange-600'
                                 : 'bg-primary hover:bg-primary/80 text-background-dark'
@@ -473,7 +513,7 @@ export default function PyTutorStepper({
                     </button>
                     <button
                         onClick={handleNext}
-                        disabled={!!waitingForInput}
+                        disabled={!!waitingForInput || isAtEnd}
                         className="p-2 rounded-lg bg-border-dark hover:bg-border-dark/80 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                         title="שלב הבא"
                     >
@@ -483,6 +523,34 @@ export default function PyTutorStepper({
                     </button>
                 </div>
             </div>
+
+            {/* Call Stack Display */}
+            <AnimatePresence mode="wait">
+                {currentState.callStack && currentState.callStack.length > 0 && (
+                    <motion.div
+                        key={`callstack-${currentStep}`}
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="px-4 py-2 bg-purple-500/10 border-b border-purple-500/30"
+                    >
+                        <div className="flex items-center gap-2 text-xs font-mono flex-wrap">
+                            <span className="text-purple-400">Call Stack:</span>
+                            {currentState.callStack.map((frame, idx) => (
+                                <span key={idx} className="flex items-center gap-1">
+                                    {idx > 0 && <span className="text-purple-400/50">&rarr;</span>}
+                                    <span className={`px-2 py-0.5 rounded ${idx === currentState.callStack!.length - 1
+                                            ? 'bg-purple-500/30 text-purple-300'
+                                            : 'bg-purple-500/10 text-purple-400/70'
+                                        }`}>
+                                        {frame}
+                                    </span>
+                                </span>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Description Bar */}
             <AnimatePresence mode="wait">
@@ -495,13 +563,13 @@ export default function PyTutorStepper({
                         className="px-4 py-3 bg-primary/10 border-b border-primary/30"
                     >
                         <p className="text-primary font-medium text-sm">
-                            💡 {currentState.description}
+                            {currentState.description}
                         </p>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Interactive Input Panel */}
+            {/* Interactive Input Panel (interpreter mode only) */}
             <AnimatePresence>
                 {waitingForInput && (
                     <motion.div
@@ -513,7 +581,7 @@ export default function PyTutorStepper({
                         <div className="flex items-center gap-4">
                             <div className="flex-1">
                                 <label className="block text-sm font-medium text-yellow-400 mb-2">
-                                    ⌨️ {waitingForInput.prompt}
+                                    {waitingForInput.prompt}
                                 </label>
                                 <div className="flex gap-2">
                                     <input
@@ -531,11 +599,11 @@ export default function PyTutorStepper({
                                         disabled={!inputValue}
                                         className="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
-                                        שלח ⏎
+                                        שלח
                                     </button>
                                 </div>
                                 <p className="text-xs text-yellow-400/70 mt-2">
-                                    הקלד ערך ולחץ Enter או לחץ על "שלח"
+                                    הקלד ערך ולחץ Enter או לחץ על &ldquo;שלח&rdquo;
                                 </p>
                             </div>
                         </div>
@@ -552,11 +620,11 @@ export default function PyTutorStepper({
                 />
             </div>
 
-            {/* Output Panel (if has output) */}
+            {/* Output Panel */}
             {currentState.output && currentState.output.length > 0 && (
                 <div className="p-4 border-t border-border-dark">
                     <h4 className="text-xs text-text-muted mb-2 flex items-center gap-2">
-                        <span>📤</span> פלט
+                        <span>OUTPUT</span>
                     </h4>
                     <div className="bg-black rounded-lg p-3 font-mono text-sm">
                         {currentState.output.map((line, idx) => (
@@ -571,7 +639,7 @@ export default function PyTutorStepper({
                 <motion.div
                     className="h-full bg-primary"
                     initial={{ width: 0 }}
-                    animate={{ width: `${steps.length > 0 ? ((currentStep + 1) / Math.max(steps.length, 1)) * 100 : 0}%` }}
+                    animate={{ width: `${totalSteps > 0 ? ((currentStep + 1) / totalSteps) * 100 : 0}%` }}
                     transition={{ duration: 0.3 }}
                 />
             </div>
@@ -579,5 +647,4 @@ export default function PyTutorStepper({
     );
 }
 
-// Export types for use in parent
 export type { PyTutorStepperProps };
