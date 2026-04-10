@@ -275,7 +275,11 @@ function AdvancedExamContent() {
                                                 }`}>
                                                 {String.fromCharCode(65 + idx)}
                                             </span>
-                                            <span className="font-mono" dir="ltr">{option}</span>
+                                            <div className="font-mono flex flex-col" dir="ltr">
+                                                {option.split('\n').map((line, i) => (
+                                                    <span key={i}>{line}</span>
+                                                ))}
+                                            </div>
                                         </div>
                                     </motion.button>
                                 );

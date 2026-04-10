@@ -171,9 +171,11 @@ export default function QuizQuestion({
                                     >
                                         {option.label}
                                     </span>
-                                    <span className={`text-lg ${isSelected || showAsCorrect ? "font-bold" : "font-medium"}`}>
-                                        {option.text}
-                                    </span>
+                                    <div className={`text-lg ${isSelected || showAsCorrect ? "font-bold" : "font-medium"} flex flex-col`} dir="ltr">
+                                        {option.text.split('\n').map((line, i) => (
+                                            <span key={i}>{line}</span>
+                                        ))}
+                                    </div>
                                 </div>
                                 {(showAsCorrect || isSelected) && (
                                     <svg

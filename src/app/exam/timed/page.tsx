@@ -164,7 +164,11 @@ export default function TimedExamPage() {
                                                             }`}
                                                     >
                                                         <span className="font-bold ml-2">{String.fromCharCode(1488 + i)}.</span>
-                                                        {opt}
+                                                        <span dir="ltr" className="flex flex-col">
+                                                            {opt.split('\n').map((line, li) => (
+                                                                <span key={li}>{line}</span>
+                                                            ))}
+                                                        </span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -263,7 +267,11 @@ export default function TimedExamPage() {
                                             }`}>
                                             {String.fromCharCode(1488 + i)}
                                         </span>
-                                        <span>{opt}</span>
+                                        <div className="flex flex-col" dir="ltr">
+                                            {opt.split('\n').map((line, i) => (
+                                                <span key={i}>{line}</span>
+                                            ))}
+                                        </div>
                                     </div>
                                 ))}
                             </div>

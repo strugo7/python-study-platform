@@ -241,15 +241,17 @@ function FinalExamContent() {
                                                             }`}>
                                                             {String.fromCharCode(65 + i)}
                                                         </span>
-                                                        <span className={
+                                                        <div className={`flex flex-col ${
                                                             q.correct === i
                                                                 ? 'text-green-400'
                                                                 : userAnswer === i && userAnswer !== q.correct
                                                                     ? 'text-red-400'
                                                                     : 'text-text-muted'
-                                                        }>
-                                                            {opt}
-                                                        </span>
+                                                        }`} dir="ltr">
+                                                            {opt.split('\n').map((line, li) => (
+                                                                <span key={li}>{line}</span>
+                                                            ))}
+                                                        </div>
                                                         {q.correct === i && <span className="mr-auto">✓</span>}
                                                     </div>
                                                 ))}
@@ -367,7 +369,11 @@ function FinalExamContent() {
                                                 }`}>
                                                 {String.fromCharCode(65 + i)}
                                             </span>
-                                            <span>{opt}</span>
+                                            <div className="flex flex-col" dir="ltr">
+                                                {opt.split('\n').map((line, i) => (
+                                                    <span key={i}>{line}</span>
+                                                ))}
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
