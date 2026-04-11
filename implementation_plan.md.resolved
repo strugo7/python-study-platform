@@ -1,0 +1,282 @@
+# Python Study Platform — Full UX/UI Redesign
+
+## 1. Overview & Context
+
+The **"Python Learning HUB"** Stitch project (ID: `14570473170347892827`) serves as the **English-language UX/UI blueprint** for redesigning our Hebrew-language Python study platform. The Stitch design system — codenamed **"The Digital Atheneum"** — establishes a premium, dark-mode, editorial learning environment.
+
+**Key principle:** We adopt the *visual language* from Stitch (colors, typography, spacing, elevation, component patterns) while **keeping all Hebrew content, lesson data, quiz logic, and exam functionality completely intact**.
+
+---
+
+## 2. Stitch Design System: "The Digital Atheneum"
+
+The design system defines these foundational tokens:
+
+### Color Palette (Dark Mode)
+| Token | Hex | Usage |
+|---|---|---|
+| `background` | `#0b160f` | Page background (deep obsidian green) |
+| `surface` | `#0b160f` | Base surface |
+| `surface-container-low` | `#131e17` | Large secondary areas |
+| `surface-container` | `#17221b` | Standard containers |
+| `surface-container-high` | `#212d25` | Interactive cards |
+| `surface-container-highest` | `#2c372f` | Active states |
+| `surface-container-lowest` | `#06100a` | Code blocks, recessed areas |
+| `primary` | `#d2ffd5` | Text on primary elements |
+| `primary-container` | `#00f77b` | **Main accent** (neon green) |
+| `on-surface` | `#d9e6da` | Primary text |
+| `on-surface-variant` | `#b9cbb8` | Secondary text |
+| `outline` | `#849584` | Subtle outlines |
+| `outline-variant` | `#3b4b3c` | Ghost borders (15% opacity) |
+| `error` | `#ffb4ab` | Error states |
+
+### Typography
+| Role | Font | Notes |
+|---|---|---|
+| **Display / Headlines** | Space Grotesk | Tight tracking (-0.02em), architectural precision |
+| **Body** | Inter / Assistant Hebrew | 1.6x line-height for readability |
+| **Labels** | Inter | All-caps, +0.05em letter-spacing |
+| **Code** | Fira Code / Monospace | body-sm size |
+
+> [!IMPORTANT]
+> We must keep **Noto Sans Hebrew** as the primary body font for Hebrew text. Space Grotesk will be used for display/headline elements and English text. Inter remains for labels and UI chrome.
+
+### Design Rules
+- **No-Line Rule:** 1px borders are **prohibited** for sectioning. Use tonal background shifts instead.
+- **Ghost Border:** If a border is needed for accessibility, use `outline-variant` at **15% opacity**.
+- **Tonal Layering:** Elevation achieved through background color stacking, not shadows.
+- **Glassmorphism:** Nav/floating elements use semi-transparent surfaces + `backdrop-blur(12-20px)`.
+- **Signature Gradient:** CTAs use a 135° gradient from `primary-container` (#00f77b) → `primary-fixed` (#63ff93).
+- **Asymmetric Margins:** Use uneven spacing for editorial layouts.
+- **Generous Spacing:** Double the padding when in doubt.
+
+---
+
+## 3. Stitch Screens → Current Pages Mapping
+
+| # | Stitch Screen | Title | Current Page | File |
+|---|---|---|---|---|
+| 1 | `430a5edc` | **Dashboard** | Home / Dashboard | [page.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/page.tsx) |
+| 2 | `56b8b41e` | **Courses List** | Module cards grid | Same as above (section) |
+| 3 | `ed5d8591` | **Active Lesson** | Learn page | [learn/[id]/page.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/learn/%5Bid%5D/page.tsx) |
+| 4 | `580ad177` | **Practice Exam** | Exam practice page | [exam/page.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/exam/page.tsx) |
+| 5 | `10156b82` | **Python Variables Reference** | Guides / Reference pages | `src/app/guides/` |
+| 6 | `299eb641` | **Exception Hierarchy** | Exception tree page | `src/app/guides/exceptions/` |
+| 7 | `f2379ea5` | **Exception Hierarchy (Mobile)** | Mobile responsive variant | Same as above |
+
+---
+
+## 4. Proposed Changes
+
+### Phase 1: Design Foundation
+
+#### [MODIFY] [globals.css](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/globals.css)
+Complete overhaul of the design token system:
+- Replace all current CSS custom properties with the Stitch "Digital Atheneum" palette
+- Update `@theme inline` block with new Tailwind color mappings
+- Replace current neon-glow effects with new tonal layering system
+- Add glassmorphism utility classes
+- Add the signature 135° gradient CTA mixin
+- Implement the "Ghost Border" utility (outline-variant @ 15%)
+- Update scrollbar styling to match new palette
+- Keep all RTL/LTR handling rules **unchanged**
+- Keep all animation keyframes, update colors only
+
+**Current → New token mapping:**
+```diff
+- --primary: #2bee6c;
++ --primary: #00f77b;            /* primary-container from Stitch */
++ --primary-soft: #d2ffd5;       /* primary from Stitch */
++ --primary-gradient-end: #63ff93; /* primary-fixed */
+- --background-dark: #102216;
++ --background: #0b160f;
+- --surface-dark: #1a2e20;
++ --surface-container: #17221b;
++ --surface-container-low: #131e17;
++ --surface-container-high: #212d25;
++ --surface-container-highest: #2c372f;
++ --surface-container-lowest: #06100a;
+- --border-dark: #23482f;
++ --outline-variant: #3b4b3c;
+- --text-muted: #92c9a4;
++ --on-surface: #d9e6da;
++ --on-surface-variant: #b9cbb8;
+- --neon-glow: rgba(43, 238, 108, 0.4);
++ --primary-glow: rgba(0, 247, 123, 0.15);
+```
+
+---
+
+#### [MODIFY] [layout.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/layout.tsx)
+- Add **Space Grotesk** from Google Fonts (for headlines/display)
+- Keep **Noto Sans Hebrew** as body font
+- Add **Inter** for labels/UI text
+- Update body className to reference new background token
+
+---
+
+### Phase 2: Shared Components
+
+#### [MODIFY] [Header.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/../components/Header.tsx)
+Redesign to match "The Digital Atheneum" navigation:
+- Apply glassmorphism: `surface-container-low` at 80% opacity + `backdrop-blur(16px)`
+- Remove `border-b` → use tonal shift (no-line rule)
+- Update text colors from `white/70` → `on-surface-variant`
+- Active/hover states use `primary-container` (#00f77b)
+- Logo area gets more breathing room (spacing-12 clear zone)
+- Mobile nav: glass panel with blur
+- Keep all Hebrew navigation labels **unchanged**
+
+#### [MODIFY] [QuizQuestion.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/components/exam/QuizQuestion.tsx)
+Redesign quiz card to match "Practice Exam" screen:
+- Card uses `surface-container-high` background, zero borders
+- Answer options: `surface-container-highest` background, ghost border on hover
+- Selected state: `primary-container` accent
+- Correct/incorrect feedback: tonal shifts (green/red tinted surfaces)
+- Code blocks: `surface-container-lowest` with 2px left accent border in primary
+- Keep all quiz logic, Hebrew text, and data flow **unchanged**
+
+#### [MODIFY] [CodeBlock.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/components/CodeBlock.tsx)
+- Update background to `surface-container-lowest` (#06100a)
+- Add 2px left-accent border using primary color
+- Keep line numbering logic unchanged
+
+---
+
+### Phase 3: Page Redesigns
+
+#### [MODIFY] [page.tsx (Dashboard)](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/page.tsx)
+Map to Stitch "Dashboard" + "Courses List" screens:
+- Replace `bg-surface-dark` with `surface-container-high` for cards
+- Progress bar: signature gradient (primary-container → primary-fixed at 135°)
+- Module cards: zero borders, tonal layering for elevation
+- On hover: shift to `surface-container-highest` + whisper shadow
+- CTA section: gradient background with editorial asymmetric spacing
+- Bottom mobile nav: glassmorphism panel
+- Keep all data bindings, module loading, and Hebrew strings **unchanged**
+
+#### [MODIFY] [learn/[id]/page.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/learn/%5Bid%5D/page.tsx)
+Map to Stitch "Active Lesson" screen:
+- Theory sections: `surface-container-high` backgrounds, no border-r
+- Section tabs: ghost buttons with tonal active state
+- Breadcrumbs: use `on-surface-variant` with primary hover
+- Interactive simulator toggle: surface-container-high base, primary-container active
+- Learning objectives box: `surface-container-low` with no border
+- Navigation: editorial spacing with asymmetric margins
+- Keep all theory HTML, code simulator, memory grid, and video logic **unchanged**
+
+#### [MODIFY] [exam/page.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/exam/page.tsx)
+Map to Stitch "Practice Exam" screen:
+- Module filter bar: glass panel, chips with tonal states
+- Results screen: editorial card with tonal layering
+- Keep all exam logic, scoring, and question shuffling **unchanged**
+
+#### [MODIFY] [exam/final/page.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/exam/final/page.tsx)
+- Library view cards: zero borders, tonal elevation
+- Timed exam call-to-action: gradient accent with whisper shadow
+- Question navigation pills: updated palette
+- Results review: tonal correct/incorrect states
+- Keep all exam, scoring and answer logic **unchanged**
+
+#### [MODIFY] [exam/timed/page.tsx](file:///Users/ofekstrogo/Library/CloudStorage/GoogleDrive-ofekstudent99@gmail.com/My%20Drive/4.%20%D7%90%D7%99%D7%A9%D7%99/Python%20Exam%20Perperation/python-study-platform/src/app/exam/timed/page.tsx)
+- Timer bar: glass panel with tonal background
+- Question cards: surface-container-high, ghost borders
+- Submit button: signature gradient
+- Keep all timer, scoring, and review logic **unchanged**
+
+---
+
+### Phase 4: Guide/Reference Pages
+
+#### [MODIFY] Guides pages (`src/app/guides/data-types/` and `src/app/guides/exceptions/`)
+Map to Stitch "Python Variables Reference" and "Exception Hierarchy" screens:
+- Apply same tonal layering system
+- Reference tables: alternating `surface-container` / `surface-container-low` rows (no divider lines)
+- Exception tree: updated palette tokens
+- Keep all educational content **unchanged**
+
+---
+
+## 5. What We Are NOT Changing
+
+> [!CAUTION]
+> These elements must remain **completely untouched**:
+
+- All Hebrew text strings (titles, labels, instructions, feedback messages)
+- `src/data/` — All curriculum JSON, lesson data, exam questions, final exams
+- `src/utils/` — bidi helpers and utility functions
+- Quiz/exam business logic (scoring, shuffling, timing, navigation)
+- Interactive code simulator logic (PyTutor, MemoryGrid)
+- Route structure (`/`, `/learn/[id]`, `/exam`, `/exam/final`, `/exam/timed`, `/guides/*`)
+- RTL layout direction
+- `package.json` dependencies (except adding Google Fonts for Space Grotesk)
+
+---
+
+## 6. New Dependencies
+
+| Package | Purpose |
+|---|---|
+| `@next/font` (already via `next/font`) | Add Space Grotesk + Inter |
+
+> No new npm packages required. Space Grotesk and Inter will be loaded via `next/font/google`, which is already available.
+
+---
+
+## 7. Execution Order
+
+```mermaid
+graph TD
+    A[Phase 1: Design Foundation] --> B[Phase 2: Shared Components]
+    B --> C[Phase 3: Page Redesigns]
+    C --> D[Phase 4: Guide Pages]
+    D --> E[Phase 5: Verification]
+    
+    A --> A1[globals.css — new tokens]
+    A --> A2[layout.tsx — fonts]
+    
+    B --> B1[Header.tsx — glassmorphism]
+    B --> B2[QuizQuestion.tsx — tonal cards]
+    B --> B3[CodeBlock.tsx — code styling]
+    
+    C --> C1[Dashboard page]
+    C --> C2[Learn page]
+    C --> C3[Exam pages x3]
+    
+    D --> D1[Data types guide]
+    D --> D2[Exceptions guide]
+    
+    E --> E1[npm run build — no errors]
+    E --> E2[Visual review in browser]
+    E --> E3[RTL/Hebrew content check]
+```
+
+---
+
+## 8. Open Questions
+
+> [!IMPORTANT]
+> 1. **Should we install Fira Code** for code blocks, or keep the current `Courier New` monospace? The Stitch design recommends Fira Code.
+> 2. **Mobile bottom nav:** The Stitch designs are mobile-first (780px viewport). Should we keep the current mobile bottom nav bar pattern or switch to a hamburger menu for desktop?
+> 3. **Transition strategy:** Should we do this as one big PR or would you prefer incremental changes (Phase 1 first, review, then continue)?
+
+---
+
+## 9. Verification Plan
+
+### Build Verification
+```bash
+npm run build   # Must complete with 0 errors
+npm run dev      # Visual review
+```
+
+### Manual Verification
+- [ ] All pages render correctly in dark mode
+- [ ] Hebrew text displays properly (RTL)
+- [ ] Code blocks remain LTR
+- [ ] Quiz/exam flow works end-to-end
+- [ ] Timed exam timer functions correctly
+- [ ] Module navigation intact
+- [ ] Mobile responsive layouts
+- [ ] Glassmorphism header visible on scroll
+- [ ] No broken styles or missing tokens
