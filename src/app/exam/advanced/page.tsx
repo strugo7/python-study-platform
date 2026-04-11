@@ -102,28 +102,30 @@ function AdvancedExamContent() {
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="max-w-lg w-full bg-surface-dark rounded-2xl p-8 text-center border border-border-dark"
+                        className="max-w-lg w-full rounded-2xl p-8 text-center"
+                        style={{ background: 'var(--surface-container-high)' }}
                     >
                         <div className="text-7xl mb-6">
                             {percentage >= 90 ? '🏆' : percentage >= 70 ? '🎉' : percentage >= 55 ? '👍' : '📚'}
                         </div>
-                        <h1 className="text-3xl font-black mb-2">{grade}</h1>
-                        <p className="text-text-muted text-lg mb-6">
+                        <h1 className="font-display text-3xl font-black mb-2 text-on-surface">{grade}</h1>
+                        <p className="text-on-surface-variant text-lg mb-6">
                             מבחן מסכם #{examNumber}
                         </p>
 
-                        <div className="bg-background-dark rounded-xl p-6 mb-6">
-                            <div className={`text-6xl font-black mb-2 ${percentage >= 55 ? 'text-primary' : 'text-red-400'}`}>
+                        <div className="rounded-xl p-6 mb-6" style={{ background: 'var(--surface-container-lowest)' }}>
+                            <div className={`font-display text-6xl font-black mb-2 ${percentage >= 55 ? '' : 'text-red-400'}`}
+                                 style={percentage >= 55 ? { background: 'linear-gradient(135deg, #00f77b, #63ff93)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' } : {}}>
                                 {percentage}%
                             </div>
-                            <p className="text-text-muted text-lg">
+                            <p className="text-on-surface-variant text-lg">
                                 {score} מתוך {examQuestions.length} תשובות נכונות
                             </p>
                         </div>
 
                         {/* Category breakdown */}
-                        <div className="text-right mb-6 bg-background-dark/50 rounded-xl p-4">
-                            <h3 className="font-bold mb-3 text-sm">פירוט לפי קטגוריות:</h3>
+                        <div className="text-right mb-6 rounded-xl p-4" style={{ background: 'var(--surface-container)' }}>
+                            <h3 className="font-bold mb-3 text-sm text-on-surface font-display">פירוט לפי קטגוריות:</h3>
                             {categories.map(cat => {
                                 const catQuestions = examQuestions.filter(q => q.category === cat);
                                 const catCorrect = catQuestions.filter((q, idx) =>
@@ -132,8 +134,8 @@ function AdvancedExamContent() {
                                 if (catQuestions.length === 0) return null;
                                 return (
                                     <div key={cat} className="flex justify-between items-center text-sm py-1">
-                                        <span className="text-text-muted">{cat}</span>
-                                        <span className={catCorrect === catQuestions.length ? 'text-green-400' : 'text-white'}>
+                                        <span className="text-on-surface-variant">{cat}</span>
+                                        <span className={catCorrect === catQuestions.length ? 'text-green-400' : 'text-on-surface'}>
                                             {catCorrect}/{catQuestions.length}
                                         </span>
                                     </div>
@@ -144,19 +146,21 @@ function AdvancedExamContent() {
                         <div className="flex flex-col gap-3">
                             <button
                                 onClick={startNewExam}
-                                className="w-full bg-primary text-background-dark py-4 rounded-xl font-bold hover:opacity-90 transition-opacity text-lg"
+                                className="w-full gradient-cta text-background-dark py-4 rounded-xl font-bold hover:opacity-90 transition-opacity text-lg shadow-[0_4px_16px_rgba(0,247,123,0.2)]"
                             >
                                 🎯 התחל מבחן חדש
                             </button>
                             <button
                                 onClick={restartExam}
-                                className="w-full border border-border-dark py-3 rounded-xl font-medium hover:bg-surface-dark transition-colors"
+                                className="w-full py-3 rounded-xl font-medium text-on-surface-variant hover:text-on-surface transition-colors"
+                                style={{ border: '1px solid rgba(59,75,60,0.3)' }}
                             >
                                 🔄 נסה את המבחן הזה שוב
                             </button>
                             <Link
                                 href="/"
-                                className="w-full border border-border-dark py-3 rounded-xl font-medium hover:bg-surface-dark transition-colors inline-block"
+                                className="w-full py-3 rounded-xl font-medium text-on-surface-variant hover:text-on-surface transition-colors inline-block text-center"
+                                style={{ border: '1px solid rgba(59,75,60,0.3)' }}
                             >
                                 חזרה לדף הבית
                             </Link>
@@ -173,21 +177,21 @@ function AdvancedExamContent() {
         <div className="min-h-screen flex flex-col">
             <Header />
 
-            {/* Exam Info Bar */}
-            <div className="bg-surface-dark border-b border-border-dark py-3 px-6">
+            {/* Exam Info Bar — glassmorphism */}
+            <div className="glass py-3 px-6 sticky top-[56px] z-40" style={{ borderBottom: '1px solid rgba(59,75,60,0.15)' }}>
                 <div className="max-w-4xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <span className="text-lg font-bold">מבחן מסכם #{examNumber}</span>
-                        <span className="text-text-muted text-sm">
+                        <span className="font-display text-lg font-bold text-on-surface">מבחן מסכם #{examNumber}</span>
+                        <span className="text-on-surface-variant text-sm">
                             20 שאלות • {currentQuestion.difficulty === 'easy' ? '⭐' : currentQuestion.difficulty === 'medium' ? '⭐⭐' : '⭐⭐⭐'}
                         </span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="text-xs bg-primary/20 text-primary px-3 py-1 rounded-full">
+                        <span className="text-xs px-3 py-1 rounded-full text-primary" style={{ background: 'rgba(0,247,123,0.1)' }}>
                             {currentQuestion.category}
                         </span>
                         {currentQuestion.trapProfile && (
-                            <span className="text-xs bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full">
+                            <span className="text-xs px-3 py-1 rounded-full text-orange-400" style={{ background: 'rgba(249,115,22,0.12)' }}>
                                 ⚠️ {currentQuestion.trapProfile}
                             </span>
                         )}
@@ -195,10 +199,10 @@ function AdvancedExamContent() {
                 </div>
             </div>
 
-            {/* Progress bar */}
-            <div className="h-1 bg-border-dark">
+            {/* Progress bar — signature gradient */}
+            <div className="h-1" style={{ background: 'var(--surface-container-highest)' }}>
                 <motion.div
-                    className="h-full bg-primary"
+                    className="h-full gradient-cta progress-glow"
                     initial={{ width: 0 }}
                     animate={{ width: `${((currentQuestionIndex + 1) / examQuestions.length) * 100}%` }}
                 />
@@ -209,10 +213,10 @@ function AdvancedExamContent() {
                 <div className="max-w-4xl mx-auto">
                     {/* Question header */}
                     <div className="flex items-center justify-between mb-6">
-                        <span className="text-text-muted">
+                        <span className="text-on-surface-variant">
                             שאלה {currentQuestionIndex + 1} מתוך {examQuestions.length}
                         </span>
-                        <span className="text-text-muted text-sm">
+                        <span className="text-on-surface-variant text-sm">
                             ✅ {score} נכונות
                         </span>
                     </div>
@@ -223,37 +227,38 @@ function AdvancedExamContent() {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                     >
-                        <h2 className="text-xl font-bold mb-4">{currentQuestion.question}</h2>
+                        <h2 className="text-xl font-bold mb-5 text-on-surface">{currentQuestion.question}</h2>
 
-                        {/* Code block */}
-                        <div className="bg-[#0a150e] rounded-xl border border-primary/20 p-4 mb-6 overflow-x-auto" dir="ltr">
+                        {/* Code block — tonal with accent bar */}
+                        <div className="rounded-xl p-5 mb-6 overflow-x-auto relative" style={{ background: 'var(--surface-container-lowest)' }} dir="ltr">
+                            <div className="absolute top-0 left-0 w-0.5 h-full gradient-cta" />
                             <pre className="text-sm font-mono">
                                 {currentQuestion.code.split('\n').map((line, idx) => (
                                     <div key={idx} className="flex">
-                                        <span className="text-primary/30 w-8 select-none text-right mr-4">{idx + 1}</span>
-                                        <span className="text-white">{line}</span>
+                                        <span className="text-primary/25 w-8 select-none text-right mr-4 shrink-0">{idx + 1}</span>
+                                        <span className="text-on-surface">{line}</span>
                                     </div>
                                 ))}
                             </pre>
                         </div>
 
-                        {/* Options */}
+                        {/* Options — tonal surfaces */}
                         <div className="space-y-3 mb-6">
                             {currentQuestion.options.map((option, idx) => {
-                                let bgClass = "bg-surface-dark hover:bg-border-dark/50";
-                                let borderClass = "border-border-dark";
+                                let bgStyle: React.CSSProperties = { background: 'var(--surface-container-highest)' };
+                                let extraClass = "ghost-border hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]";
 
                                 if (showResult) {
                                     if (idx === currentQuestion.correctAnswer) {
-                                        bgClass = "bg-green-500/20";
-                                        borderClass = "border-green-500";
+                                        bgStyle = { background: 'rgba(0,247,123,0.12)' };
+                                        extraClass = "shadow-[0_0_16px_rgba(0,247,123,0.08)]";
                                     } else if (idx === selectedAnswer && idx !== currentQuestion.correctAnswer) {
-                                        bgClass = "bg-red-500/20";
-                                        borderClass = "border-red-500";
+                                        bgStyle = { background: 'rgba(255,180,171,0.1)' };
+                                        extraClass = "";
                                     }
                                 } else if (idx === selectedAnswer) {
-                                    bgClass = "bg-primary/20";
-                                    borderClass = "border-primary";
+                                    bgStyle = { background: 'rgba(0,247,123,0.1)' };
+                                    extraClass = "";
                                 }
 
                                 return (
@@ -261,22 +266,23 @@ function AdvancedExamContent() {
                                         key={idx}
                                         onClick={() => handleSelectAnswer(idx)}
                                         disabled={showResult}
-                                        className={`w-full p-4 rounded-xl border ${borderClass} ${bgClass} text-right transition-all`}
+                                        className={`w-full p-4 rounded-xl text-right transition-all ${extraClass}`}
+                                        style={bgStyle}
                                         whileHover={!showResult ? { scale: 1.01 } : {}}
                                         whileTap={!showResult ? { scale: 0.99 } : {}}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${showResult && idx === currentQuestion.correctAnswer
-                                                    ? 'bg-green-500 text-white'
+                                            <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${showResult && idx === currentQuestion.correctAnswer
+                                                    ? 'bg-primary text-background-dark'
                                                     : showResult && idx === selectedAnswer
-                                                        ? 'bg-red-500 text-white'
+                                                        ? 'bg-error/20 text-error'
                                                         : idx === selectedAnswer
-                                                            ? 'bg-primary text-background-dark'
-                                                            : 'bg-border-dark'
-                                                }`}>
+                                                            ? 'gradient-cta text-background-dark'
+                                                            : 'text-on-surface-variant'
+                                                }`} style={!(showResult && idx === currentQuestion.correctAnswer) && !(showResult && idx === selectedAnswer) && idx !== selectedAnswer ? { background: 'var(--surface-container-low)' } : {}}>
                                                 {String.fromCharCode(65 + idx)}
                                             </span>
-                                            <div className="font-mono flex flex-col">
+                                            <div className="font-mono flex flex-col text-on-surface">
                                                 {fixCodeDirection(option).split('\n').map((line, i) => (
                                                     <span key={i}>{line}</span>
                                                 ))}
@@ -294,15 +300,19 @@ function AdvancedExamContent() {
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: 'auto' }}
                                     exit={{ opacity: 0, height: 0 }}
-                                    className={`p-4 rounded-xl mb-6 ${isCorrect ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'}`}
+                                    className="p-5 rounded-2xl mb-6"
+                                    style={{
+                                        background: isCorrect ? 'rgba(0,247,123,0.08)' : 'rgba(255,180,171,0.08)',
+                                        border: `1px solid ${isCorrect ? 'rgba(0,247,123,0.2)' : 'rgba(255,180,171,0.2)'}`,
+                                    }}
                                 >
                                     <div className="flex items-start gap-3">
                                         <span className="text-2xl">{isCorrect ? '✅' : '❌'}</span>
                                         <div>
-                                            <p className={`font-bold mb-2 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                                            <p className={`font-bold mb-2 ${isCorrect ? 'text-primary' : 'text-error'}`}>
                                                 {isCorrect ? 'נכון!' : 'לא נכון'}
                                             </p>
-                                            <p className="text-text-muted">{currentQuestion.explanation}</p>
+                                            <p className="text-on-surface-variant">{currentQuestion.explanation}</p>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -314,17 +324,15 @@ function AdvancedExamContent() {
                             <button
                                 onClick={handlePrevQuestion}
                                 disabled={currentQuestionIndex === 0}
-                                className="px-6 py-3 rounded-xl border border-border-dark font-medium hover:bg-surface-dark transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                className="px-6 py-3 rounded-xl font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                style={{ border: '1px solid rgba(59,75,60,0.2)' }}
                             >
                                 ← הקודם
                             </button>
                             <button
                                 onClick={handleSubmitAnswer}
                                 disabled={selectedAnswer === null}
-                                className={`flex-1 py-3 rounded-xl font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed ${showResult
-                                        ? 'bg-primary text-background-dark hover:opacity-90'
-                                        : 'bg-primary text-background-dark hover:opacity-90'
-                                    }`}
+                                className="flex-1 py-3 rounded-xl font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed gradient-cta text-background-dark hover:opacity-90 shadow-[0_4px_16px_rgba(0,247,123,0.2)]"
                             >
                                 {showResult
                                     ? (currentQuestionIndex === examQuestions.length - 1 ? 'סיים מבחן' : 'הבא →')
@@ -347,7 +355,7 @@ export default function AdvancedExamPage() {
                 <main className="flex-1 flex items-center justify-center">
                     <div className="text-center">
                         <div className="text-6xl mb-4">📝</div>
-                        <h1 className="text-2xl font-bold mb-2">טוען מבחן מסכם...</h1>
+                        <h1 className="font-display text-2xl font-bold mb-2 text-on-surface">טוען מבחן מסכם...</h1>
                     </div>
                 </main>
             </div>

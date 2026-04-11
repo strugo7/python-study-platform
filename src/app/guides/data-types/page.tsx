@@ -163,54 +163,56 @@ export default function DataTypesGuide() {
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-            <main className="flex-1 p-4 md:p-6 overflow-auto">
+            <main className="flex-1 p-4 md:p-8 overflow-auto">
                 <div className="max-w-5xl mx-auto">
                     {/* Header */}
-                    <div className="text-center mb-6 md:mb-8">
-                        <h1 className="text-2xl md:text-4xl font-black mb-3">📚 מילון טיפוסי נתונים</h1>
-                        <p className="text-text-muted text-sm md:text-lg">כל מה שצריך לדעת על טיפוסי נתונים בפייתון</p>
+                    <div className="text-center mb-8 md:mb-12">
+                        <h1 className="font-display text-2xl md:text-4xl font-black mb-3 text-on-surface">📚 מילון טיפוסי נתונים</h1>
+                        <p className="text-on-surface-variant text-sm md:text-lg">כל מה שצריך לדעת על טיפוסי נתונים בפייתון</p>
                     </div>
 
                     {/* Data Types Grid */}
-                    <section className="mb-8 md:mb-12">
-                        <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-2">
+                    <section className="mb-10 md:mb-14">
+                        <h2 className="font-display text-xl md:text-2xl font-bold mb-5 md:mb-7 flex items-center gap-2 text-on-surface">
                             <span className="text-primary">📦</span> טיפוסי הנתונים העיקריים
                         </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                             {dataTypes.map((dt) => (
                                 <div
                                     key={dt.name}
-                                    className="bg-surface-dark rounded-xl border border-border-dark p-4 md:p-5 hover:border-primary/50 transition-all"
+                                    className="rounded-2xl p-5 md:p-6 card-hover ghost-border"
+                                    style={{ background: 'var(--surface-container)' }}
                                 >
                                     <div className="flex items-center justify-between mb-3">
-                                        <h3 className="text-lg md:text-xl font-bold text-primary">{dt.name}</h3>
-                                        <span className={`text-xs px-2 py-1 rounded-full ${dt.mutable ? 'bg-orange-500/20 text-orange-400' : 'bg-blue-500/20 text-blue-400'}`}>
+                                        <h3 className="font-display text-lg md:text-xl font-bold text-primary">{dt.name}</h3>
+                                        <span className={`text-xs px-2.5 py-1 rounded-full ${dt.mutable ? 'text-orange-400' : 'text-blue-400'}`}
+                                              style={{ background: dt.mutable ? 'rgba(249,115,22,0.12)' : 'rgba(96,165,250,0.12)' }}>
                                             {dt.mutable ? 'Mutable' : 'Immutable'}
                                         </span>
                                     </div>
-                                    <p className="text-lg font-medium mb-2">{dt.hebrewName}</p>
-                                    <p className="text-text-muted text-sm mb-3">{dt.description}</p>
+                                    <p className="text-lg font-medium text-on-surface mb-2">{dt.hebrewName}</p>
+                                    <p className="text-on-surface-variant text-sm mb-4">{dt.description}</p>
 
                                     <div className="mb-3">
-                                        <p className="text-xs text-text-muted mb-1">דוגמאות:</p>
-                                        <div className="flex flex-wrap gap-1">
+                                        <p className="text-xs text-on-surface-variant/60 mb-1.5 tracking-widest uppercase">דוגמאות:</p>
+                                        <div className="flex flex-wrap gap-1.5">
                                             {dt.examples.map((ex, i) => (
-                                                <code key={i} className="text-xs bg-background-dark px-2 py-1 rounded">{ex}</code>
+                                                <code key={i} className="text-xs px-2 py-1 rounded text-on-surface" style={{ background: 'var(--surface-container-lowest)' }}>{ex}</code>
                                             ))}
                                         </div>
                                     </div>
 
                                     <div className="mb-3">
-                                        <p className="text-xs text-text-muted mb-1">פעולות:</p>
-                                        <div className="flex flex-wrap gap-1">
+                                        <p className="text-xs text-on-surface-variant/60 mb-1.5 tracking-widest uppercase">פעולות:</p>
+                                        <div className="flex flex-wrap gap-1.5">
                                             {dt.operations.map((op, i) => (
-                                                <span key={i} className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded">{op}</span>
+                                                <span key={i} className="text-xs text-primary px-2 py-0.5 rounded" style={{ background: 'rgba(0,247,123,0.1)' }}>{op}</span>
                                             ))}
                                         </div>
                                     </div>
 
                                     {dt.notes && (
-                                        <p className="text-xs text-orange-400 bg-orange-500/10 p-2 rounded">
+                                        <p className="text-xs text-orange-400 p-2.5 rounded-lg" style={{ background: 'rgba(249,115,22,0.08)' }}>
                                             ⚠️ {dt.notes}
                                         </p>
                                     )}
@@ -220,38 +222,43 @@ export default function DataTypesGuide() {
                     </section>
 
                     {/* Comprehensive Operations Table */}
-                    <section className="mb-8 md:mb-12">
-                        <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-2">
+                    <section className="mb-10 md:mb-14">
+                        <h2 className="font-display text-xl md:text-2xl font-bold mb-5 md:mb-7 flex items-center gap-2 text-on-surface">
                             <span className="text-primary">📊</span> טבלת פעולות מקיפה
                         </h2>
-                        <p className="text-text-muted mb-4 text-sm">כל הפעולות החשובות לפי טיפוס - מתוך חומרי המרצה</p>
-                        <div className="bg-surface-dark rounded-xl border border-border-dark overflow-x-auto">
+                        <p className="text-on-surface-variant mb-5 text-sm">כל הפעולות החשובות לפי טיפוס - מתוך חומרי המרצה</p>
+                        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--surface-container)' }}>
                             <table className="w-full text-xs md:text-sm">
-                                <thead className="bg-primary/20">
-                                    <tr>
-                                        <th className="p-2 md:p-3 text-right font-bold text-primary">טיפוס</th>
-                                        <th className="p-2 md:p-3 text-right font-bold">פעולה</th>
-                                        <th className="p-2 md:p-3 text-right font-bold">דוגמה</th>
-                                        <th className="p-2 md:p-3 text-right font-bold">תוצאה</th>
-                                        <th className="p-2 md:p-3 text-right font-bold hidden md:table-cell">הסבר</th>
-                                        <th className="p-2 md:p-3 text-center font-bold">Mutable?</th>
+                                <thead>
+                                    <tr style={{ background: 'rgba(0,247,123,0.08)' }}>
+                                        <th className="p-3 md:p-4 text-right font-bold text-primary">טיפוס</th>
+                                        <th className="p-3 md:p-4 text-right font-bold text-on-surface">פעולה</th>
+                                        <th className="p-3 md:p-4 text-right font-bold text-on-surface">דוגמה</th>
+                                        <th className="p-3 md:p-4 text-right font-bold text-on-surface">תוצאה</th>
+                                        <th className="p-3 md:p-4 text-right font-bold text-on-surface hidden md:table-cell">הסבר</th>
+                                        <th className="p-3 md:p-4 text-center font-bold text-on-surface">Mutable?</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {operationsTable.map((row, i) => {
                                         const isFirstOfType = i === 0 || operationsTable[i - 1].type !== row.type;
                                         return (
-                                            <tr key={i} className={`border-t border-border-dark hover:bg-border-dark/30 ${isFirstOfType ? 'bg-border-dark/20' : ''}`}>
-                                                <td className="p-2 md:p-3">
+                                            <tr key={i}
+                                                className="transition-colors hover:bg-surface-container-high"
+                                                style={{
+                                                    background: isFirstOfType ? 'var(--surface-container-low)' : undefined,
+                                                    borderTop: '1px solid rgba(59,75,60,0.15)',
+                                                }}>
+                                                <td className="p-3 md:p-4">
                                                     {isFirstOfType && (
                                                         <code className="text-primary font-bold">{row.type}</code>
                                                     )}
                                                 </td>
-                                                <td className="p-2 md:p-3"><code className="text-blue-400">{row.operation}</code></td>
-                                                <td className="p-2 md:p-3"><code className="text-green-400 text-xs">{row.example}</code></td>
-                                                <td className="p-2 md:p-3"><code className="text-orange-400">{row.result}</code></td>
-                                                <td className="p-2 md:p-3 text-text-muted text-xs hidden md:table-cell">{row.explanation}</td>
-                                                <td className="p-2 md:p-3 text-center">
+                                                <td className="p-3 md:p-4"><code className="text-blue-400">{row.operation}</code></td>
+                                                <td className="p-3 md:p-4"><code className="text-green-400 text-xs">{row.example}</code></td>
+                                                <td className="p-3 md:p-4"><code className="text-orange-400">{row.result}</code></td>
+                                                <td className="p-3 md:p-4 text-on-surface-variant text-xs hidden md:table-cell">{row.explanation}</td>
+                                                <td className="p-3 md:p-4 text-center">
                                                     {row.mutable ? (
                                                         <span className="text-green-400">✅</span>
                                                     ) : (
@@ -264,35 +271,35 @@ export default function DataTypesGuide() {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="mt-4 flex gap-4 text-xs text-text-muted">
+                        <div className="mt-4 flex gap-4 text-xs text-on-surface-variant">
                             <span><span className="text-green-400">✅</span> Mutable = משנה את האובייקט המקורי</span>
                             <span><span className="text-red-400">❌</span> Immutable = יוצר אובייקט חדש</span>
                         </div>
                     </section>
 
                     {/* Type Conversions */}
-                    <section className="mb-8 md:mb-12">
-                        <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-2">
+                    <section className="mb-10 md:mb-14">
+                        <h2 className="font-display text-xl md:text-2xl font-bold mb-5 md:mb-7 flex items-center gap-2 text-on-surface">
                             <span className="text-primary">🔄</span> המרות בין טיפוסים
                         </h2>
-                        <div className="bg-surface-dark rounded-xl border border-border-dark overflow-x-auto">
+                        <div className="rounded-2xl overflow-hidden" style={{ background: 'var(--surface-container)' }}>
                             <table className="w-full text-sm">
-                                <thead className="bg-border-dark/50">
-                                    <tr>
-                                        <th className="p-3 text-right">מ-</th>
-                                        <th className="p-3 text-right">ל-</th>
-                                        <th className="p-3 text-right">פונקציה</th>
-                                        <th className="p-3 text-right">תוצאה</th>
-                                        <th className="p-3 text-right">הערה</th>
+                                <thead>
+                                    <tr style={{ background: 'var(--surface-container-high)' }}>
+                                        <th className="p-3 text-right text-on-surface font-bold">מ-</th>
+                                        <th className="p-3 text-right text-on-surface font-bold">ל-</th>
+                                        <th className="p-3 text-right text-on-surface font-bold">פונקציה</th>
+                                        <th className="p-3 text-right text-on-surface font-bold">תוצאה</th>
+                                        <th className="p-3 text-right text-on-surface font-bold">הערה</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {conversionTable.map((row, i) => (
-                                        <tr key={i} className="border-t border-border-dark hover:bg-border-dark/30">
+                                        <tr key={i} className="hover:bg-surface-container-high transition-colors" style={{ borderTop: '1px solid rgba(59,75,60,0.15)' }}>
                                             <td className="p-3"><code className="text-blue-400">{row.from}</code></td>
                                             <td className="p-3"><code className="text-green-400">{row.to}</code></td>
                                             <td className="p-3"><code className="text-primary">{row.func}</code></td>
-                                            <td className="p-3"><code>{row.result}</code></td>
+                                            <td className="p-3"><code className="text-on-surface">{row.result}</code></td>
                                             <td className="p-3 text-orange-400 text-xs">{row.warning}</td>
                                         </tr>
                                     ))}
@@ -302,25 +309,25 @@ export default function DataTypesGuide() {
                     </section>
 
                     {/* Falsy Values */}
-                    <section className="mb-8 md:mb-12">
-                        <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-2">
+                    <section className="mb-10 md:mb-14">
+                        <h2 className="font-display text-xl md:text-2xl font-bold mb-5 md:mb-7 flex items-center gap-2 text-on-surface">
                             <span className="text-primary">❌</span> ערכי Falsy
                         </h2>
-                        <p className="text-text-muted mb-4">ערכים אלו נחשבים כ-False בתנאי if:</p>
+                        <p className="text-on-surface-variant mb-5">ערכים אלו נחשבים כ-False בתנאי if:</p>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                             {falsyValues.map((fv, i) => (
-                                <div key={i} className="bg-surface-dark rounded-lg border border-red-500/30 p-4 text-center">
+                                <div key={i} className="rounded-xl p-4 text-center ghost-border" style={{ background: 'var(--surface-container-high)' }}>
                                     <code className="text-lg font-bold text-red-400">{fv.value}</code>
-                                    <p className="text-xs text-text-muted mt-1">{fv.type}</p>
+                                    <p className="text-xs text-on-surface-variant mt-1">{fv.type}</p>
                                 </div>
                             ))}
                         </div>
-                        <p className="text-sm text-text-muted mt-4">💡 כל ערך אחר נחשב Truthy (True)</p>
+                        <p className="text-sm text-on-surface-variant mt-4">💡 כל ערך אחר נחשב Truthy (True)</p>
                     </section>
 
                     {/* Back Link */}
-                    <div className="text-center mt-8">
-                        <Link href="/" className="text-text-muted hover:text-primary transition-colors">
+                    <div className="text-center mt-10">
+                        <Link href="/" className="text-on-surface-variant hover:text-primary transition-colors text-sm">
                             ← חזרה לדף הבית
                         </Link>
                     </div>
