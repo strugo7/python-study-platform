@@ -11,3 +11,8 @@ export function fixCodeDirection(text: string): string {
     // U+2069 = Pop Directional Isolate (PDI)
     return text.replace(/\[([^\]]*)\]/g, '\u2066[$1]\u2069');
 }
+
+export function renderNewlines(text: string): string {
+    if (!text) return "";
+    return text.replace(/\\\\n/g, '\n').replace(/\\n/g, '\n');
+}

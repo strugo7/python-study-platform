@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { getShuffledExam, getAllFinalExams, type FinalExam } from "@/data/finalExams";
-import { fixCodeDirection } from "@/utils/bidi";
+import { fixCodeDirection, renderNewlines } from "@/utils/bidi";
 
 function FinalExamContent() {
     const searchParams = useSearchParams();
@@ -264,7 +264,7 @@ function FinalExamContent() {
                                                         <div className={`flex flex-col ${
                                                             q.correct === i ? 'text-primary' : userAnswer === i && userAnswer !== q.correct ? 'text-error' : 'text-on-surface-variant'
                                                         }`}>
-                                                            {fixCodeDirection(opt).split('\n').map((line, li) => (
+                                                            {renderNewlines(fixCodeDirection(opt)).split('\n').map((line, li) => (
                                                                 <span key={li}>{line}</span>
                                                             ))}
                                                         </div>
@@ -398,7 +398,7 @@ function FinalExamContent() {
                                                 {String.fromCharCode(65 + i)}
                                             </span>
                                             <div className="flex flex-col text-on-surface text-sm">
-                                                {fixCodeDirection(opt).split('\n').map((line, i) => (
+                                                {renderNewlines(fixCodeDirection(opt)).split('\n').map((line, i) => (
                                                     <span key={i}>{line}</span>
                                                 ))}
                                             </div>

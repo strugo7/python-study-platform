@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Header from "@/components/Header";
 import Link from "next/link";
 import { timedExam, shuffleExamAnswers, EXAM_DURATION_MS } from "@/data/timedExam";
-import { fixCodeDirection } from "@/utils/bidi";
+import { fixCodeDirection, renderNewlines } from "@/utils/bidi";
 
 export default function TimedExamPage() {
     const [examStarted, setExamStarted] = useState(false);
@@ -185,7 +185,7 @@ export default function TimedExamPage() {
                                                             {String.fromCharCode(1488 + i)}.
                                                         </span>
                                                         <span className={`flex flex-col ${q.correct === i ? 'text-primary' : userAnswer === i ? 'text-error' : 'text-on-surface-variant'}`}>
-                                                            {fixCodeDirection(opt).split('\n').map((line, li) => (
+                                                            {renderNewlines(fixCodeDirection(opt)).split('\n').map((line, li) => (
                                                                 <span key={li}>{line}</span>
                                                             ))}
                                                         </span>
@@ -300,7 +300,7 @@ export default function TimedExamPage() {
                                             {String.fromCharCode(1488 + i)}
                                         </span>
                                         <div className="flex flex-col text-sm text-on-surface">
-                                            {fixCodeDirection(opt).split('\n').map((line, i) => (
+                                            {renderNewlines(fixCodeDirection(opt)).split('\n').map((line, i) => (
                                                 <span key={i}>{line}</span>
                                             ))}
                                         </div>
